@@ -1,0 +1,12 @@
+# Ignored directories
+extra/
+node_modules/
+dist/
+build/
+.next/
+.next-build/
+.env
+.DS_Store
+*.log
+*.tsbuildinfo
+tsc_errors.txt

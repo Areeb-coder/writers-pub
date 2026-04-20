@@ -1,0 +1,4 @@
+ALTER TABLE drafts
+ADD COLUMN IF NOT EXISTS tags TEXT[] DEFAULT '{}';
+
+CREATE INDEX IF NOT EXISTS idx_drafts_tags ON drafts USING GIN (tags);

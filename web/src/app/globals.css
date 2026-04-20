@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+:root {
+  --background: #daddc6;
+  --foreground: #4a5033;
+  --primary: #4a5033;
+  --primary-foreground: #daddc6;
+  
+  --glass-surface: rgba(218, 221, 198, 0.4);
+  --glass-border: rgba(74, 80, 51, 0.1);
+  --glass-shadow: rgba(74, 80, 51, 0.08);
+
+  --ink-glow: rgba(74, 80, 51, 0.05);
+  --font-outfit: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-merriweather: "Georgia", "Times New Roman", serif;
+  --font-serif: var(--font-merriweather);
+
+  --radius: 0.75rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+  
+  --animate-ink-float: ink-float 6s ease-in-out infinite;
+  --animate-ink-spread: ink-spread 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @keyframes ink-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes ink-spread {
+    from { opacity: 0; transform: scale(0.95); filter: blur(4px); }
+    to { opacity: 1; transform: scale(1); filter: blur(0); }
+  }
+}
+
+/* Base resets */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-outfit);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism Utilities */
+@layer utilities {
+  .glass-card {
+    background: var(--glass-surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 var(--glass-shadow);
+  }
+
+  .glass-border {
+    border: 1px solid var(--glass-border);
+  }
+
+  .ink-bg {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  .ink-text {
+    color: var(--primary);
+  }
+
+  .ambient-glow {
+    background: radial-gradient(circle at 50% 50%, var(--ink-glow) 0%, transparent 70%);
+  }
+}
+
+/* Zen Editor Typography */
+.prose-ink {
+  font-family: var(--font-serif), serif;
+  line-height: 1.8;
+  font-size: 1.125rem;
+}
