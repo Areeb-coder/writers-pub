@@ -65,6 +65,12 @@ const DraftSchema = new Schema(
   commonSchemaOptions
 );
 
+// Optimize Agora/explore queries
+DraftSchema.index({ visibility: 1, createdAt: -1 });
+// Optimize AI critique sorting
+DraftSchema.index({ 'ai_critique.scores.plot': -1, createdAt: -1 });
+DraftSchema.index({ 'ai_critique.scores.character': -1, createdAt: -1 });
+
 const DraftVersionSchema = new Schema(
   {
     draft_id: { type: Schema.Types.ObjectId, ref: 'Draft', required: true, index: true },

@@ -1,0 +1,9 @@
+extra/
+node_modules/
+dist/
+build/
+.next/
+.next-build/
+*.log
+.git/
+graphify-out/

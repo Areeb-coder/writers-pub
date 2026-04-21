@@ -1,0 +1,1486 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\index.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_index_ts",
+      "community": 0,
+      "norm_label": "index.ts"
+    },
+    {
+      "label": "start()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\index.ts",
+      "source_location": "L69",
+      "id": "index_start",
+      "community": 0,
+      "norm_label": "start()"
+    },
+    {
+      "label": "database.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\database.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_config_database_ts",
+      "community": 1,
+      "norm_label": "database.ts"
+    },
+    {
+      "label": "getErrorDetail()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\database.ts",
+      "source_location": "L6",
+      "id": "database_geterrordetail",
+      "community": 1,
+      "norm_label": "geterrordetail()"
+    },
+    {
+      "label": "connectDatabase()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\database.ts",
+      "source_location": "L14",
+      "id": "database_connectdatabase",
+      "community": 1,
+      "norm_label": "connectdatabase()"
+    },
+    {
+      "label": "testConnection()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\database.ts",
+      "source_location": "L28",
+      "id": "database_testconnection",
+      "community": 1,
+      "norm_label": "testconnection()"
+    },
+    {
+      "label": "env.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\env.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_config_env_ts",
+      "community": 25,
+      "norm_label": "env.ts"
+    },
+    {
+      "label": "redis.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\redis.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_config_redis_ts",
+      "community": 0,
+      "norm_label": "redis.ts"
+    },
+    {
+      "label": "connectRedis()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\redis.ts",
+      "source_location": "L24",
+      "id": "redis_connectredis",
+      "community": 0,
+      "norm_label": "connectredis()"
+    },
+    {
+      "label": "analytics.controller.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\analytics.controller.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_controllers_analytics_controller_ts",
+      "community": 8,
+      "norm_label": "analytics.controller.ts"
+    },
+    {
+      "label": "pstr()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\analytics.controller.ts",
+      "source_location": "L4",
+      "id": "analytics_controller_pstr",
+      "community": 8,
+      "norm_label": "pstr()"
+    },
+    {
+      "label": "auth.controller.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\auth.controller.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_controllers_auth_controller_ts",
+      "community": 26,
+      "norm_label": "auth.controller.ts"
+    },
+    {
+      "label": "drafts.controller.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\drafts.controller.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_controllers_drafts_controller_ts",
+      "community": 4,
+      "norm_label": "drafts.controller.ts"
+    },
+    {
+      "label": "qstr()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\drafts.controller.ts",
+      "source_location": "L6",
+      "id": "drafts_controller_qstr",
+      "community": 4,
+      "norm_label": "qstr()"
+    },
+    {
+      "label": "pstr()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\drafts.controller.ts",
+      "source_location": "L11",
+      "id": "drafts_controller_pstr",
+      "community": 4,
+      "norm_label": "pstr()"
+    },
+    {
+      "label": "explore.controller.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\explore.controller.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_controllers_explore_controller_ts",
+      "community": 27,
+      "norm_label": "explore.controller.ts"
+    },
+    {
+      "label": "feedback.controller.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\feedback.controller.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_controllers_feedback_controller_ts",
+      "community": 9,
+      "norm_label": "feedback.controller.ts"
+    },
+    {
+      "label": "pstr()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\feedback.controller.ts",
+      "source_location": "L4",
+      "id": "feedback_controller_pstr",
+      "community": 9,
+      "norm_label": "pstr()"
+    },
+    {
+      "label": "notifications.controller.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\notifications.controller.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_controllers_notifications_controller_ts",
+      "community": 10,
+      "norm_label": "notifications.controller.ts"
+    },
+    {
+      "label": "pstr()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\notifications.controller.ts",
+      "source_location": "L5",
+      "id": "notifications_controller_pstr",
+      "community": 10,
+      "norm_label": "pstr()"
+    },
+    {
+      "label": "opportunities.controller.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\opportunities.controller.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_controllers_opportunities_controller_ts",
+      "community": 11,
+      "norm_label": "opportunities.controller.ts"
+    },
+    {
+      "label": "pstr()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\opportunities.controller.ts",
+      "source_location": "L4",
+      "id": "opportunities_controller_pstr",
+      "community": 11,
+      "norm_label": "pstr()"
+    },
+    {
+      "label": "submissions.controller.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\submissions.controller.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_controllers_submissions_controller_ts",
+      "community": 12,
+      "norm_label": "submissions.controller.ts"
+    },
+    {
+      "label": "pstr()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\submissions.controller.ts",
+      "source_location": "L4",
+      "id": "submissions_controller_pstr",
+      "community": 12,
+      "norm_label": "pstr()"
+    },
+    {
+      "label": "users.controller.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\users.controller.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_controllers_users_controller_ts",
+      "community": 13,
+      "norm_label": "users.controller.ts"
+    },
+    {
+      "label": "pstr()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\users.controller.ts",
+      "source_location": "L4",
+      "id": "users_controller_pstr",
+      "community": 13,
+      "norm_label": "pstr()"
+    },
+    {
+      "label": "migrate.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\db\\migrate.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_db_migrate_ts",
+      "community": 1,
+      "norm_label": "migrate.ts"
+    },
+    {
+      "label": "migrate()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\db\\migrate.ts",
+      "source_location": "L3",
+      "id": "migrate_migrate",
+      "community": 1,
+      "norm_label": "migrate()"
+    },
+    {
+      "label": "seed.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\db\\seed.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_db_seed_ts",
+      "community": 1,
+      "norm_label": "seed.ts"
+    },
+    {
+      "label": "seed()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\db\\seed.ts",
+      "source_location": "L5",
+      "id": "seed_seed",
+      "community": 1,
+      "norm_label": "seed()"
+    },
+    {
+      "label": "auth.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\auth.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_middleware_auth_ts",
+      "community": 5,
+      "norm_label": "auth.ts"
+    },
+    {
+      "label": "authenticate()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\auth.ts",
+      "source_location": "L7",
+      "id": "auth_authenticate",
+      "community": 5,
+      "norm_label": "authenticate()"
+    },
+    {
+      "label": "optionalAuth()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\auth.ts",
+      "source_location": "L27",
+      "id": "auth_optionalauth",
+      "community": 5,
+      "norm_label": "optionalauth()"
+    },
+    {
+      "label": "errorHandler.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\errorHandler.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_middleware_errorhandler_ts",
+      "community": 3,
+      "norm_label": "errorhandler.ts"
+    },
+    {
+      "label": "AppError",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\errorHandler.ts",
+      "source_location": "L13",
+      "id": "errorhandler_apperror",
+      "community": 3,
+      "norm_label": "apperror"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\errorHandler.ts",
+      "source_location": "L17",
+      "id": "errorhandler_apperror_constructor",
+      "community": 3,
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "errorHandler()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\errorHandler.ts",
+      "source_location": "L25",
+      "id": "errorhandler_errorhandler",
+      "community": 3,
+      "norm_label": "errorhandler()"
+    },
+    {
+      "label": "notFound()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\errorHandler.ts",
+      "source_location": "L83",
+      "id": "errorhandler_notfound",
+      "community": 3,
+      "norm_label": "notfound()"
+    },
+    {
+      "label": "rateLimiter.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\rateLimiter.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_middleware_ratelimiter_ts",
+      "community": 14,
+      "norm_label": "ratelimiter.ts"
+    },
+    {
+      "label": "rateLimit()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\rateLimiter.ts",
+      "source_location": "L11",
+      "id": "ratelimiter_ratelimit",
+      "community": 14,
+      "norm_label": "ratelimit()"
+    },
+    {
+      "label": "rbac.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\rbac.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_middleware_rbac_ts",
+      "community": 15,
+      "norm_label": "rbac.ts"
+    },
+    {
+      "label": "requireRole()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\rbac.ts",
+      "source_location": "L5",
+      "id": "rbac_requirerole",
+      "community": 15,
+      "norm_label": "requirerole()"
+    },
+    {
+      "label": "validate.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\validate.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_middleware_validate_ts",
+      "community": 16,
+      "norm_label": "validate.ts"
+    },
+    {
+      "label": "validate()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\validate.ts",
+      "source_location": "L5",
+      "id": "validate_validate",
+      "community": 16,
+      "norm_label": "validate()"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_models_index_ts",
+      "community": 2,
+      "norm_label": "index.ts"
+    },
+    {
+      "label": "toJSONTransform()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L5",
+      "id": "index_tojsontransform",
+      "community": 2,
+      "norm_label": "tojsontransform()"
+    },
+    {
+      "label": "isValidObjectId()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L218",
+      "id": "index_isvalidobjectid",
+      "community": 2,
+      "norm_label": "isvalidobjectid()"
+    },
+    {
+      "label": "toObjectId()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L222",
+      "id": "index_toobjectid",
+      "community": 2,
+      "norm_label": "toobjectid()"
+    },
+    {
+      "label": "normalize()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L226",
+      "id": "index_normalize",
+      "community": 2,
+      "norm_label": "normalize()"
+    },
+    {
+      "label": "ensureObjectId()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L232",
+      "id": "index_ensureobjectid",
+      "community": 2,
+      "norm_label": "ensureobjectid()"
+    },
+    {
+      "label": "averageFeedbackScore()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L238",
+      "id": "index_averagefeedbackscore",
+      "community": 2,
+      "norm_label": "averagefeedbackscore()"
+    },
+    {
+      "label": "analytics.routes.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\routes\\analytics.routes.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_routes_analytics_routes_ts",
+      "community": 28,
+      "norm_label": "analytics.routes.ts"
+    },
+    {
+      "label": "auth.routes.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\routes\\auth.routes.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_routes_auth_routes_ts",
+      "community": 29,
+      "norm_label": "auth.routes.ts"
+    },
+    {
+      "label": "drafts.routes.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\routes\\drafts.routes.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_routes_drafts_routes_ts",
+      "community": 30,
+      "norm_label": "drafts.routes.ts"
+    },
+    {
+      "label": "explore.routes.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\routes\\explore.routes.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_routes_explore_routes_ts",
+      "community": 31,
+      "norm_label": "explore.routes.ts"
+    },
+    {
+      "label": "feedback.routes.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\routes\\feedback.routes.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_routes_feedback_routes_ts",
+      "community": 32,
+      "norm_label": "feedback.routes.ts"
+    },
+    {
+      "label": "notifications.routes.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\routes\\notifications.routes.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_routes_notifications_routes_ts",
+      "community": 33,
+      "norm_label": "notifications.routes.ts"
+    },
+    {
+      "label": "opportunities.routes.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\routes\\opportunities.routes.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_routes_opportunities_routes_ts",
+      "community": 34,
+      "norm_label": "opportunities.routes.ts"
+    },
+    {
+      "label": "submissions.routes.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\routes\\submissions.routes.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_routes_submissions_routes_ts",
+      "community": 35,
+      "norm_label": "submissions.routes.ts"
+    },
+    {
+      "label": "users.routes.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\routes\\users.routes.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_routes_users_routes_ts",
+      "community": 36,
+      "norm_label": "users.routes.ts"
+    },
+    {
+      "label": "achievements.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\achievements.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_achievements_service_ts",
+      "community": 37,
+      "norm_label": "achievements.service.ts"
+    },
+    {
+      "label": "ai.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\ai.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_ai_service_ts",
+      "community": 17,
+      "norm_label": "ai.service.ts"
+    },
+    {
+      "label": "generateFallbackCritique()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\ai.service.ts",
+      "source_location": "L127",
+      "id": "ai_service_generatefallbackcritique",
+      "community": 17,
+      "norm_label": "generatefallbackcritique()"
+    },
+    {
+      "label": "analytics.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\analytics.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_analytics_service_ts",
+      "community": 18,
+      "norm_label": "analytics.service.ts"
+    },
+    {
+      "label": "updateStreak()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\analytics.service.ts",
+      "source_location": "L76",
+      "id": "analytics_service_updatestreak",
+      "community": 18,
+      "norm_label": "updatestreak()"
+    },
+    {
+      "label": "auth.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\auth.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_auth_service_ts",
+      "community": 19,
+      "norm_label": "auth.service.ts"
+    },
+    {
+      "label": "generateTokens()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\auth.service.ts",
+      "source_location": "L8",
+      "id": "auth_service_generatetokens",
+      "community": 19,
+      "norm_label": "generatetokens()"
+    },
+    {
+      "label": "drafts.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\drafts.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_drafts_service_ts",
+      "community": 6,
+      "norm_label": "drafts.service.ts"
+    },
+    {
+      "label": "mapDraft()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\drafts.service.ts",
+      "source_location": "L185",
+      "id": "drafts_service_mapdraft",
+      "community": 6,
+      "norm_label": "mapdraft()"
+    },
+    {
+      "label": "extractText()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\drafts.service.ts",
+      "source_location": "L195",
+      "id": "drafts_service_extracttext",
+      "community": 6,
+      "norm_label": "extracttext()"
+    },
+    {
+      "label": "explore.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\explore.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_explore_service_ts",
+      "community": 20,
+      "norm_label": "explore.service.ts"
+    },
+    {
+      "label": "sortToMongoSort()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\explore.service.ts",
+      "source_location": "L63",
+      "id": "explore_service_sorttomongosort",
+      "community": 20,
+      "norm_label": "sorttomongosort()"
+    },
+    {
+      "label": "feedback.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\feedback.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_feedback_service_ts",
+      "community": 7,
+      "norm_label": "feedback.service.ts"
+    },
+    {
+      "label": "mapFeedback()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\feedback.service.ts",
+      "source_location": "L135",
+      "id": "feedback_service_mapfeedback",
+      "community": 7,
+      "norm_label": "mapfeedback()"
+    },
+    {
+      "label": "mapInlineComment()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\feedback.service.ts",
+      "source_location": "L146",
+      "id": "feedback_service_mapinlinecomment",
+      "community": 7,
+      "norm_label": "mapinlinecomment()"
+    },
+    {
+      "label": "notifications.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\notifications.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_notifications_service_ts",
+      "community": 21,
+      "norm_label": "notifications.service.ts"
+    },
+    {
+      "label": "mapNotification()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\notifications.service.ts",
+      "source_location": "L42",
+      "id": "notifications_service_mapnotification",
+      "community": 21,
+      "norm_label": "mapnotification()"
+    },
+    {
+      "label": "opportunities.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\opportunities.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_opportunities_service_ts",
+      "community": 22,
+      "norm_label": "opportunities.service.ts"
+    },
+    {
+      "label": "mapOpportunity()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\opportunities.service.ts",
+      "source_location": "L143",
+      "id": "opportunities_service_mapopportunity",
+      "community": 22,
+      "norm_label": "mapopportunity()"
+    },
+    {
+      "label": "plagiarism.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\plagiarism.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_plagiarism_service_ts",
+      "community": 38,
+      "norm_label": "plagiarism.service.ts"
+    },
+    {
+      "label": "submissions.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\submissions.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_submissions_service_ts",
+      "community": 23,
+      "norm_label": "submissions.service.ts"
+    },
+    {
+      "label": "mapSubmission()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\submissions.service.ts",
+      "source_location": "L186",
+      "id": "submissions_service_mapsubmission",
+      "community": 23,
+      "norm_label": "mapsubmission()"
+    },
+    {
+      "label": "users.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\users.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_users_service_ts",
+      "community": 24,
+      "norm_label": "users.service.ts"
+    },
+    {
+      "label": "authoredDraftsIds()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\users.service.ts",
+      "source_location": "L165",
+      "id": "users_service_authoreddraftsids",
+      "community": 24,
+      "norm_label": "authoreddraftsids()"
+    },
+    {
+      "label": "worker.service.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\worker.service.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_services_worker_service_ts",
+      "community": 39,
+      "norm_label": "worker.service.ts"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\socket\\index.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_socket_index_ts",
+      "community": 0,
+      "norm_label": "index.ts"
+    },
+    {
+      "label": "initSocket()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\socket\\index.ts",
+      "source_location": "L9",
+      "id": "index_initsocket",
+      "community": 0,
+      "norm_label": "initsocket()"
+    },
+    {
+      "label": "getIO()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\socket\\index.ts",
+      "source_location": "L62",
+      "id": "index_getio",
+      "community": 0,
+      "norm_label": "getio()"
+    },
+    {
+      "label": "emitToUser()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\socket\\index.ts",
+      "source_location": "L68",
+      "id": "index_emittouser",
+      "community": 0,
+      "norm_label": "emittouser()"
+    },
+    {
+      "label": "emitToDraft()",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\socket\\index.ts",
+      "source_location": "L74",
+      "id": "index_emittodraft",
+      "community": 0,
+      "norm_label": "emittodraft()"
+    },
+    {
+      "label": "express.d.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\types\\express.d.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_types_express_d_ts",
+      "community": 40,
+      "norm_label": "express.d.ts"
+    },
+    {
+      "label": "index.ts",
+      "file_type": "code",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\types\\index.ts",
+      "source_location": "L1",
+      "id": "e_projects_writers_pub_server_src_types_index_ts",
+      "community": 41,
+      "norm_label": "index.ts"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\index.ts",
+      "source_location": "L69",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_index_ts",
+      "_tgt": "index_start",
+      "source": "e_projects_writers_pub_server_src_index_ts",
+      "target": "index_start",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\index.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "_src": "index_start",
+      "_tgt": "database_testconnection",
+      "source": "index_start",
+      "target": "database_testconnection"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\index.ts",
+      "source_location": "L86",
+      "weight": 1.0,
+      "_src": "index_start",
+      "_tgt": "redis_connectredis",
+      "source": "index_start",
+      "target": "redis_connectredis"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\index.ts",
+      "source_location": "L92",
+      "weight": 1.0,
+      "_src": "index_start",
+      "_tgt": "index_initsocket",
+      "source": "index_start",
+      "target": "index_initsocket"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\database.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_config_database_ts",
+      "_tgt": "database_geterrordetail",
+      "source": "e_projects_writers_pub_server_src_config_database_ts",
+      "target": "database_geterrordetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\database.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_config_database_ts",
+      "_tgt": "database_connectdatabase",
+      "source": "e_projects_writers_pub_server_src_config_database_ts",
+      "target": "database_connectdatabase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\database.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_config_database_ts",
+      "_tgt": "database_testconnection",
+      "source": "e_projects_writers_pub_server_src_config_database_ts",
+      "target": "database_testconnection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\database.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_src": "database_connectdatabase",
+      "_tgt": "database_geterrordetail",
+      "source": "database_geterrordetail",
+      "target": "database_connectdatabase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\database.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_src": "database_testconnection",
+      "_tgt": "database_connectdatabase",
+      "source": "database_connectdatabase",
+      "target": "database_testconnection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\db\\migrate.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "migrate_migrate",
+      "_tgt": "database_connectdatabase",
+      "source": "database_connectdatabase",
+      "target": "migrate_migrate"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\db\\seed.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_src": "seed_seed",
+      "_tgt": "database_connectdatabase",
+      "source": "database_connectdatabase",
+      "target": "seed_seed"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\config\\redis.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_config_redis_ts",
+      "_tgt": "redis_connectredis",
+      "source": "e_projects_writers_pub_server_src_config_redis_ts",
+      "target": "redis_connectredis",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\analytics.controller.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_controllers_analytics_controller_ts",
+      "_tgt": "analytics_controller_pstr",
+      "source": "e_projects_writers_pub_server_src_controllers_analytics_controller_ts",
+      "target": "analytics_controller_pstr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\drafts.controller.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_controllers_drafts_controller_ts",
+      "_tgt": "drafts_controller_qstr",
+      "source": "e_projects_writers_pub_server_src_controllers_drafts_controller_ts",
+      "target": "drafts_controller_qstr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\drafts.controller.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_controllers_drafts_controller_ts",
+      "_tgt": "drafts_controller_pstr",
+      "source": "e_projects_writers_pub_server_src_controllers_drafts_controller_ts",
+      "target": "drafts_controller_pstr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\feedback.controller.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_controllers_feedback_controller_ts",
+      "_tgt": "feedback_controller_pstr",
+      "source": "e_projects_writers_pub_server_src_controllers_feedback_controller_ts",
+      "target": "feedback_controller_pstr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\notifications.controller.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_controllers_notifications_controller_ts",
+      "_tgt": "notifications_controller_pstr",
+      "source": "e_projects_writers_pub_server_src_controllers_notifications_controller_ts",
+      "target": "notifications_controller_pstr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\opportunities.controller.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_controllers_opportunities_controller_ts",
+      "_tgt": "opportunities_controller_pstr",
+      "source": "e_projects_writers_pub_server_src_controllers_opportunities_controller_ts",
+      "target": "opportunities_controller_pstr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\submissions.controller.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_controllers_submissions_controller_ts",
+      "_tgt": "submissions_controller_pstr",
+      "source": "e_projects_writers_pub_server_src_controllers_submissions_controller_ts",
+      "target": "submissions_controller_pstr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\controllers\\users.controller.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_controllers_users_controller_ts",
+      "_tgt": "users_controller_pstr",
+      "source": "e_projects_writers_pub_server_src_controllers_users_controller_ts",
+      "target": "users_controller_pstr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\db\\migrate.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_db_migrate_ts",
+      "_tgt": "migrate_migrate",
+      "source": "e_projects_writers_pub_server_src_db_migrate_ts",
+      "target": "migrate_migrate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\db\\seed.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_db_seed_ts",
+      "_tgt": "seed_seed",
+      "source": "e_projects_writers_pub_server_src_db_seed_ts",
+      "target": "seed_seed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\auth.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_middleware_auth_ts",
+      "_tgt": "auth_authenticate",
+      "source": "e_projects_writers_pub_server_src_middleware_auth_ts",
+      "target": "auth_authenticate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\auth.ts",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_middleware_auth_ts",
+      "_tgt": "auth_optionalauth",
+      "source": "e_projects_writers_pub_server_src_middleware_auth_ts",
+      "target": "auth_optionalauth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\errorHandler.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_middleware_errorhandler_ts",
+      "_tgt": "errorhandler_apperror",
+      "source": "e_projects_writers_pub_server_src_middleware_errorhandler_ts",
+      "target": "errorhandler_apperror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\errorHandler.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_middleware_errorhandler_ts",
+      "_tgt": "errorhandler_errorhandler",
+      "source": "e_projects_writers_pub_server_src_middleware_errorhandler_ts",
+      "target": "errorhandler_errorhandler",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\errorHandler.ts",
+      "source_location": "L83",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_middleware_errorhandler_ts",
+      "_tgt": "errorhandler_notfound",
+      "source": "e_projects_writers_pub_server_src_middleware_errorhandler_ts",
+      "target": "errorhandler_notfound",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\errorHandler.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_src": "errorhandler_apperror",
+      "_tgt": "errorhandler_apperror_constructor",
+      "source": "errorhandler_apperror",
+      "target": "errorhandler_apperror_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\rateLimiter.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_middleware_ratelimiter_ts",
+      "_tgt": "ratelimiter_ratelimit",
+      "source": "e_projects_writers_pub_server_src_middleware_ratelimiter_ts",
+      "target": "ratelimiter_ratelimit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\rbac.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_middleware_rbac_ts",
+      "_tgt": "rbac_requirerole",
+      "source": "e_projects_writers_pub_server_src_middleware_rbac_ts",
+      "target": "rbac_requirerole",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\middleware\\validate.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_middleware_validate_ts",
+      "_tgt": "validate_validate",
+      "source": "e_projects_writers_pub_server_src_middleware_validate_ts",
+      "target": "validate_validate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_models_index_ts",
+      "_tgt": "index_tojsontransform",
+      "source": "e_projects_writers_pub_server_src_models_index_ts",
+      "target": "index_tojsontransform",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L218",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_models_index_ts",
+      "_tgt": "index_isvalidobjectid",
+      "source": "e_projects_writers_pub_server_src_models_index_ts",
+      "target": "index_isvalidobjectid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L222",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_models_index_ts",
+      "_tgt": "index_toobjectid",
+      "source": "e_projects_writers_pub_server_src_models_index_ts",
+      "target": "index_toobjectid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L226",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_models_index_ts",
+      "_tgt": "index_normalize",
+      "source": "e_projects_writers_pub_server_src_models_index_ts",
+      "target": "index_normalize",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L232",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_models_index_ts",
+      "_tgt": "index_ensureobjectid",
+      "source": "e_projects_writers_pub_server_src_models_index_ts",
+      "target": "index_ensureobjectid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L238",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_models_index_ts",
+      "_tgt": "index_averagefeedbackscore",
+      "source": "e_projects_writers_pub_server_src_models_index_ts",
+      "target": "index_averagefeedbackscore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\models\\index.ts",
+      "source_location": "L233",
+      "weight": 1.0,
+      "_src": "index_ensureobjectid",
+      "_tgt": "index_isvalidobjectid",
+      "source": "index_isvalidobjectid",
+      "target": "index_ensureobjectid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\ai.service.ts",
+      "source_location": "L127",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_services_ai_service_ts",
+      "_tgt": "ai_service_generatefallbackcritique",
+      "source": "e_projects_writers_pub_server_src_services_ai_service_ts",
+      "target": "ai_service_generatefallbackcritique",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\analytics.service.ts",
+      "source_location": "L76",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_services_analytics_service_ts",
+      "_tgt": "analytics_service_updatestreak",
+      "source": "e_projects_writers_pub_server_src_services_analytics_service_ts",
+      "target": "analytics_service_updatestreak",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\auth.service.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_services_auth_service_ts",
+      "_tgt": "auth_service_generatetokens",
+      "source": "e_projects_writers_pub_server_src_services_auth_service_ts",
+      "target": "auth_service_generatetokens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\drafts.service.ts",
+      "source_location": "L185",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_services_drafts_service_ts",
+      "_tgt": "drafts_service_mapdraft",
+      "source": "e_projects_writers_pub_server_src_services_drafts_service_ts",
+      "target": "drafts_service_mapdraft",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\drafts.service.ts",
+      "source_location": "L195",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_services_drafts_service_ts",
+      "_tgt": "drafts_service_extracttext",
+      "source": "e_projects_writers_pub_server_src_services_drafts_service_ts",
+      "target": "drafts_service_extracttext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\explore.service.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_services_explore_service_ts",
+      "_tgt": "explore_service_sorttomongosort",
+      "source": "e_projects_writers_pub_server_src_services_explore_service_ts",
+      "target": "explore_service_sorttomongosort",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\feedback.service.ts",
+      "source_location": "L135",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_services_feedback_service_ts",
+      "_tgt": "feedback_service_mapfeedback",
+      "source": "e_projects_writers_pub_server_src_services_feedback_service_ts",
+      "target": "feedback_service_mapfeedback",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\feedback.service.ts",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_services_feedback_service_ts",
+      "_tgt": "feedback_service_mapinlinecomment",
+      "source": "e_projects_writers_pub_server_src_services_feedback_service_ts",
+      "target": "feedback_service_mapinlinecomment",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\notifications.service.ts",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_services_notifications_service_ts",
+      "_tgt": "notifications_service_mapnotification",
+      "source": "e_projects_writers_pub_server_src_services_notifications_service_ts",
+      "target": "notifications_service_mapnotification",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\opportunities.service.ts",
+      "source_location": "L143",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_services_opportunities_service_ts",
+      "_tgt": "opportunities_service_mapopportunity",
+      "source": "e_projects_writers_pub_server_src_services_opportunities_service_ts",
+      "target": "opportunities_service_mapopportunity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\submissions.service.ts",
+      "source_location": "L186",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_services_submissions_service_ts",
+      "_tgt": "submissions_service_mapsubmission",
+      "source": "e_projects_writers_pub_server_src_services_submissions_service_ts",
+      "target": "submissions_service_mapsubmission",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\services\\users.service.ts",
+      "source_location": "L165",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_services_users_service_ts",
+      "_tgt": "users_service_authoreddraftsids",
+      "source": "e_projects_writers_pub_server_src_services_users_service_ts",
+      "target": "users_service_authoreddraftsids",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\socket\\index.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_socket_index_ts",
+      "_tgt": "index_initsocket",
+      "source": "e_projects_writers_pub_server_src_socket_index_ts",
+      "target": "index_initsocket",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\socket\\index.ts",
+      "source_location": "L62",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_socket_index_ts",
+      "_tgt": "index_getio",
+      "source": "e_projects_writers_pub_server_src_socket_index_ts",
+      "target": "index_getio",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\socket\\index.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_socket_index_ts",
+      "_tgt": "index_emittouser",
+      "source": "e_projects_writers_pub_server_src_socket_index_ts",
+      "target": "index_emittouser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "E:\\Projects\\Writers Pub\\server\\src\\socket\\index.ts",
+      "source_location": "L74",
+      "weight": 1.0,
+      "_src": "e_projects_writers_pub_server_src_socket_index_ts",
+      "_tgt": "index_emittodraft",
+      "source": "e_projects_writers_pub_server_src_socket_index_ts",
+      "target": "index_emittodraft",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": []
+}
