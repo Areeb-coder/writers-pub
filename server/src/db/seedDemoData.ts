@@ -524,7 +524,7 @@ async function seedDemoData() {
         wordLimit: 15000,
       },
       {
-        title: 'Mystery Writers' Competition',
+        title: "Mystery Writers' Competition",
         description:
           'Annual competition for mystery and thriller writers. Grand prize: $2,000 and publication guarantee. Top 10 finalists featured on our website.',
         genres: ['Mystery', 'Thriller'],
