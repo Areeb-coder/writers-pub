@@ -71,10 +71,12 @@ async function start() {
   console.log('║       Writers\' Pub — Backend API        ║');
   console.log('╚══════════════════════════════════════════╝\n');
 
-  // Connect to MongoDB Atlas
+  // Connect to Databases
+  console.log('[Server] Initializing database connections...');
   const dbConnected = await testConnection();
+  
   if (!dbConnected) {
-    const message = '[Server] MongoDB unavailable. Set up MONGO_URI or set ALLOW_DEGRADED_START=true for non-production diagnostics.';
+    const message = '[Server] Primary Database (PostgreSQL) unavailable. Check DATABASE_URL.';
     if (!env.ALLOW_DEGRADED_START) {
       console.error(message);
       process.exit(1);
@@ -98,11 +100,13 @@ async function start() {
   httpServer.listen(env.PORT, () => {
     console.log(`\n[Server] ✓ API running at http://localhost:${env.PORT}`);
     console.log(`[Server] ✓ Health check: http://localhost:${env.PORT}/api/health`);
-    console.log(`[Server] ✓ Frontend CORS: ${env.FRONTEND_URL}`);
+    console.log(`[Server] ✓ PostgreSQL: ${dbConnected ? 'Connected ✅' : 'Disconnected ❌'}`);
+    console.log(`[Server] ✓ Redis:      ${redisConnected ? 'Connected ✅' : 'Disconnected ❌'}`);
     console.log(`[Server] ✓ Environment: ${env.NODE_ENV}`);
-    console.log(`[Server] ✓ Gemini AI: ${env.GEMINI_API_KEY ? 'Configured' : 'Not configured'}`);
+    console.log(`[Server] ✓ Gemini AI:   ${env.GEMINI_API_KEY ? 'Configured' : 'Not configured'}`);
     console.log('');
   });
+
 }
 
 start().catch((err) => {
