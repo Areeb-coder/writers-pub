@@ -77,8 +77,8 @@ export default function AgoraDraftDetailPage() {
     setCritiqueLoading(true);
     setCritiqueError("");
     try {
-      const res = await api.post(`/drafts/${id}/critique`);
-      if (res.data?.success) {
+      const res = await api.post(`/drafts/${id}/critique`, {});
+      if (res.success) {
         // Refresh draft to get updated critique if available
         const draftRes = await api.get<DraftDetail>(`/drafts/${id}`);
         if (draftRes.data) setDraft(draftRes.data);
