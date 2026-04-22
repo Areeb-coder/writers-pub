@@ -1,0 +1,6 @@
+# Production-ready requirements.txt
+# Generated based on project analysis
+
+pytest==7.4.0
+asyncio==3.4.3
+unittest-mock==1.7.0
