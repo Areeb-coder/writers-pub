@@ -75,21 +75,21 @@ class ApiClient {
     return this.request<ApiResponse<T>>(endpoint, { method: 'GET' });
   }
 
-  post<T>(endpoint: string, body: unknown) {
+  post<T>(endpoint: string, body: unknown = {}) {
     return this.request<ApiResponse<T>>(endpoint, {
       method: 'POST',
       body: JSON.stringify(body),
     });
   }
 
-  put<T>(endpoint: string, body: unknown) {
+  put<T>(endpoint: string, body: unknown = {}) {
     return this.request<ApiResponse<T>>(endpoint, {
       method: 'PUT',
       body: JSON.stringify(body),
     });
   }
 
-  patch<T>(endpoint: string, body: unknown) {
+  patch<T>(endpoint: string, body: unknown = {}) {
     return this.request<ApiResponse<T>>(endpoint, {
       method: 'PATCH',
       body: JSON.stringify(body),
