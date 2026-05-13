@@ -39,7 +39,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col relative text-[#4a5033]">
+    <div className="min-h-screen flex flex-col relative text-[#2a2e1a]">
       {/* Floating Header */}
       <motion.header
         initial={{ y: -100 }}

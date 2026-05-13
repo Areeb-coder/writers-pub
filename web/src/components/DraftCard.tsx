@@ -74,7 +74,7 @@ export function DraftCard({ draft, item }: { draft: SharedDraft; item: any }) {
             <h3 className="text-xl lg:text-2xl font-serif font-black italic group-hover:underline decoration-2 underline-offset-4">
               {draft.title}
             </h3>
-            <p className="text-sm font-serif italic text-[#4a5033]/60 leading-relaxed line-clamp-2">
+            <p className="text-sm font-serif italic text-[#2a2e1a]/60 leading-relaxed line-clamp-2">
               &ldquo;{draft.excerpt}&rdquo;
             </p>
           </div>
