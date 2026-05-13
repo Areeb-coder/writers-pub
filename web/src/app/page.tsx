@@ -66,7 +66,7 @@ export default function LandingPage() {
                 <span className="opacity-60 italic font-medium">Earn Your Ink.</span>
              </motion.h1>
              
-             <motion.p variants={item} className="text-lg md:text-xl text-[#4a5033]/70 font-light leading-relaxed max-w-xl mx-auto lg:mx-0">
+             <motion.p variants={item} className="text-lg md:text-xl text-[#2E3318]/60 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
                 A premium space where writers write, readers critique, and editors select the future of publishing. 
                 Experience distraction-free writing empowered by AI and human connection.
              </motion.p>
