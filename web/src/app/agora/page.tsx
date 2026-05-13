@@ -104,7 +104,7 @@ export default function AgoraPage() {
         {/* Page Header */}
         <section className="space-y-6">
           <motion.div variants={item} className="space-y-2">
-            <h1 className="text-4xl md:text-5xl font-serif font-black italic tracking-tight text-[#2a2e1a]">
+            <h1 className="text-4xl md:text-5xl font-serif font-black italic tracking-tight text-[#4a5033]">
               The Agora
             </h1>
             <p className="opacity-50 text-sm font-medium uppercase tracking-widest">
@@ -122,7 +122,7 @@ export default function AgoraPage() {
                 className={`px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${
                   activeGenre === genre
                     ? "ink-bg"
-                    : "bg-[#4a5033]/5 text-[#2a2e1a]/60 hover:bg-[#4a5033]/10 hover:text-[#2a2e1a]"
+                    : "bg-[#4a5033]/5 text-[#4a5033]/60 hover:bg-[#4a5033]/10 hover:text-[#4a5033]"
                 }`}
               >
                 {genre}
@@ -182,7 +182,7 @@ export default function AgoraPage() {
                 <Link href="/studio/new">
                   <InkButton
                     variant="secondary"
-                    className="px-6 py-3 rounded-xl text-[10px] bg-[#F7F5EE] text-[#2a2e1a] hover:bg-[#F7F5EE]/90"
+                    className="px-6 py-3 rounded-xl text-[10px] bg-[#daddc6] text-[#4a5033] hover:bg-[#daddc6]/90"
                     id="share-draft-cta"
                   >
                     Share a Chapter

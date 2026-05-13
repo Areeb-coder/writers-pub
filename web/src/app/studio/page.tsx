@@ -94,7 +94,7 @@ export default function StudioPage() {
         {/* Header */}
         <section className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <motion.div variants={item} className="space-y-2">
-            <h1 className="text-4xl md:text-5xl font-serif font-black italic tracking-tight text-[#2a2e1a]">
+            <h1 className="text-4xl md:text-5xl font-serif font-black italic tracking-tight text-[#4a5033]">
               The Studio
             </h1>
             <p className="opacity-50 text-sm font-medium uppercase tracking-widest">

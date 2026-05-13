@@ -12,9 +12,9 @@ interface InkButtonProps extends HTMLMotionProps<"button"> {
 export function InkButton({ children, className, variant = "primary", ...props }: InkButtonProps) {
   const variants = {
     primary: "ink-bg text-[#daddc6] hover:scale-105 shadow-xl shadow-[#4a5033]/20",
-    secondary: "glass-card text-[#2a2e1a] hover:bg-[#4a5033]/5",
-    outline: "border border-[#4a5033]/20 text-[#2a2e1a] hover:bg-[#4a5033]/5",
-    ghost: "text-[#2a2e1a]/70 hover:text-[#2a2e1a] hover:bg-[#4a5033]/5",
+    secondary: "glass-card text-[#4a5033] hover:bg-[#4a5033]/5",
+    outline: "border border-[#4a5033]/20 text-[#4a5033] hover:bg-[#4a5033]/5",
+    ghost: "text-[#4a5033]/70 hover:text-[#4a5033] hover:bg-[#4a5033]/5",
   };
 
   return (

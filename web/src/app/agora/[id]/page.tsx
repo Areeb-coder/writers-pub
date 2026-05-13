@@ -135,7 +135,7 @@ export default function AgoraDraftDetailPage() {
 
             {/* Content */}
             <div className="border-t border-[#4a5033]/10 pt-6">
-              <p className="leading-relaxed whitespace-pre-wrap font-serif text-[#2a2e1a]">
+              <p className="leading-relaxed whitespace-pre-wrap font-serif text-[#4a5033]">
                 {draft.content_text || "No text available."}
               </p>
             </div>
