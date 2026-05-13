@@ -50,7 +50,7 @@ export function ProgressRing({
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[10px] font-black text-[#4a5033]">{value}%</span>
+        <span className="text-[10px] font-black text-[#2a2e1a]">{value}%</span>
         {label && (
           <span className="text-[7px] font-bold uppercase tracking-widest opacity-40">{label}</span>
         )}

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export function AmbientBackground() {
   return (
-    <div className="fixed inset-0 -z-50 overflow-hidden bg-[#daddc6]">
+    <div className="fixed inset-0 -z-50 overflow-hidden bg-[#F7F5EE]">
       {/* Dynamic Ink Orbs */}
       <motion.div
         animate={{

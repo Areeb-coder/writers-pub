@@ -41,7 +41,7 @@ export default function Dashboard() {
         {/* Welcome Header */}
         <section className="flex flex-col md:flex-row md:items-end justify-between gap-6">
            <motion.div variants={item} className="space-y-2">
-              <h1 className="text-4xl font-serif font-black italic tracking-tight text-[#4a5033]">
+              <h1 className="text-4xl font-serif font-black italic tracking-tight text-[#2a2e1a]">
                  Welcome back, Scribe.
               </h1>
               <p className="opacity-60 text-sm font-medium uppercase tracking-widest leading-relaxed">
@@ -126,9 +126,9 @@ export default function Dashboard() {
               {/* Profile Card / Trust Score */}
               <motion.section variants={item}>
                  <GlassCard variant="ink" className="text-center p-10 space-y-6">
-                    <div className="w-20 h-20 rounded-full mx-auto bg-[#daddc6]/20 p-1">
-                       <div className="w-full h-full rounded-full bg-[#daddc6] flex items-center justify-center">
-                          <User size={32} className="text-[#4a5033]" />
+                    <div className="w-20 h-20 rounded-full mx-auto bg-[#F7F5EE]/20 p-1">
+                       <div className="w-full h-full rounded-full bg-[#F7F5EE] flex items-center justify-center">
+                          <User size={32} className="text-[#2a2e1a]" />
                        </div>
                     </div>
                     <div className="space-y-1">
