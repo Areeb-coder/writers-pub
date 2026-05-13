@@ -1,21 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --background: #daddc6;
-  --foreground: #4a5033;
-  --primary: #4a5033;
+  --background: #EDE8D8;
+  --foreground: #2E3318;
+  --primary: #4e5435;
   --primary-foreground: #daddc6;
   
-  --glass-surface: rgba(218, 221, 198, 0.4);
-  --glass-border: rgba(74, 80, 51, 0.1);
-  --glass-shadow: rgba(74, 80, 51, 0.08);
+  --glass-surface:#daddc666;
+  --glass-border: rgba(74, 80, 51, 0.18);
+  --glass-shadow: rgba(62, 68, 40, 0.10);
 
-  --ink-glow: rgba(74, 80, 51, 0.05);
+  --ink-glow: rgba(76, 82, 49, 0.04);
   --font-outfit: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --font-merriweather: "Georgia", "Times New Roman", serif;
   --font-serif: var(--font-merriweather);
 
   --radius: 0.75rem;
+ 
 }
 
 @theme inline {
@@ -85,4 +86,5 @@ body {
   font-family: var(--font-serif), serif;
   line-height: 1.8;
   font-size: 1.125rem;
+  color: #2E3318;
 }
