@@ -106,7 +106,7 @@ export default function SubmissionsPage() {
         {/* Header */}
         <section className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <motion.div variants={item} className="space-y-2">
-            <h1 className="text-4xl md:text-5xl font-serif font-black italic tracking-tight text-[#2a2e1a]">
+            <h1 className="text-4xl md:text-5xl font-serif font-black italic tracking-tight text-[#4a5033]">
               Submissions
             </h1>
             <p className="opacity-50 text-sm font-medium uppercase tracking-widest">
@@ -191,7 +191,7 @@ export default function SubmissionsPage() {
                           {sub.draft_title}
                         </h3>
                         <ChevronRight size={14} className="opacity-20 shrink-0" />
-                        <span className="text-sm text-[#2a2e1a]/60 italic truncate">
+                        <span className="text-sm text-[#4a5033]/60 italic truncate">
                           {sub.opportunity_title}
                         </span>
                       </div>
@@ -222,7 +222,7 @@ export default function SubmissionsPage() {
                           Editor Feedback
                         </span>
                       </div>
-                      <p className="text-sm text-[#2a2e1a]/70 italic leading-relaxed">
+                      <p className="text-sm text-[#4a5033]/70 italic leading-relaxed">
                         &ldquo;{sub.editor_feedback}&rdquo;
                       </p>
                     </div>

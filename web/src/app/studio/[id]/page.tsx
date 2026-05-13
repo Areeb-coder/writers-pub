@@ -150,7 +150,7 @@ export default function StudioEditorPage() {
   if (loading) return <div className="min-h-screen flex items-center justify-center opacity-30">Loading editor...</div>;
 
   return (
-    <div className="min-h-screen flex flex-col text-[#2a2e1a]">
+    <div className="min-h-screen flex flex-col text-[#4a5033]">
       <motion.header
         initial={{ y: -40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

@@ -117,7 +117,7 @@ export default function MarketplacePage() {
         <section className="space-y-6">
           <motion.div variants={item} className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2">
-              <h1 className="text-4xl md:text-5xl font-serif font-black italic tracking-tight text-[#2a2e1a]">
+              <h1 className="text-4xl md:text-5xl font-serif font-black italic tracking-tight text-[#4a5033]">
                 The Exchange
               </h1>
               <p className="opacity-50 text-sm font-medium uppercase tracking-widest">
@@ -139,7 +139,7 @@ export default function MarketplacePage() {
                 className="p-4 border-none shadow-none bg-[#4a5033]/[0.03] flex items-center gap-3"
               >
                 <div className="w-9 h-9 rounded-xl bg-[#4a5033]/5 flex items-center justify-center">
-                  <stat.icon size={16} className="text-[#2a2e1a]" />
+                  <stat.icon size={16} className="text-[#4a5033]" />
                 </div>
                 <div>
                   <p className="text-lg font-serif font-black">{stat.value}</p>
@@ -218,7 +218,7 @@ export default function MarketplacePage() {
                       <h2 className="text-2xl lg:text-3xl font-serif font-black italic">
                         {featured.title}
                       </h2>
-                      <p className="text-sm text-[#2a2e1a]/60 leading-relaxed italic">
+                      <p className="text-sm text-[#4a5033]/60 leading-relaxed italic">
                         {featured.description}
                       </p>
                       <div className="flex flex-wrap gap-2">
@@ -286,7 +286,7 @@ export default function MarketplacePage() {
                       </h3>
 
                       {/* Description */}
-                      <p className="text-xs text-[#2a2e1a]/50 leading-relaxed italic line-clamp-2">
+                      <p className="text-xs text-[#4a5033]/50 leading-relaxed italic line-clamp-2">
                         {opp.description}
                       </p>
 

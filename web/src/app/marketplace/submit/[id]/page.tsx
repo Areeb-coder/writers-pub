@@ -97,7 +97,7 @@ export default function SubmitToOpportunity() {
         </Link>
 
         <section className="space-y-4">
-          <h1 className="text-4xl font-serif font-black italic tracking-tight text-[#2a2e1a]">
+          <h1 className="text-4xl font-serif font-black italic tracking-tight text-[#4a5033]">
             Submit Manuscript
           </h1>
           <p className="opacity-50 text-sm font-medium uppercase tracking-widest leading-relaxed">

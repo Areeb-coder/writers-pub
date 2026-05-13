@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
-      <body className="font-sans min-h-screen relative overflow-x-hidden selection:bg-[#4a5033]/20 selection:text-[#2a2e1a]">
+      <body className="font-sans min-h-screen relative overflow-x-hidden selection:bg-[#4a5033]/20 selection:text-[#4a5033]">
         {/* Ambient background effect */}
         <AmbientBackground />
         
