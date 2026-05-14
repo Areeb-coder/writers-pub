@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { PenTool, MessageSquare, ChevronRight, Sparkles, BookOpen, Layers } from "lucide-react";
 import Link from "next/link";
+import TypewriterText from "@/components/TypewriterText";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { InkButton } from "@/components/ui/InkButton";
 
@@ -61,10 +62,11 @@ export default function LandingPage() {
                 The First Complete Writing Ecosystem
              </motion.div>
              
-             <motion.h1 variants={item} className="text-5xl md:text-7xl font-serif text-[#4a5033] leading-[1.1] tracking-tight font-black italic">
-                Craft Your Masterpiece. <br />
-                <span className="opacity-60 italic font-medium">Earn Your Ink.</span>
-             </motion.h1>
+               <motion.h1 variants={item} className="text-5xl md:text-7xl font-serif text-[#4a5033] leading-[1.1] tracking-tight font-black italic">
+                  <TypewriterText text="Craft Your Masterpiece." speed={65} showCursor={false} />
+                     <br />
+                  <TypewriterText text="Earn Your Ink." speed={65} delay={1800} className="opacity-60 italic font-medium" showCursor={false}/>
+               </motion.h1>
              
              <motion.p variants={item} className="text-lg md:text-xl text-[#2E3318]/60 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
                 A premium space where writers write, readers critique, and editors select the future of publishing. 
