@@ -3,7 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { createServer } from 'http';
 import { env } from './config/env';
-import { testConnection } from './config/database';
+import { connectDatabase } from './config/database';
 import { connectRedis } from './config/redis';
 import { initSocket } from './socket';
 import { errorHandler, notFound } from './middleware/errorHandler';
