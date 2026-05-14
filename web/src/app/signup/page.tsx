@@ -15,6 +15,49 @@ interface RegisterResponse {
   tokens: { accessToken: string; refreshToken: string };
 }
 
+interface PasswordRule {
+  label: string;
+  message: string;
+  test: (value: string) => boolean;
+}
+
+const passwordRules: PasswordRule[] = [
+  {
+    label: "8+ characters",
+    message: "Password must be at least 8 characters",
+    test: (value) => value.length >= 8,
+  },
+  {
+    label: "Uppercase letter",
+    message: "Password must contain at least 1 uppercase letter",
+    test: (value) => /[A-Z]/.test(value),
+  },
+  {
+    label: "Number",
+    message: "Password must contain at least 1 number",
+    test: (value) => /[0-9]/.test(value),
+  },
+  {
+    label: "Special character",
+    message: "Password must contain at least 1 special character (!@#$%^&*)",
+    test: (value) => /[!@#$%^&*]/.test(value),
+  },
+];
+
+function getPasswordStrength(password: string) {
+  const passedRules = passwordRules.filter((rule) => rule.test(password)).length;
+
+  if (passedRules <= 1) {
+    return { label: "Weak", barClass: "bg-rose-500", textClass: "text-rose-600" };
+  }
+
+  if (passedRules <= 3) {
+    return { label: "Medium", barClass: "bg-amber-500", textClass: "text-amber-600" };
+  }
+
+  return { label: "Strong", barClass: "bg-emerald-500", textClass: "text-emerald-600" };
+}
+
 export default function SignupPage() {
   const router = useRouter();
   const [displayName, setDisplayName] = useState("");
@@ -23,9 +66,22 @@ export default function SignupPage() {
   const [role, setRole] = useState<Role>("writer");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
+  const passwordStrength = getPasswordStrength(password);
+  const passwordErrors = passwordRules
+    .filter((rule) => !rule.test(password))
+    .map((rule) => rule.message);
+
+  const showPasswordFeedback = passwordTouched || password.length > 0;
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setPasswordTouched(true);
+    if (passwordErrors.length > 0) {
+      setError(passwordErrors[0]);
+      return;
+    }
     setLoading(true);
     setError("");
     try {
@@ -76,12 +132,48 @@ export default function SignupPage() {
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordTouched(true);
+              setError("");
+            }}
+            onBlur={() => setPasswordTouched(true)}
             required
-            minLength={6}
+            minLength={8}
             className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
             placeholder="Password"
           />
+          {showPasswordFeedback ? (
+            <div className="space-y-3 rounded-xl border border-[#4a5033]/10 bg-[#4a5033]/5 p-4">
+              <div className="flex items-center justify-between gap-3 text-xs font-semibold">
+                <span className={passwordStrength.textClass}>Password strength</span>
+                <span className={passwordStrength.textClass}>{passwordStrength.label}</span>
+              </div>
+              <div className="h-2 overflow-hidden rounded-full bg-black/10">
+                <div
+                  className={`h-full w-full rounded-full transition-colors ${passwordStrength.barClass}`}
+                  style={{
+                    width:
+                      passwordStrength.label === "Weak"
+                        ? "25%"
+                        : passwordStrength.label === "Medium"
+                          ? "60%"
+                          : "100%",
+                  }}
+                />
+              </div>
+              <ul className="space-y-1 text-xs">
+                {passwordRules.map((rule) => {
+                  const isValid = rule.test(password);
+                  return (
+                    <li key={rule.label} className={isValid ? "text-emerald-600" : "text-rose-600"}>
+                      {isValid ? "✓" : "•"} {rule.message}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ) : null}
           <select
             value={role}
             onChange={(e) => setRole(e.target.value as Role)}
