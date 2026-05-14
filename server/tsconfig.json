@@ -16,6 +16,8 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "ignoreDeprecations": "6.0",
+    "skipLibCheck": true,
+    "noImplicitAny": false,
     "paths": {
       "@/*": ["./*"]
     }
