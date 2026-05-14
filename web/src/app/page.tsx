@@ -63,8 +63,10 @@ export default function LandingPage() {
              </motion.div>
              
                <motion.h1 variants={item} className="text-5xl md:text-7xl font-serif text-[#4a5033] leading-[1.1] tracking-tight font-black italic">
-                  <TypewriterText text="Craft Your Masterpiece." speed={65} showCursor={false} />
-                     <br />
+                  <TypewriterText text="Craft Your" speed={65} showCursor={false} />
+                  <br />
+                  <TypewriterText text="Masterpiece." speed={65} delay={650} showCursor={false} />
+                  <br />
                   <TypewriterText text="Earn Your Ink." speed={65} delay={1800} className="opacity-60 italic font-medium" showCursor={false}/>
                </motion.h1>
              
