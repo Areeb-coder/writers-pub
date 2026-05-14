@@ -6,10 +6,10 @@ import { JwtPayload } from '../types';
 
 let io: Server;
 
-export function initSocket(httpServer: HttpServer) {
+export function initSocket(httpServer: HttpServer, allowedOrigins: string[]) {
   io = new Server(httpServer, {
     cors: {
-      origin: env.FRONTEND_URL,
+      origin: allowedOrigins,
       methods: ['GET', 'POST'],
       credentials: true,
     },
