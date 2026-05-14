@@ -2,9 +2,6 @@ import mongoose from 'mongoose';
 import { Pool } from 'pg';
 import { env } from './env';
 
-// MongoDB configuration (Legacy/Co-existence)
-mongoose.set('bufferCommands', false);
-
 // PostgreSQL configuration (Primary)
 export const pool = new Pool({
   connectionString: env.DATABASE_URL,
@@ -26,12 +23,12 @@ export async function connectPostgres() {
     const client = await pool.connect();
     console.log('[DB] Connected to PostgreSQL');
     
-    // Check for pgvector support (as requested in Phase 1.4)
+    // Check for pgvector support
     try {
       await client.query('SELECT "vector" FROM pg_extension WHERE extname = \'vector\'');
       console.log('[DB] pgvector extension detected');
     } catch (e) {
-      console.warn('[DB] pgvector extension not found or not accessible. Vector queries might fail.');
+      console.warn('[DB] pgvector extension not found or not accessible.');
     }
     
     client.release();
@@ -43,25 +40,25 @@ export async function connectPostgres() {
 }
 
 export async function connectDatabase() {
-  // We attempt to connect to both if URIs are provided, 
-  // but PostgreSQL is the primary target for this task.
+  console.log('[DB] Initializing database connections...');
   const pgConnected = await connectPostgres();
   
   let mongoConnected = false;
   if (env.MONGO_URI) {
     try {
+      // NOTE: We allow buffering (default) so transient disconnects don't crash auth.
       await mongoose.connect(env.MONGO_URI, {
-        serverSelectionTimeoutMS: 10000,
+        serverSelectionTimeoutMS: 15000,
         maxPoolSize: 20,
       });
       console.log('[DB] Connected to MongoDB Atlas');
       mongoConnected = true;
     } catch (err: any) {
-      console.warn('[DB] MongoDB connection failed (non-fatal if using PostgreSQL):', getErrorDetail(err));
+      console.error('[DB] MongoDB connection failed:', getErrorDetail(err));
     }
   }
 
-  return pgConnected;
+  return { pgConnected, mongoConnected };
 }
 
 export async function testConnection() {
@@ -69,7 +66,8 @@ export async function testConnection() {
     await pool.query('SELECT NOW()');
     return true;
   } catch (err) {
-    return connectDatabase();
+    const status = await connectDatabase();
+    return status.pgConnected;
   }
 }
 
