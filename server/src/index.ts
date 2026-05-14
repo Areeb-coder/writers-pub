@@ -28,6 +28,7 @@ const httpServer = createServer(app);
 // Standardize allowed origins for production deployment
 const allowedOrigins = [
   env.FRONTEND_URL,
+  'https://writters-pub-tau.vercel.app',
   'https://writers-pub.vercel.app',
   'https://writers-pub-git-main-areeb-coders-projects.vercel.app'
 ].filter(Boolean).map(url => url!.replace(/\/$/, ''));
