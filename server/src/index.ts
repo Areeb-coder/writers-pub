@@ -25,12 +25,26 @@ const app = express();
 const httpServer = createServer(app);
 
 // ─── Global Middleware ───
+// Standardize allowed origins for production deployment
+const allowedOrigins = [
+  env.FRONTEND_URL,
+  'https://writers-pub.vercel.app',
+  'https://writers-pub-git-main-areeb-coders-projects.vercel.app'
+].filter(Boolean).map(url => url!.replace(/\/$/, ''));
+
 app.use(cors({
-  origin: env.FRONTEND_URL,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ''))) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -72,10 +86,9 @@ async function start() {
   console.log('╚══════════════════════════════════════════╝\n');
 
   // Connect to Databases
-  console.log('[Server] Initializing database connections...');
-  const dbConnected = await testConnection();
+  const { pgConnected, mongoConnected } = await connectDatabase();
   
-  if (!dbConnected) {
+  if (!pgConnected) {
     const message = '[Server] Primary Database (PostgreSQL) unavailable. Check DATABASE_URL.';
     if (!env.ALLOW_DEGRADED_START) {
       console.error(message);
@@ -90,8 +103,8 @@ async function start() {
     console.warn('[Server] ⚠ Redis not available — rate limiting and caching disabled');
   }
 
-  // Initialize Socket.IO
-  initSocket(httpServer);
+  // Initialize Socket.IO with shared allowed origins
+  initSocket(httpServer, allowedOrigins);
 
   // Initialize Background Workers
   workerService.init();
@@ -100,7 +113,8 @@ async function start() {
   httpServer.listen(env.PORT, () => {
     console.log(`\n[Server] ✓ API running at http://localhost:${env.PORT}`);
     console.log(`[Server] ✓ Health check: http://localhost:${env.PORT}/api/health`);
-    console.log(`[Server] ✓ PostgreSQL: ${dbConnected ? 'Connected ✅' : 'Disconnected ❌'}`);
+    console.log(`[Server] ✓ PostgreSQL: ${pgConnected ? 'Connected ✅' : 'Disconnected ❌'}`);
+    console.log(`[Server] ✓ MongoDB:    ${mongoConnected ? 'Connected ✅' : 'Disconnected ❌'}`);
     console.log(`[Server] ✓ Redis:      ${redisConnected ? 'Connected ✅' : 'Disconnected ❌'}`);
     console.log(`[Server] ✓ Environment: ${env.NODE_ENV}`);
     console.log(`[Server] ✓ Gemini AI:   ${env.GEMINI_API_KEY ? 'Configured' : 'Not configured'}`);
