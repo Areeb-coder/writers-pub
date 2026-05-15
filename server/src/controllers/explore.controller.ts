@@ -23,4 +23,11 @@ export const exploreController = {
       res.json({ success: true, data: topics });
     } catch (err) { next(err); }
   },
+
+  async getLeaderboard(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const leaderboard = await exploreService.getLeaderboard();
+      res.json({ success: true, data: leaderboard });
+    } catch (err) { next(err); }
+  },
 };
