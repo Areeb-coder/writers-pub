@@ -177,7 +177,7 @@ export default function BrainstormingHub() {
                 className="flex-1 bg-transparent border-none px-4 py-3 text-sm focus:outline-none resize-none h-[52px] text-[#4a5033] placeholder:text-[#4a5033]/40"
                 rows={1}
               />
-              <InkButton onClick={handleSend} disabled={!input.trim() || loading} className="h-[52px] w-[52px] shrink-0 p-0 flex items-center justify-center rounded-xl shadow-md">
+              <InkButton onClick={() => handleSend()} disabled={!input.trim() || loading} className="h-[52px] w-[52px] shrink-0 p-0 flex items-center justify-center rounded-xl shadow-md">
                 <Send size={18} />
               </InkButton>
             </div>
