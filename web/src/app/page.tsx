@@ -72,7 +72,7 @@ export default function LandingPage() {
              
              <motion.p variants={item} className="text-lg md:text-xl text-[#2E3318]/60 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
                 A premium space where writers write, readers critique, and editors select the future of publishing. 
-                Experience distraction-free writing empowered by AI and human connection.
+                Experience a studio empowered by AI and human connection.
              </motion.p>
              
              <motion.div variants={item} className="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start">
@@ -131,7 +131,7 @@ export default function LandingPage() {
         {/* Feature Highlights */}
         <motion.div variants={item} className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12">
             {[
-              { icon: BookOpen, title: "The Studio", desc: "A zen, distraction-free environment for pure creative flow." },
+              { icon: BookOpen, title: "The Studio", desc: "A creative environment for pure writing flow." },
               { icon: MessageSquare, title: "The Agora", desc: "Share drafts for high-quality, structured human feedback." },
               { icon: Layers, title: "The Exchange", desc: "A marketplace matching writers with publishers." },
             ].map((feature, idx) => (

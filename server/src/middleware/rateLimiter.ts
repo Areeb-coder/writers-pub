@@ -38,4 +38,4 @@ export function rateLimit(options: RateLimitOptions) {
 export const generalLimiter = rateLimit({ windowMs: 60000, max: 100, keyPrefix: 'rl:gen' });
 export const authLimiter = rateLimit({ windowMs: 60000, max: 10, keyPrefix: 'rl:auth' });
 export const feedbackLimiter = rateLimit({ windowMs: 60000, max: 5, keyPrefix: 'rl:fb' });
-export const aiLimiter = rateLimit({ windowMs: 60000, max: 3, keyPrefix: 'rl:ai' });
+export const aiLimiter = rateLimit({ windowMs: 60000, max: 20, keyPrefix: 'rl:ai' });
