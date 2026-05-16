@@ -37,7 +37,7 @@ export function errorHandler(err: Error, _req: Request, res: Response, _next: Ne
     return;
   }
 
-  if (typedErr?.type === 'entity.parse.failed' || typedErr?.status === 400) {
+  if (typedErr?.type === 'entity.parse.failed') {
     const response: ApiResponse = {
       success: false,
       error: 'Invalid JSON payload',
