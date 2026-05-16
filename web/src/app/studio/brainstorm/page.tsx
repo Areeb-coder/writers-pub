@@ -32,28 +32,33 @@ export default function BrainstormingHub() {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = async () => {
-    if (!input.trim() || loading) return;
+  const handleSend = async (overrideInput?: string) => {
+    const userMessage = overrideInput || input.trim();
+    if (!userMessage || loading) return;
 
-    const userMessage = input.trim();
-    setInput("");
-    setMessages(prev => [...prev, { role: "user", content: userMessage }]);
+    if (!overrideInput) setInput("");
+    
+    // Only add to messages if it's not a retry (or if we want to duplicate it, but let's assume retry uses the last message)
+    if (!overrideInput) {
+      setMessages(prev => [...prev, { role: "user", content: userMessage }]);
+    }
+    
     setLoading(true);
 
     try {
       const res = await api.post<{ response: string }>("/ai/brainstorm", {
         prompt: userMessage,
-        history: messages // Send previous context without incorrectly filtering
+        history: overrideInput ? messages.slice(0, -1) : messages 
       });
 
       const responseText = res.data?.response;
       if (responseText) {
         setMessages(prev => [...prev, { role: "model", content: responseText }]);
       }
-    } catch {
+    } catch (err: any) {
       setMessages(prev => [...prev, { 
         role: "model", 
-        content: "I'm sorry, I encountered an error connecting to the Muse. Please try again." 
+        content: err.message || "I'm sorry, I encountered an error connecting to the Muse. Please try again." 
       }]);
     } finally {
       setLoading(false);
@@ -108,6 +113,22 @@ export default function BrainstormingHub() {
                     : "bg-[#fdfcf8]/60 backdrop-blur-sm border border-[#4a5033]/5 text-[#4a5033] rounded-tl-none"
                 }`}>
                   <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>
+                  
+                  {msg.role === "model" && index === messages.length - 1 && msg.content.includes("error") && !loading && (
+                    <button 
+                      onClick={() => {
+                        const lastUserMsg = [...messages].reverse().find(m => m.role === "user");
+                        if (lastUserMsg) {
+                          setMessages(prev => prev.slice(0, -1)); // Remove the error message
+                          handleSend(lastUserMsg.content);
+                        }
+                      }}
+                      className="mt-3 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-amber-700 hover:text-amber-800 transition-colors"
+                    >
+                      <Sparkles size={12} />
+                      Try asking again
+                    </button>
+                  )}
                 </div>
               </motion.div>
             ))}

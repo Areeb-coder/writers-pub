@@ -51,13 +51,26 @@ router.post('/brainstorm', authenticate, async (req, res, next) => {
       history: formattedHistory,
     });
 
-    const result = await chat.sendMessage(prompt);
-    const text = result.response.text();
+    let responseText = '';
+    try {
+      const result = await chat.sendMessage(prompt);
+      responseText = result.response.text();
+    } catch (err: any) {
+      console.error('[AI Error]', err);
+      if (err.message?.includes('blocked') || err.message?.includes('Safety')) {
+        res.status(400).json({ 
+          success: false, 
+          message: "I'm sorry, I cannot fulfill this request due to safety guidelines. Please try rephrasing your prompt." 
+        });
+        return;
+      }
+      throw err; // Re-throw for general error handler
+    }
 
     res.json({
       success: true,
       data: {
-        response: text
+        response: responseText
       }
     });
   } catch (err) {

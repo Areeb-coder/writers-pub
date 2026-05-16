@@ -44,6 +44,18 @@ class ApiClient {
     return data.accessToken;
   }
 
+  private isRefreshing = false;
+  private refreshSubscribers: ((token: string) => void)[] = [];
+
+  private onRefreshed(token: string) {
+    this.refreshSubscribers.forEach((cb) => cb(token));
+    this.refreshSubscribers = [];
+  }
+
+  private addRefreshSubscriber(cb: (token: string) => void) {
+    this.refreshSubscribers.push(cb);
+  }
+
   async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${BASE_URL}${endpoint}`;
     const headers = this.getHeaders();
@@ -52,13 +64,31 @@ class ApiClient {
 
     // Handle 401 Unauthorized (Token expired)
     if (res.status === 401 && typeof window !== 'undefined') {
+      if (this.isRefreshing) {
+        return new Promise((resolve) => {
+          this.addRefreshSubscriber((token) => {
+            resolve(this.request<T>(endpoint, {
+              ...options,
+              headers: { ...headers, 'Authorization': `Bearer ${token}` },
+            }));
+          });
+        });
+      }
+
+      this.isRefreshing = true;
       try {
         const newToken = await this.refreshTokens();
+        this.isRefreshing = false;
+        this.onRefreshed(newToken);
+        
+        // Retry the original request
         res = await fetch(url, {
           ...options,
           headers: { ...headers, 'Authorization': `Bearer ${newToken}` },
         });
       } catch (err) {
+        this.isRefreshing = false;
+        this.refreshSubscribers = [];
         window.location.href = '/login';
         throw err;
       }
