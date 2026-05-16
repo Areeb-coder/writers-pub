@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { PenTool, Search, Briefcase, Bell, User } from "lucide-react";
+import { PenTool, Search, Briefcase, Bell, User, Trophy } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -11,6 +11,7 @@ import { clearSession, useIsAuthenticated, useUserRole } from "@/lib/auth";
 const navItems = [
   { icon: PenTool, label: "Studio", href: "/studio" },
   { icon: Search, label: "The Agora", href: "/agora" },
+  { icon: Trophy, label: "Leaderboard", href: "/agora/leaderboard" },
   { icon: Briefcase, label: "Marketplace", href: "/marketplace" },
 ];
 
@@ -20,13 +21,18 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   const authenticated = useIsAuthenticated();
   const role = useUserRole();
   const isEditor = role === "editor" || role === "admin";
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    if (!authenticated) router.replace("/login");
-  }, [authenticated, router]);
+    setIsMounted(true);
+  }, []);
 
-  if (!authenticated) {
-    return <div className="min-h-screen flex items-center justify-center opacity-40">Loading...</div>;
+  useEffect(() => {
+    if (isMounted && !authenticated) router.replace("/login");
+  }, [authenticated, router, isMounted]);
+
+  if (!isMounted || !authenticated) {
+    return <div className="min-h-screen flex items-center justify-center opacity-40 font-serif italic text-sm">Preparing workspace...</div>;
   }
 
   const items = isEditor
