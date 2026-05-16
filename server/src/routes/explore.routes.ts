@@ -6,5 +6,6 @@ const router = Router();
 
 router.get('/', optionalAuth, exploreController.getFeed);
 router.get('/trending', exploreController.getTrending);
+router.get('/leaderboard', exploreController.getLeaderboard);
 
 export default router;
