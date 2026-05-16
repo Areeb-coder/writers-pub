@@ -23,9 +23,15 @@ export default function LandingPage() {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const } },
   };
-
+   const quotes = [
+  "Your words matter more than you think ✨",
+  "Some stories heal the writer first 💙",
+  "Write what you feel, not what you’re told 💭"
+];
+const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-6 sm:p-24 overflow-hidden">
+
+    <main className="min-h-screen flex flex-col items-center justify-center p-6 sm:p-24 overflow-hidden bg-gradient-to-br from-[#fdf6ec] via-[#f7efe5] to-[#e8e2d6]">
       <motion.div
         variants={container}
         initial="hidden"
@@ -59,26 +65,32 @@ export default function LandingPage() {
           <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
              <motion.div variants={item} className="inline-flex items-center gap-2 glass-border px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest ink-text/60 bg-[#4a5033]/5">
                 <Sparkles size={12} className="text-[#4a5033]" />
-                The First Complete Writing Ecosystem
+                A Space Where Words Feel Like Home
              </motion.div>
              
                <motion.h1 variants={item} className="text-5xl md:text-7xl font-serif text-[#4a5033] leading-[1.1] tracking-tight font-black italic">
-                  <TypewriterText text="Craft Your" speed={65} showCursor={false} />
+                 <TypewriterText text="Craft Your Story" speed={65} showCursor={false} />
+                 <br />
+               <TypewriterText text="Feel Every Word." speed={65} delay={650} showCursor={false} />
                   <br />
-                  <TypewriterText text="Masterpiece." speed={65} delay={650} showCursor={false} />
-                  <br />
-                  <TypewriterText text="Earn Your Ink." speed={65} delay={1800} className="opacity-60 italic font-medium" showCursor={false}/>
+               <TypewriterText text="Let It Heal You." speed={65} delay={1800} className="opacity-60 italic font-medium" showCursor={false}/> 
                </motion.h1>
              
              <motion.p variants={item} className="text-lg md:text-xl text-[#2E3318]/60 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
-                A premium space where writers write, readers critique, and editors select the future of publishing. 
-                Experience a studio empowered by AI and human connection.
-             </motion.p>
+  This is more than just a writing platform — it's your personal space to think, feel, and express.
+  <br /><br />
+  Whether you're pouring your heart out, capturing memories, or simply trying to understand yourself,
+  every word you write here matters.
+</motion.p>
+
+<motion.p variants={item} className="text-sm italic text-[#4a5033]/60 mt-2">
+  {randomQuote}
+</motion.p>
              
              <motion.div variants={item} className="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start">
                 <Link href="/studio/new">
                   <InkButton className="px-8 py-5 rounded-2xl flex items-center gap-3 text-lg hover:gap-5">
-                     Start Writing <ChevronRight size={20} />
+                     Start Writing Your Story <ChevronRight size={20} />
                   </InkButton>
                 </Link>
                 <Link href="/agora">
@@ -131,10 +143,10 @@ export default function LandingPage() {
         {/* Feature Highlights */}
         <motion.div variants={item} className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12">
             {[
-              { icon: BookOpen, title: "The Studio", desc: "A creative environment for pure writing flow." },
-              { icon: MessageSquare, title: "The Agora", desc: "Share drafts for high-quality, structured human feedback." },
-              { icon: Layers, title: "The Exchange", desc: "A marketplace matching writers with publishers." },
-            ].map((feature, idx) => (
+  { icon: BookOpen, title: "Your Safe Space", desc: "Write without fear — your thoughts, your rules, your story." },
+  { icon: MessageSquare, title: "Be Heard", desc: "Share your voice and receive meaningful, human feedback." },
+  { icon: Layers, title: "Grow Through Words", desc: "Turn your emotions into expression and your writing into strength." },
+].map((feature, idx) => (
               <GlassCard key={idx} className="group hover:scale-105 border-[#4a5033]/10 hover:border-[#4a5033]/30">
                 <div className="w-12 h-12 rounded-2xl bg-[#4a5033]/5 flex items-center justify-center mb-6">
                    <feature.icon size={24} className="text-[#4a5033]" />
