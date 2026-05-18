@@ -1,5 +1,5 @@
 "use client";
-
+import ReadingProgressBar from "@/components/ReadingProgressBar";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { MainLayout } from "@/components/layout/MainLayout";
@@ -99,6 +99,7 @@ export default function AgoraPage() {
   };
 
   return (
+   
     <MainLayout>
       <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
         {/* Page Header */}
@@ -252,5 +253,6 @@ export default function AgoraPage() {
         </div>
       </motion.div>
     </MainLayout>
+
   );
 }
