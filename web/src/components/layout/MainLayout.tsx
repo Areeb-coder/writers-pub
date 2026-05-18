@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { clearSession, useIsAuthenticated, useUserRole } from "@/lib/auth";
+import { WorkspaceLoader } from "@/components/layout/WorkspaceLoader"; // GSSoC 2026 - Dhruva5vora
 
 const navItems = [
   { icon: PenTool, label: "Studio", href: "/studio" },
@@ -32,8 +33,8 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   }, [authenticated, router, isMounted]);
 
   if (!isMounted || !authenticated) {
-    return <div className="min-h-screen flex items-center justify-center opacity-40 font-serif italic text-sm">Preparing workspace...</div>;
-  }
+  return <WorkspaceLoader />; //changes made here
+}
 
   const items = isEditor
     ? [...navItems, { icon: User, label: "Editor", href: "/editor" }]
