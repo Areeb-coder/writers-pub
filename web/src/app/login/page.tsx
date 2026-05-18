@@ -48,7 +48,7 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center p-6">
-      <GlassCard className="w-full max-w-md p-8 space-y-6">
+      <GlassCard variant="dialog" className="w-full max-w-md p-8 space-y-6">
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-serif font-black italic">Welcome Back</h1>
           <p className="text-sm opacity-60">Sign in to continue to Writers&apos; Pub.</p>
