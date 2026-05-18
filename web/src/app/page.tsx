@@ -1,11 +1,13 @@
 "use client";
 
+
 import { motion } from "framer-motion";
 import { PenTool, MessageSquare, ChevronRight, Sparkles, BookOpen, Layers } from "lucide-react";
 import Link from "next/link";
 import TypewriterText from "@/components/TypewriterText";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { InkButton } from "@/components/ui/InkButton";
+import { useEffect, useState } from "react";
 
 export default function LandingPage() {
   const container = {
@@ -19,6 +21,25 @@ export default function LandingPage() {
     },
   };
 
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+  const handleScroll = () => {
+    const totalHeight =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+
+    const scrollTop = window.scrollY;
+
+    const scrollProgress = (scrollTop / totalHeight) * 100;
+
+    setProgress(scrollProgress);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
   const item = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const } },
@@ -26,6 +47,18 @@ export default function LandingPage() {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-6 sm:p-24 overflow-hidden">
+
+    <div
+  style={{
+    position: "fixed",
+    top: 0,
+    left: 0,
+    height: "5px",
+    width: `${progress}%`,
+    backgroundColor: "#2563eb",
+    zIndex: 9999,
+  }}
+/>
       <motion.div
         variants={container}
         initial="hidden"
