@@ -21,6 +21,22 @@ export default function LandingPage() {
     },
   };
 
+  
+ useEffect(() => {
+   const saved = localStorage.getItem(
+    `reading-position-${window.location.pathname}`
+  );
+
+  if (saved) {
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top: parseInt(saved),
+        behavior: "smooth",
+      });
+    });
+  }
+}, []);
+
   const [progress, setProgress] = useState(0);
   useEffect(() => {
   const handleScroll = () => {
@@ -33,6 +49,10 @@ export default function LandingPage() {
     const scrollProgress = (scrollTop / totalHeight) * 100;
 
     setProgress(scrollProgress);
+   localStorage.setItem(
+  `reading-position-${window.location.pathname}`,
+  window.scrollY.toString()
+);
   };
 
   window.addEventListener("scroll", handleScroll);
