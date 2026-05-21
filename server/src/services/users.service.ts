@@ -26,6 +26,8 @@ export const usersService = {
       display_name: user.display_name,
       avatar_url: user.avatar_url,
       bio: user.bio,
+      tagline:      (user as any).tagline ?? null,
+      social_links: (user as any).social_links ?? {},
       role: user.role,
       genres: user.genres || [],
       trust_score: user.trust_score,
@@ -44,11 +46,13 @@ export const usersService = {
     };
   },
 
-  async updateProfile(userId: string, data: { display_name?: string; bio?: string; genres?: string[]; avatar_url?: string }) {
-    const update: any = {};
+async updateProfile(userId: string, data: { display_name?: string; bio?: string; tagline?: string | null; genres?: string[]; avatar_url?: string; social_links?: { website?: string | null; twitter?: string | null; instagram?: string | null; goodreads?: string | null } }) {
+  const update: any = {};
     if (data.display_name !== undefined) update.display_name = data.display_name;
     if (data.bio !== undefined) update.bio = data.bio;
     if (data.genres !== undefined) update.genres = data.genres;
+    if (data.tagline      !== undefined) update.tagline      = data.tagline;
+    if (data.social_links !== undefined) update.social_links = data.social_links;
     if (data.avatar_url !== undefined) update.avatar_url = data.avatar_url;
 
     if (!Object.keys(update).length) throw new AppError('No fields to update', 400);
@@ -62,6 +66,8 @@ export const usersService = {
       display_name: user.display_name,
       avatar_url: user.avatar_url,
       bio: user.bio,
+      tagline:      (user as any).tagline ?? null,
+      social_links: (user as any).social_links ?? {},
       role: user.role,
       genres: user.genres || [],
       trust_score: user.trust_score,
