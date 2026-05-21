@@ -107,7 +107,7 @@ export default function SignupPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center p-6">
-      <GlassCard className="w-full max-w-md p-8 space-y-6">
+      <GlassCard variant="dialog" className="w-full max-w-md p-8 space-y-6">
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-serif font-black italic">Create Account</h1>
           <p className="text-sm opacity-60">Choose your role and join the Writers&apos; Pub.</p>
