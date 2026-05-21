@@ -29,6 +29,18 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
     if (isMounted && !authenticated) router.replace("/login");
   }, [authenticated, router, isMounted]);
 
@@ -55,7 +67,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="fixed top-0 inset-x-0 z-50 p-6 flex justify-center pointer-events-none"
+        className="fixed top-0 inset-x-0 z-50 p-6 flex justify-center"
       >
         <div className="glass-card w-full max-w-5xl px-4 sm:px-8 py-3 rounded-2xl flex items-center justify-between pointer-events-auto border-[#4a5033]/10 shadow-2xl shadow-[#4a5033]/5">
           {/* Logo */}
@@ -109,53 +121,59 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         </div>
         <AnimatePresence>
           {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.25 }}
-              className="absolute top-[105%] left-6 right-6 md:hidden rounded-3xl p-6 border border-[#4a5033]/15 overflow-hidden shadow-2xl shadow-[#4a5033]/10 z-50 bg-[#e8e7d8]/95 backdrop-blur-2xl"
-            >
-              <div className="flex flex-col gap-5 text-sm font-medium uppercase tracking-widest">
-                {items.map((item) => (
+            <>
+              <div
+                className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[9998] md:hidden"
+                onClick={() => setMobileMenuOpen(false)}
+              />
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.25 }}
+                className="fixed top-24 left-6 right-6 md:hidden rounded-3xl p-6 border border-[#4a5033]/15 shadow-2xl shadow-[#4a5033]/10 z-[9999] bg-[#e8e7d8]/95 backdrop-blur-2xl max-h-[calc(100vh-120px)] overflow-y-auto"
+              >
+                <div className="flex flex-col gap-5 text-sm font-medium uppercase tracking-widest">
+                  {items.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center gap-3 border-b border-[#4a5033]/10 pb-3"
+                    >
+                      <item.icon size={16} />
+                      {item.label}
+                    </Link>
+                  ))}
+
                   <Link
-                    key={item.href}
-                    href={item.href}
+                    href="/notifications"
                     onClick={() => setMobileMenuOpen(false)}
                     className="flex items-center gap-3 border-b border-[#4a5033]/10 pb-3"
                   >
-                    <item.icon size={16} />
-                    {item.label}
+                    <Bell size={16} />
+                    Notifications
                   </Link>
-                ))}
 
-                <Link
-                  href="/notifications"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 border-b border-[#4a5033]/10 pb-3"
-                >
-                  <Bell size={16} />
-                  Notifications
-                </Link>
+                  <Link
+                    href="/profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-3 border-b border-[#4a5033]/10 pb-3"
+                  >
+                    <User size={16} />
+                    Profile
+                  </Link>
 
-                <Link
-                  href="/profile"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 border-b border-[#4a5033]/10 pb-3"
-                >
-                  <User size={16} />
-                  Profile
-                </Link>
-
-                <button
-                  onClick={handleLogout}
-                  className="text-left flex items-center gap-3 pt-2 text-red-600"
-                >
-                  <X size={16} />
-                  Logout
-                </button>
-              </div>
-            </motion.div>
+                  <button
+                    onClick={handleLogout}
+                    className="text-left flex items-center gap-3 pt-2 text-red-600"
+                  >
+                    <X size={16} />
+                    Logout
+                  </button>
+                </div>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </motion.header>
