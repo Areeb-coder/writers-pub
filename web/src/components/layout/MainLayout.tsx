@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { PenTool, Search, Briefcase, Bell, User, Trophy } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { PenTool, Search, Briefcase, Bell, User, Trophy, Menu, X, } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -22,6 +22,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   const role = useUserRole();
   const isEditor = role === "editor" || role === "admin";
   const [isMounted, setIsMounted] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -32,7 +33,11 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   }, [authenticated, router, isMounted]);
 
   if (!isMounted || !authenticated) {
-    return <div className="min-h-screen flex items-center justify-center opacity-40 font-serif italic text-sm">Preparing workspace...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center opacity-40 font-serif italic text-sm">
+        Preparing workspace...
+      </div>
+    );
   }
 
   const items = isEditor
@@ -52,13 +57,13 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         animate={{ y: 0 }}
         className="fixed top-0 inset-x-0 z-50 p-6 flex justify-center pointer-events-none"
       >
-        <div className="glass-card px-8 py-3 rounded-2xl flex items-center gap-12 pointer-events-auto border-[#4a5033]/10 shadow-2xl shadow-[#4a5033]/5">
+        <div className="glass-card w-full max-w-5xl px-4 sm:px-8 py-3 rounded-2xl flex items-center justify-between pointer-events-auto border-[#4a5033]/10 shadow-2xl shadow-[#4a5033]/5">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-             <div className="w-8 h-8 ink-bg rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                <PenTool size={16} className="text-[#daddc6]" />
-             </div>
-             <span className="font-serif font-black italic tracking-tighter text-lg">Pub</span>
+            <div className="w-8 h-8 ink-bg rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+              <PenTool size={16} className="text-[#daddc6]" />
+            </div>
+            <span className="font-serif font-black italic tracking-tighter text-lg">Pub</span>
           </Link>
 
           {/* Nav Links */}
@@ -78,23 +83,81 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
             ))}
           </nav>
 
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden w-11 h-11 rounded-2xl glass-card flex items-center justify-center border border-[#4a5033]/10 text-[#4a5033] transition-all duration-300"
+          >
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+
           {/* User Section */}
-          <div className="flex items-center gap-4 pl-8 border-l border-[#4a5033]/10">
-             <Link href="/notifications" className="opacity-40 hover:opacity-100 transition-opacity">
-                <Bell size={18} />
-             </Link>
-             <Link href="/profile" className="w-8 h-8 rounded-full bg-[#4a5033]/10 flex items-center justify-center hover:bg-[#4a5033]/20 transition-colors">
-                <User size={18} />
-             </Link>
-             <button
-               onClick={handleLogout}
-               className="text-[10px] font-bold uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity"
-               id="logout-btn"
-             >
-               Logout
-             </button>
+          <div className="hidden md:flex items-center gap-4 pl-8 border-l border-[#4a5033]/10">
+            <Link href="/notifications" className="opacity-40 hover:opacity-100 transition-opacity">
+              <Bell size={18} />
+            </Link>
+            <Link href="/profile" className="w-8 h-8 rounded-full bg-[#4a5033]/10 flex items-center justify-center hover:bg-[#4a5033]/20 transition-colors">
+              <User size={18} />
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="text-[10px] font-bold uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity"
+              id="logout-btn"
+            >
+              Logout
+            </button>
           </div>
         </div>
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.25 }}
+              className="absolute top-[105%] left-6 right-6 md:hidden rounded-3xl p-6 border border-[#4a5033]/15 overflow-hidden shadow-2xl shadow-[#4a5033]/10 z-50 bg-[#e8e7d8]/95 backdrop-blur-2xl"
+            >
+              <div className="flex flex-col gap-5 text-sm font-medium uppercase tracking-widest">
+                {items.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-3 border-b border-[#4a5033]/10 pb-3"
+                  >
+                    <item.icon size={16} />
+                    {item.label}
+                  </Link>
+                ))}
+
+                <Link
+                  href="/notifications"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 border-b border-[#4a5033]/10 pb-3"
+                >
+                  <Bell size={16} />
+                  Notifications
+                </Link>
+
+                <Link
+                  href="/profile"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-3 border-b border-[#4a5033]/10 pb-3"
+                >
+                  <User size={16} />
+                  Profile
+                </Link>
+
+                <button
+                  onClick={handleLogout}
+                  className="text-left flex items-center gap-3 pt-2 text-red-600"
+                >
+                  <X size={16} />
+                  Logout
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.header>
 
       {/* Page Content */}
@@ -109,7 +172,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
 
       {/* Footer */}
       <footer className="py-12 border-t border-[#4a5033]/5 text-center text-[10px] font-bold uppercase tracking-widest opacity-30 mt-auto">
-         &copy; 2026 Writers&apos; Pub &bull; The Digital Atelier &bull; Premium Creative Ecosystem
+        &copy; 2026 Writers&apos; Pub &bull; The Digital Atelier &bull; Premium Creative Ecosystem
       </footer>
     </div>
   );
