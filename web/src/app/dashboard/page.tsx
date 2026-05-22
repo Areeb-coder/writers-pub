@@ -8,6 +8,8 @@ import { PenTool, MessageSquare, TrendingUp, Sparkles, BookOpen, Clock, ChevronR
 import Link from "next/link";
 import { useUserRole } from "@/lib/auth";
 
+import {WritersSanctuaryDashboard} from "./WritersSanctuaryDashboard";
+
 const recentDrafts = [
   { id: 1, title: "The Obsidian Inkwell", lastEdited: "2 hours ago", progress: 65, words: 1240 },
   { id: 2, title: "Echoes of the Agora", lastEdited: "Yesterday", progress: 20, words: 450 },
@@ -23,8 +25,8 @@ export default function Dashboard() {
       opacity: 1,
       transition: { staggerChildren: 0.1 },
     },
-  };
-
+  }; 
+   
   const item = {
     hidden: { opacity: 0, y: 10 },
     show: { opacity: 1, y: 0 },
@@ -38,6 +40,7 @@ export default function Dashboard() {
         animate="show"
         className="space-y-8"
       >
+         return <WritersSanctuaryDashboard />;
         {/* Welcome Header */}
         <section className="flex flex-col md:flex-row md:items-end justify-between gap-6">
            <motion.div variants={item} className="space-y-2">
@@ -188,3 +191,4 @@ export default function Dashboard() {
     </MainLayout>
   );
 }
+
