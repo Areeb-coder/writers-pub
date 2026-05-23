@@ -18,6 +18,8 @@ import {
   PanelRightClose,
   Share2,
   RefreshCcw,
+  Download,
+  ChevronDown,
 } from "lucide-react";
 
 interface Suggestion {
@@ -73,6 +75,7 @@ export default function StudioEditorPage() {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
   const [dirty, setDirty] = useState(false);
+  const [exportDropdownOpen, setExportDropdownOpen] = useState(false);
 
   const fetchDraft = useCallback(async () => {
     try {
@@ -93,6 +96,19 @@ export default function StudioEditorPage() {
   useEffect(() => {
     void fetchDraft();
   }, [fetchDraft]);
+
+  // Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl+S to force save (though it's auto-saved)
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        setDirty(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   useEffect(() => {
     if (!dirty || !draft) return;
@@ -142,6 +158,47 @@ export default function StudioEditorPage() {
     }
   };
 
+  const handleExport = (format: 'pdf' | 'txt' | 'md') => {
+    if (format === 'pdf') {
+      import('jspdf').then(({ jsPDF }) => {
+        const doc = new jsPDF();
+        doc.setFontSize(22);
+        doc.setFont("times", "bold");
+        const titleLines = doc.splitTextToSize(title || 'Untitled', 170);
+        doc.text(titleLines, 20, 30);
+        
+        doc.setFontSize(12);
+        doc.setFont("times", "normal");
+        const contentLines = doc.splitTextToSize(content || '', 170);
+        
+        let y = 30 + (titleLines.length * 10) + 10;
+        const pageHeight = doc.internal.pageSize.height;
+        const margin = 20;
+        
+        contentLines.forEach((line: string) => {
+          if (y + 10 > pageHeight - margin) {
+            doc.addPage();
+            y = margin + 10;
+          }
+          doc.text(line, margin, y);
+          y += 7;
+        });
+        
+        doc.save(`${(title || 'Draft').replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`);
+      });
+    } else {
+      const exportContent = format === 'md' ? `# ${title}\n\n${content}` : `${title}\n\n${content}`;
+      const blob = new Blob([exportContent], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${(title || 'Draft').replace(/[^a-z0-9]/gi, '_').toLowerCase()}.${format}`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+    setExportDropdownOpen(false);
+  };
+
   const wordCount = useMemo(() => content.trim().split(/\s+/).filter(Boolean).length, [content]);
   const charCount = content.length;
   const paragraphCount = content.split(/\n\n+/).filter(Boolean).length;
@@ -178,13 +235,26 @@ export default function StudioEditorPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 relative">
+          <div className="relative">
+            <InkButton variant="ghost" className="p-2 rounded-lg flex items-center gap-1" onClick={() => setExportDropdownOpen(!exportDropdownOpen)} title="Export">
+              <Download size={16} /> <ChevronDown size={12} />
+            </InkButton>
+            {exportDropdownOpen && (
+              <div className="absolute top-full right-0 mt-2 w-48 glass-card border border-[#4a5033]/10 rounded-xl overflow-hidden shadow-xl z-50 py-1">
+                <button onClick={() => handleExport('pdf')} className="w-full text-left px-4 py-2 text-sm hover:bg-[#4a5033]/5 font-semibold transition-colors">Export as PDF (.pdf)</button>
+                <button onClick={() => handleExport('md')} className="w-full text-left px-4 py-2 text-sm hover:bg-[#4a5033]/5 font-semibold transition-colors">Export as Markdown (.md)</button>
+                <button onClick={() => handleExport('txt')} className="w-full text-left px-4 py-2 text-sm hover:bg-[#4a5033]/5 font-semibold transition-colors">Export as Text (.txt)</button>
+              </div>
+            )}
+          </div>
           <InkButton variant="ghost" className="p-2 rounded-lg" id="share-btn" onClick={toggleVisibility}>
             <Share2 size={16} />
           </InkButton>
           <InkButton variant="ghost" className="p-2 rounded-lg" id="reanalyze-btn" onClick={triggerAI}>
             <RefreshCcw size={16} />
           </InkButton>
+
           <button
             id="toggle-sidebar"
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -208,6 +278,8 @@ export default function StudioEditorPage() {
               placeholder="Start writing..."
             />
             {error ? <p className="text-sm text-rose-600 font-semibold">{error}</p> : null}
+            
+
           </div>
         </main>
 

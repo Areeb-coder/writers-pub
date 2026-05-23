@@ -1,4 +1,4 @@
-import { DraftModel } from '../models';
+import { DraftModel, UserModel } from '../models';
 
 export const exploreService = {
   async getFeed(opts: { genre?: string; search?: string; sort?: string; userId?: string; userRole?: string; page?: number; limit?: number }) {
@@ -57,6 +57,28 @@ export const exploreService = {
     const topics = genres.map((g) => g._id);
     const curated = ['Unreliable Narrators', 'Climate Fiction', 'Flash Fiction Under 500w', 'Second-Person POV'];
     return [...new Set([...topics, ...curated])].slice(0, 6);
+  },
+
+  async getLeaderboard() {
+    const writers = await UserModel.find({ role: 'writer' })
+      .select('display_name trust_score avatar_url')
+      .sort({ trust_score: -1 })
+      .limit(10)
+      .lean();
+
+    const leaderboard = await Promise.all(writers.map(async (w: any) => {
+      const drafts = await DraftModel.find({ author_id: w._id }).select('word_count').lean();
+      const totalWords = drafts.reduce((sum: number, d: any) => sum + (d.word_count || 0), 0);
+      return {
+        id: String(w._id),
+        name: w.display_name,
+        avatar: w.avatar_url,
+        trust_score: w.trust_score,
+        total_words: totalWords,
+      };
+    }));
+
+    return leaderboard.sort((a, b) => b.trust_score - a.trust_score);
   },
 };
 

@@ -102,7 +102,12 @@ export default function StudioPage() {
             </p>
           </motion.div>
 
-          <motion.div variants={item}>
+          <motion.div variants={item} className="flex flex-wrap gap-3">
+            <Link href="/studio/brainstorm">
+              <InkButton variant="secondary" className="px-6 py-4 rounded-xl flex items-center gap-2 shadow-none border border-[#4a5033]/10">
+                <Sparkles size={18} /> Brainstorming Hub
+              </InkButton>
+            </Link>
             <Link href="/studio/new">
               <InkButton className="px-6 py-4 rounded-xl flex items-center gap-2 shadow-none" id="new-draft-btn">
                 <Plus size={18} /> New Draft
@@ -112,29 +117,31 @@ export default function StudioPage() {
         </section>
 
         {/* Stats */}
-        <motion.div variants={item} className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { label: "Total Drafts", value: stats?.total_drafts || 0, icon: FileText },
-            { label: "Words Written", value: (stats?.total_words || 0).toLocaleString(), icon: BookOpen },
-            { label: "Avg. Session", value: `${stats?.avg_session_minutes || 0} min`, icon: Timer },
-            { label: "Weekly Growth", value: `${stats?.weekly_growth_pct || 0}%`, icon: TrendingUp },
-          ].map((stat) => (
-            <GlassCard
-              key={stat.label}
-              className="p-4 border-none shadow-none bg-[#4a5033]/[0.03] flex items-center gap-3"
-            >
-              <div className="w-9 h-9 rounded-xl bg-[#4a5033]/5 flex items-center justify-center">
-                <stat.icon size={16} />
-              </div>
-              <div>
-                <p className="text-lg font-serif font-black">{stat.value}</p>
-                <p className="text-[9px] font-bold uppercase tracking-widest opacity-40">
-                  {stat.label}
-                </p>
-              </div>
-            </GlassCard>
-          ))}
-        </motion.div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <motion.div variants={item} className="contents">
+            {[
+              { label: "Total Drafts", value: stats?.total_drafts || 0, icon: FileText },
+              { label: "Words Written", value: (stats?.total_words || 0).toLocaleString(), icon: BookOpen },
+              { label: "Avg. Session", value: `${stats?.avg_session_minutes || 0} min`, icon: Timer },
+              { label: "Weekly Growth", value: `${stats?.weekly_growth_pct || 0}%`, icon: TrendingUp },
+            ].map((stat) => (
+              <GlassCard
+                key={stat.label}
+                className="p-4 border-none shadow-none bg-[#4a5033]/[0.03] flex items-center gap-3"
+              >
+                <div className="w-9 h-9 rounded-xl bg-[#4a5033]/5 flex items-center justify-center">
+                  <stat.icon size={16} />
+                </div>
+                <div>
+                  <p className="text-lg font-serif font-black">{stat.value}</p>
+                  <p className="text-[9px] font-bold uppercase tracking-widest opacity-40">
+                    {stat.label}
+                  </p>
+                </div>
+              </GlassCard>
+            ))}
+          </motion.div>
+        </div>
 
         {/* Toolbar */}
         <motion.div variants={item} className="flex items-center justify-between gap-4">

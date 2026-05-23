@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import mongoose from 'mongoose';
 import { createServer } from 'http';
 import { env } from './config/env';
 import { connectDatabase } from './config/database';
@@ -20,6 +21,7 @@ import opportunitiesRoutes from './routes/opportunities.routes';
 import submissionsRoutes from './routes/submissions.routes';
 import analyticsRoutes from './routes/analytics.routes';
 import notificationsRoutes, { achievementsRouter } from './routes/notifications.routes';
+import aiRoutes from './routes/ai.routes';
 
 const app = express();
 const httpServer = createServer(app);
@@ -28,7 +30,7 @@ const httpServer = createServer(app);
 // Standardize allowed origins for production deployment
 const allowedOrigins = [
   env.FRONTEND_URL,
-  'https://writters-pub-tau.vercel.app',
+  'https://writers-pub-tau.vercel.app',
   'https://writers-pub.vercel.app',
   'https://writers-pub-git-main-areeb-coders-projects.vercel.app'
 ].filter(Boolean).map(url => url!.replace(/\/$/, ''));
@@ -75,6 +77,7 @@ app.use('/api/submissions', submissionsRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/achievements', achievementsRouter);
+app.use('/api/ai', aiRoutes);
 
 // ─── Error Handling ───
 app.use(notFound);

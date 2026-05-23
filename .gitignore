@@ -5,7 +5,10 @@ dist/
 build/
 .next/
 .next-build/
+# env files
 .env
+.env.*
+*.env
 .DS_Store
 *.log
 *.tsbuildinfo
