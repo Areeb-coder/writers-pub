@@ -1,7 +1,7 @@
 "use client";
-import { signIn } from "next-auth/react";
 import { AuthBrand } from '@/components/auth-brand';
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -14,26 +14,7 @@ import { api } from "@/lib/api";
 import { InkButton } from "@/components/ui/InkButton";
 import { GlassCard } from "@/components/ui/GlassCard";
 
-export default function SignupPage() {
-  const router = useRouter();
-  const [serverError, setServerError] = useState("");
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<SignupInput>({
-    resolver: zodResolver(signupSchema),
-  });
-
-  const onSubmit = async (data: SignupInput) => {
-    setServerError("");
 type Role = "writer" | "editor" | "reader";
-
-interface RegisterResponse {
-  user: { id: string; role: string; display_name: string };
-  tokens: { accessToken: string; refreshToken: string };
-}
 
 interface PasswordRule {
   label: string;
@@ -42,73 +23,49 @@ interface PasswordRule {
 }
 
 const passwordRules: PasswordRule[] = [
-  {
-    label: "8+ characters",
-    message: "Password must be at least 8 characters",
-    test: (value) => value.length >= 8,
-  },
-  {
-    label: "Uppercase letter",
-    message: "Password must contain at least 1 uppercase letter",
-    test: (value) => /[A-Z]/.test(value),
-  },
-  {
-    label: "Number",
-    message: "Password must contain at least 1 number",
-    test: (value) => /[0-9]/.test(value),
-  },
-  {
-    label: "Special character",
-    message: "Password must contain at least 1 special character (!@#$%^&*)",
-    test: (value) => /[!@#$%^&*]/.test(value),
-  },
+  { label: "8+ characters", message: "At least 8 characters", test: (value) => value.length >= 8 },
+  { label: "Uppercase", message: "At least 1 uppercase letter", test: (value) => /[A-Z]/.test(value) },
+  { label: "Number", message: "At least 1 number", test: (value) => /[0-9]/.test(value) },
+  { label: "Special", message: "At least 1 special character (!@#$%^&*)", test: (value) => /[!@#$%^&*]/.test(value) },
 ];
 
 function getPasswordStrength(password: string) {
   const passedRules = passwordRules.filter((rule) => rule.test(password)).length;
-
-  if (passedRules <= 1) {
-    return { label: "Weak", barClass: "bg-rose-500", textClass: "text-rose-600" };
-  }
-
-  if (passedRules <= 3) {
-    return { label: "Medium", barClass: "bg-amber-500", textClass: "text-amber-600" };
-  }
-
-  return { label: "Strong", barClass: "bg-emerald-500", textClass: "text-emerald-600" };
+  if (passedRules <= 1) return { label: "Weak", barClass: "bg-rose-500", textClass: "text-rose-600", width: "25%" };
+  if (passedRules <= 3) return { label: "Medium", barClass: "bg-amber-500", textClass: "text-amber-600", width: "60%" };
+  return { label: "Strong", barClass: "bg-emerald-500", textClass: "text-emerald-600", width: "100%" };
 }
 
 export default function SignupPage() {
   const router = useRouter();
-  const [displayName, setDisplayName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [serverError, setServerError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState<Role>("writer");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [passwordTouched, setPasswordTouched] = useState(false);
 
-  const passwordStrength = getPasswordStrength(password);
-  const passwordErrors = passwordRules
-    .filter((rule) => !rule.test(password))
-    .map((rule) => rule.message);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<SignupInput>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
-  const showPasswordFeedback = passwordTouched || password.length > 0;
+  const password = watch("password", "");
+  const strength = getPasswordStrength(password);
+  const showFeedback = password.length > 0;
 
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setPasswordTouched(true);
-    if (passwordErrors.length > 0) {
-      setError(passwordErrors[0]);
-      return;
-    }
-    setLoading(true);
-    setError("");
+  const onSubmit = async (data: SignupInput) => {
+    setServerError("");
     try {
-      // We don't need to send confirmPassword to the backend
-      const { confirmPassword, ...signupData } = data;
-
-      await api.post("/auth/signup", signupData);
+      // Combines Zod-validated data with the role state
+      await api.post("/auth/signup", { ...data, role });
       router.push("/login?message=Account created successfully!");
     } catch (err: unknown) {
       setServerError(err instanceof Error ? err.message : "Signup failed");
@@ -131,8 +88,7 @@ export default function SignupPage() {
             <input
               {...register("name")}
               placeholder="Your Name"
-              className={`w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border transition-colors ${errors.name ? "border-rose-500" : "border-[#4a5033]/10"
-                }`}
+              className={`w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border transition-colors ${errors.name ? "border-rose-500" : "border-[#4a5033]/10"}`}
             />
             {errors.name && <p className="text-[10px] text-rose-600 ml-1">{errors.name.message}</p>}
           </div>
@@ -143,23 +99,49 @@ export default function SignupPage() {
               {...register("email")}
               type="email"
               placeholder="Your Email"
-              className={`w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border transition-colors ${errors.email ? "border-rose-500" : "border-[#4a5033]/10"
-                }`}
+              className={`w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border transition-colors ${errors.email ? "border-rose-500" : "border-[#4a5033]/10"}`}
             />
             {errors.email && <p className="text-[10px] text-rose-600 ml-1">{errors.email.message}</p>}
           </div>
 
           {/* PASSWORD FIELD */}
           <div className="space-y-1">
-            <input
-              {...register("password")}
-              type="password"
-              placeholder="Create Password"
-              className={`w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border transition-colors ${errors.password ? "border-rose-500" : "border-[#4a5033]/10"
-                }`}
-            />
+            <div className="relative">
+              <input
+                {...register("password")}
+                type={showPassword ? "text" : "password"}
+                placeholder="Create Password"
+                className={`w-full px-4 py-3 pr-12 rounded-xl bg-[#4a5033]/5 border transition-colors ${errors.password ? "border-rose-500" : "border-[#4a5033]/10"}`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 opacity-60 hover:opacity-100 transition"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
             {errors.password && <p className="text-[10px] text-rose-600 ml-1">{errors.password.message}</p>}
           </div>
+
+          {/* STRENGTH INDICATOR */}
+          {showFeedback && (
+            <div className="space-y-3 rounded-xl border border-[#4a5033]/10 bg-[#4a5033]/5 p-4">
+              <div className="flex items-center justify-between text-xs font-semibold">
+                <span className={strength.textClass}>Strength: {strength.label}</span>
+              </div>
+              <div className="h-1.5 overflow-hidden rounded-full bg-black/10">
+                <div className={`h-full transition-all duration-500 ${strength.barClass}`} style={{ width: strength.width }} />
+              </div>
+              <ul className="grid grid-cols-2 gap-1 text-[10px]">
+                {passwordRules.map((rule) => (
+                  <li key={rule.label} className={rule.test(password) ? "text-emerald-600" : "text-rose-600"}>
+                    {rule.test(password) ? "✓" : "•"} {rule.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* CONFIRM PASSWORD FIELD */}
           <div className="space-y-1">
@@ -167,91 +149,26 @@ export default function SignupPage() {
               {...register("confirmPassword")}
               type="password"
               placeholder="Confirm Password"
-              className={`w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border transition-colors ${errors.confirmPassword ? "border-rose-500" : "border-[#4a5033]/10"
-                }`}
+              className={`w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border transition-colors ${errors.confirmPassword ? "border-rose-500" : "border-[#4a5033]/10"}`}
             />
-            {errors.confirmPassword && (
-              <p className="text-[10px] text-rose-600 ml-1">{errors.confirmPassword.message}</p>
-            )}
+            {errors.confirmPassword && <p className="text-[10px] text-rose-600 ml-1">{errors.confirmPassword.message}</p>}
           </div>
 
-          {serverError && <p className="text-xs text-rose-600 text-center font-semibold">{serverError}</p>}
-
-          <InkButton type="submit" className="w-full py-3 rounded-xl justify-center" disabled={isSubmitting}>
-            {isSubmitting ? "Creating Account..." : "Sign Up"}
-        <form onSubmit={onSubmit} className="space-y-4">
-          <input
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-            required
-            className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
-            placeholder="Display name"
-          />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
-            placeholder="Email"
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setPasswordTouched(true);
-              setError("");
-            }}
-            onBlur={() => setPasswordTouched(true)}
-            required
-            minLength={8}
-            className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
-            placeholder="Password"
-          />
-          {showPasswordFeedback ? (
-            <div className="space-y-3 rounded-xl border border-[#4a5033]/10 bg-[#4a5033]/5 p-4">
-              <div className="flex items-center justify-between gap-3 text-xs font-semibold">
-                <span className={passwordStrength.textClass}>Password strength</span>
-                <span className={passwordStrength.textClass}>{passwordStrength.label}</span>
-              </div>
-              <div className="h-2 overflow-hidden rounded-full bg-black/10">
-                <div
-                  className={`h-full w-full rounded-full transition-colors ${passwordStrength.barClass}`}
-                  style={{
-                    width:
-                      passwordStrength.label === "Weak"
-                        ? "25%"
-                        : passwordStrength.label === "Medium"
-                          ? "60%"
-                          : "100%",
-                  }}
-                />
-              </div>
-              <ul className="space-y-1 text-xs">
-                {passwordRules.map((rule) => {
-                  const isValid = rule.test(password);
-                  return (
-                    <li key={rule.label} className={isValid ? "text-emerald-600" : "text-rose-600"}>
-                      {isValid ? "✓" : "•"} {rule.message}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ) : null}
+          {/* ROLE SELECT */}
           <select
             value={role}
             onChange={(e) => setRole(e.target.value as Role)}
-            className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
+            className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10 text-sm"
           >
             <option value="writer">Writer</option>
             <option value="editor">Editor</option>
             <option value="reader">Reader</option>
           </select>
-          {error ? <p className="text-xs text-rose-600 font-semibold">{error}</p> : null}
-          <InkButton type="submit" className="w-full py-3 rounded-xl justify-center" disabled={loading}>
-            {loading ? "Creating..." : "Create Account"}
+
+          {serverError && <p className="text-xs text-rose-600 text-center font-semibold">{serverError}</p>}
+
+          <InkButton type="submit" className="w-full py-3 rounded-xl justify-center" disabled={isSubmitting}>
+            {isSubmitting ? "Creating Account..." : "Sign Up"}
           </InkButton>
         </form>
 
