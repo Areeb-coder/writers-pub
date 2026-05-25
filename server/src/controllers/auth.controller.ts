@@ -1,8 +1,47 @@
 import { Request, Response, NextFunction } from 'express';
 import { authService } from '../services/auth.service';
 import { AppError } from '../middleware/errorHandler';
+import crypto from 'crypto';
+import { env } from '../config/env';
 
 export const authController = {
+  async oauthLogin(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, displayName, avatarUrl, provider, providerId, signature } = req.body;
+
+      if (!email || !provider || !providerId || !signature) {
+        throw new AppError('Missing required OAuth parameters', 400);
+      }
+
+      // Secure backend verification using a shared secret
+      const expectedSignature = crypto
+        .createHmac('sha256', env.INTERNAL_AUTH_SHARED_SECRET)
+        .update(`${providerId}:${email}`)
+        .digest('hex');
+
+      if (signature !== expectedSignature) {
+        throw new AppError('Unauthorized internal request signature', 403);
+      }
+
+      const result = await authService.oauthLogin({
+        email,
+        displayName,
+        avatarUrl,
+        provider,
+        providerId,
+      });
+
+      const { user, tokens } = result;
+
+      res.status(200).json({
+        success: true,
+        user,
+        token: tokens.accessToken,
+        data: result,
+      });
+    } catch (err) { next(err); }
+  },
+
   async register(req: Request, res: Response, next: NextFunction) {
     try {
       const { email, password, displayName, name, role } = req.body;
