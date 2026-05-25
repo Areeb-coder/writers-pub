@@ -24,22 +24,38 @@ export const opportunitiesService = {
       .populate('publisher_id', 'display_name avatar_url is_verified genres')
       .lean();
 
-    let userGenres: string[] = [];
-    if (userId) {
-      const user = await UserModel.findById(userId).select('genres').lean();
-      userGenres = user?.genres || [];
-    }
+    // Fetch user genres and all submission counts in parallel — two queries total
+    // regardless of how many opportunities are on the page.
+    const opportunityIds = opportunities.map((opp: any) => opp._id);
 
+    const [userResult, submissionCounts] = await Promise.all([
+      userId ? UserModel.findById(userId).select('genres').lean() : Promise.resolve(null),
+      // Single aggregation replaces N individual countDocuments calls
+      SubmissionModel.aggregate([
+        { $match: { opportunity_id: { $in: opportunityIds } } },
+        { $group: { _id: '$opportunity_id', count: { $sum: 1 } } },
+      ]),
+    ]);
+
+    const userGenres: string[] = (userResult as any)?.genres || [];
+
+    // Build an O(1) lookup map: opportunityId → submission count
+    const submissionCountMap = new Map<string, number>(
+      submissionCounts.map((row: any) => [String(row._id), row.count])
+    );
+
+    // Match scores are still computed per-opportunity but they only hit the
+    // in-process aiService (no extra DB round-trips beyond what aiService does).
     const data = await Promise.all(
       opportunities.map(async (opp: any) => {
-        const submission_count = await SubmissionModel.countDocuments({ opportunity_id: opp._id });
+        const oppId = String(opp._id);
         return {
           ...mapOpportunity(opp),
           publisher_name: opp.publisher_id?.display_name || 'Unknown',
           publisher_avatar: opp.publisher_id?.avatar_url || null,
           publisher_verified: !!opp.publisher_id?.is_verified,
-          submission_count,
-          matchScore: userId ? await aiService.getMatchScore(userGenres, String(opp._id)) : undefined,
+          submission_count: submissionCountMap.get(oppId) ?? 0,
+          matchScore: userId ? await aiService.getMatchScore(userGenres, oppId) : undefined,
         };
       })
     );
