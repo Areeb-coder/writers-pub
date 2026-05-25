@@ -39,8 +39,11 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
     ? [...navItems, { icon: User, label: "Editor", href: "/editor" }]
     : navItems;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    // Import and call signOut synchronously or asynchronously
+    const { signOut } = await import("next-auth/react");
     clearSession();
+    await signOut({ redirect: false });
     router.push("/login");
   };
 
