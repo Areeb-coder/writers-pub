@@ -87,7 +87,7 @@ export default function BrainstormingHub() {
             <Sparkles size={24} />
           </div>
           <div>
-            <h1 className="text-3xl font-serif font-black italic text-[#4a5033]">The Brainstorming Hub</h1>
+            <h1 className="text-3xl font-serif font-black italic text-primary">The Brainstorming Hub</h1>
             <p className="opacity-50 text-sm font-medium uppercase tracking-widest">Collaborate with the AI Muse</p>
           </div>
         </div>
@@ -103,14 +103,14 @@ export default function BrainstormingHub() {
                 className={`flex gap-4 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
               >
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                  msg.role === "user" ? "bg-[#4a5033] text-[#fdfcf8]" : "bg-amber-600/10 text-amber-600"
+                  msg.role === "user" ? "bg-primary text-primary-foreground" : "bg-amber-600/10 text-amber-600"
                 }`}>
                   {msg.role === "user" ? <User size={16} /> : <Bot size={16} />}
                 </div>
                 <div className={`max-w-[80%] rounded-2xl p-4 shadow-sm ${
                   msg.role === "user" 
-                    ? "bg-[#4a5033] text-[#fdfcf8] rounded-tr-none" 
-                    : "bg-[#fdfcf8]/60 backdrop-blur-sm border border-[#4a5033]/5 text-[#4a5033] rounded-tl-none"
+                    ? "bg-primary text-primary-foreground rounded-tr-none" 
+                    : "bg-background/60 backdrop-blur-sm border border-primary/5 text-primary rounded-tl-none"
                 }`}>
                   <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>
                   
@@ -137,7 +137,7 @@ export default function BrainstormingHub() {
                 <div className="w-8 h-8 rounded-full bg-amber-600/10 text-amber-600 flex items-center justify-center shrink-0">
                   <Bot size={16} />
                 </div>
-                <div className="bg-[#fdfcf8]/60 backdrop-blur-sm border border-[#4a5033]/5 rounded-2xl rounded-tl-none p-4 flex items-center gap-2 shadow-sm">
+                <div className="bg-background/60 backdrop-blur-sm border border-primary/5 rounded-2xl rounded-tl-none p-4 flex items-center gap-2 shadow-sm">
                   <Loader2 size={16} className="animate-spin opacity-50" />
                   <span className="text-sm opacity-50 italic">The Muse is thinking...</span>
                 </div>
@@ -151,7 +151,7 @@ export default function BrainstormingHub() {
 
       {/* Input Area (Fixed) */}
       <div className="fixed bottom-0 left-0 right-0 z-40 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-t from-[#daddc6] via-[#daddc6] to-transparent opacity-95" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background to-transparent opacity-95" />
         
         <div className="relative max-w-7xl mx-auto px-6 lg:px-24 w-full pointer-events-auto pb-8 pt-12">
           <div className="max-w-4xl mx-auto">
@@ -161,20 +161,20 @@ export default function BrainstormingHub() {
                   <button
                     key={i}
                     onClick={() => setInput(suggestion)}
-                    className="text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-[#4a5033]/20 text-[#4a5033]/60 hover:bg-[#4a5033]/10 hover:text-[#4a5033] bg-[#daddc6]/80 backdrop-blur-md transition-all shadow-sm"
+                    className="text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-primary/20 text-primary/60 hover:bg-primary/10 hover:text-primary bg-primary-foreground/80 backdrop-blur-md transition-all shadow-sm cursor-pointer"
                   >
                     {suggestion}
                   </button>
                 ))}
               </div>
             )}
-            <div className="flex gap-2 glass-card p-2 rounded-2xl shadow-xl shadow-[#4a5033]/5 border-[#4a5033]/10">
+            <div className="flex gap-2 glass-card p-2 rounded-2xl shadow-xl shadow-primary/5 border-primary/10">
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Ask the Muse for ideas..."
-                className="flex-1 bg-transparent border-none px-4 py-3 text-sm focus:outline-none resize-none h-[52px] text-[#4a5033] placeholder:text-[#4a5033]/40"
+                className="flex-1 bg-transparent border-none px-4 py-3 text-sm focus:outline-none resize-none h-[52px] text-primary placeholder:text-primary/40"
                 rows={1}
               />
               <InkButton onClick={() => handleSend()} disabled={!input.trim() || loading} className="h-[52px] w-[52px] shrink-0 p-0 flex items-center justify-center rounded-xl shadow-md">

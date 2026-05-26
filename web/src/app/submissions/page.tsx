@@ -158,7 +158,7 @@ export default function SubmissionsPage() {
           {["Submitted", "Shortlisted", "Accepted"].map((step, i) => (
             <div key={step} className="flex items-center gap-2">
               <div className="flex items-center gap-1.5 bg-[#4a5033]/5 px-3 py-1.5 rounded-full">
-                <span className="w-4 h-4 rounded-full ink-bg flex items-center justify-center text-[8px] text-[#daddc6] font-black">
+                <span className="w-4 h-4 rounded-full ink-bg flex items-center justify-center text-[8px] text-primary-foreground font-black">
                   {i + 1}
                 </span>
                 <span className="text-[9px] font-bold uppercase tracking-widest">{step}</span>

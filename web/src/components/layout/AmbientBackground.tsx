@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export function AmbientBackground() {
   return (
-    <div className="fixed inset-0 -z-50 overflow-hidden bg-[#daddc6]">
+    <div className="fixed inset-0 -z-50 overflow-hidden bg-background">
       {/* Dynamic Ink Orbs */}
       <motion.div
         animate={{
@@ -17,7 +17,7 @@ export function AmbientBackground() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="absolute -top-1/4 -right-1/4 w-[80%] h-[80%] bg-[#4a5033] opacity-[0.03] blur-[140px] rounded-full"
+        className="absolute -top-1/4 -right-1/4 w-[80%] h-[80%] bg-[var(--primary)] opacity-[0.03] blur-[140px] rounded-full"
       />
       <motion.div
         animate={{
@@ -31,12 +31,12 @@ export function AmbientBackground() {
           ease: "easeInOut",
           delay: 2,
         }}
-        className="absolute -bottom-1/4 -left-1/4 w-[70%] h-[70%] bg-[#4a5033] opacity-[0.02] blur-[120px] rounded-full"
+        className="absolute -bottom-1/4 -left-1/4 w-[70%] h-[70%] bg-[var(--primary)] opacity-[0.02] blur-[120px] rounded-full"
       />
       
       {/* Subtle Grain Overly */}
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none mix-blend-multiply"
-           style={{ backgroundImage: 'radial-gradient(#4a5033 0.5px, transparent 0.5px)', backgroundSize: '24px 24px' }} />
+           style={{ backgroundImage: 'radial-gradient(var(--primary) 0.5px, transparent 0.5px)', backgroundSize: '24px 24px' }} />
     </div>
   );
 }
