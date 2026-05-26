@@ -24,4 +24,5 @@ export const env = {
 
   FRONTEND_URL: process.env.FRONTEND_URL || 'http://localhost:3000',
   ALLOW_DEGRADED_START: process.env.ALLOW_DEGRADED_START === 'true',
+  INTERNAL_AUTH_SHARED_SECRET: process.env.INTERNAL_AUTH_SHARED_SECRET || 'fallback_dev_secret',
 };

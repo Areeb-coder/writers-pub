@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AmbientBackground } from "@/components/layout/AmbientBackground";
 import PageTransition from "@/components/layout/PageTransition";
+import { AuthProvider } from "@/components/providers/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Writers' Pub — A Premium Ecosystem for Creative Minds",
@@ -19,9 +20,11 @@ export default function RootLayout({
         {/* Ambient background effect */}
         <AmbientBackground />
         
-        <PageTransition>
-          {children}
-        </PageTransition>
+        <AuthProvider>
+          <PageTransition>
+             {children}
+          </PageTransition>
+        </AuthProvider>
       </body>
     </html>
   );
