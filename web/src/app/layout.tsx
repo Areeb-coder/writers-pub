@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AmbientBackground } from "@/components/layout/AmbientBackground";
+import PageTransition from "@/components/layout/PageTransition";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 
 export const metadata: Metadata = {
@@ -20,7 +21,9 @@ export default function RootLayout({
         <AmbientBackground />
         
         <AuthProvider>
-          {children}
+          <PageTransition>
+             {children}
+          </PageTransition>
         </AuthProvider>
       </body>
     </html>
