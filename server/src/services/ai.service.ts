@@ -99,7 +99,7 @@ export const aiService = {
 
     try {
       const model = genAI.getGenerativeModel({
-        model: 'gemini-3-flash',
+        model: 'gemini-1.5-flash',
         safetySettings: [
           { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
           { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
