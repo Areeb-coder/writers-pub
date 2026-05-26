@@ -119,7 +119,7 @@ export default function SignupPage() {
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
             required
-            className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
+            className="w-full px-4 py-3 rounded-xl bg-primary/5 border border-primary/10 text-primary placeholder:text-primary/40 focus:outline-none focus:border-primary/30"
             placeholder="Display name"
           />
           <input
@@ -127,7 +127,7 @@ export default function SignupPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
+            className="w-full px-4 py-3 rounded-xl bg-primary/5 border border-primary/10 text-primary placeholder:text-primary/40 focus:outline-none focus:border-primary/30"
             placeholder="Email"
           />
           <input
@@ -141,11 +141,11 @@ export default function SignupPage() {
             onBlur={() => setPasswordTouched(true)}
             required
             minLength={8}
-            className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
+            className="w-full px-4 py-3 rounded-xl bg-primary/5 border border-primary/10 text-primary placeholder:text-primary/40 focus:outline-none focus:border-primary/30"
             placeholder="Password"
           />
           {showPasswordFeedback ? (
-            <div className="space-y-3 rounded-xl border border-[#4a5033]/10 bg-[#4a5033]/5 p-4">
+            <div className="space-y-3 rounded-xl border border-primary/10 bg-primary/5 p-4">
               <div className="flex items-center justify-between gap-3 text-xs font-semibold">
                 <span className={passwordStrength.textClass}>Password strength</span>
                 <span className={passwordStrength.textClass}>{passwordStrength.label}</span>
@@ -178,11 +178,11 @@ export default function SignupPage() {
           <select
             value={role}
             onChange={(e) => setRole(e.target.value as Role)}
-            className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
+            className="w-full px-4 py-3 rounded-xl bg-primary/5 border border-primary/10 text-primary focus:outline-none focus:border-primary/30 cursor-pointer"
           >
-            <option value="writer">Writer</option>
-            <option value="editor">Editor</option>
-            <option value="reader">Reader</option>
+            <option value="writer" className="bg-background text-primary">Writer</option>
+            <option value="editor" className="bg-background text-primary">Editor</option>
+            <option value="reader" className="bg-background text-primary">Reader</option>
           </select>
           {error ? <p className="text-xs text-rose-600 font-semibold">{error}</p> : null}
           <InkButton type="submit" className="w-full py-3 rounded-xl justify-center" disabled={loading}>
@@ -192,10 +192,10 @@ export default function SignupPage() {
         {/* Separator */}
 <div className="relative my-6">
   <div className="absolute inset-0 flex items-center">
-    <span className="w-full border-t border-gray-200" />
+    <span className="w-full border-t border-primary/10" />
   </div>
   <div className="relative flex justify-center text-xs uppercase">
-    <span className="bg-white px-2 text-gray-400">Or sign up with</span>
+    <span className="bg-background px-2 text-primary/50 font-medium">Or sign up with</span>
   </div>
 </div>
 
@@ -204,24 +204,24 @@ export default function SignupPage() {
   <button 
     type="button"
     onClick={() => signIn('google')} 
-    className="flex items-center justify-center py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all shadow-sm"
+    className="flex items-center justify-center py-2.5 border border-primary/20 rounded-lg hover:bg-primary/5 transition-all shadow-sm cursor-pointer"
   >
     <img src="https://authjs.dev/img/providers/google.svg" className="w-5 h-5 mr-2" alt="Google" />
-    <span className="text-sm font-semibold text-gray-700">Google</span>
+    <span className="text-sm font-semibold text-primary">Google</span>
   </button>
   
   <button 
     type="button"
     onClick={() => signIn('facebook')} 
-    className="flex items-center justify-center py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all shadow-sm"
+    className="flex items-center justify-center py-2.5 border border-primary/20 rounded-lg hover:bg-primary/5 transition-all shadow-sm cursor-pointer"
   >
     <img src="https://authjs.dev/img/providers/facebook.svg" className="w-5 h-5 mr-2" alt="Facebook" />
-    <span className="text-sm font-semibold text-gray-700">Facebook</span>
+    <span className="text-sm font-semibold text-primary">Facebook</span>
   </button>
 </div>
 
-        <p className="text-xs text-center opacity-60">
-          Already have an account? <Link href="/login" className="underline">Sign in</Link>
+        <p className="text-xs text-center opacity-60 text-primary">
+          Already have an account? <Link href="/login" className="underline hover:opacity-85 transition-opacity">Sign in</Link>
         </p>
       </GlassCard>
     </main>

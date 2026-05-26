@@ -62,10 +62,10 @@ export default function LoginPage() {
           <input
             type="email"
             placeholder="Your email"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
-            
+            className="w-full px-4 py-3 rounded-xl bg-primary/5 border border-primary/10 text-primary placeholder:text-primary/40 focus:outline-none focus:border-primary/30"
           />
           <div className="relative">
             <input
@@ -73,14 +73,14 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 pr-12 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
+              className="w-full px-4 py-3 pr-12 rounded-xl bg-primary/5 border border-primary/10 text-primary placeholder:text-primary/40 focus:outline-none focus:border-primary/30"
               placeholder="Password"
             />
 
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 opacity-60 hover:opacity-100 transition cursor-pointer"
+              className="absolute right-4 top-1/2 -translate-y-1/2 opacity-60 hover:opacity-100 transition cursor-pointer text-primary"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -94,10 +94,10 @@ export default function LoginPage() {
 {/* Separator Line */}
 <div className="relative my-6">
   <div className="absolute inset-0 flex items-center">
-    <span className="w-full border-t border-gray-200" />
+    <span className="w-full border-t border-primary/10" />
   </div>
   <div className="relative flex justify-center text-xs uppercase">
-    <span className="bg-white px-2 text-gray-500 font-medium">Or continue with</span>
+    <span className="bg-background px-2 text-primary/50 font-medium">Or continue with</span>
   </div>
 </div>
 
@@ -107,23 +107,23 @@ export default function LoginPage() {
   <button 
     type="button"
     onClick={() => signIn('google')}
-    className="flex items-center justify-center py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm"
+    className="flex items-center justify-center py-2.5 border border-primary/20 rounded-lg hover:bg-primary/5 transition-all duration-200 shadow-sm cursor-pointer"
   >
     <img src="https://authjs.dev/img/providers/google.svg" className="w-5 h-5 mr-2" alt="Google" />
-    <span className="text-sm font-semibold text-gray-700">Google</span>
+    <span className="text-sm font-semibold text-primary">Google</span>
   </button>
   {/* Facebook Button */}
   <button 
     type="button"
     onClick={() => signIn('facebook')}
-    className="flex items-center justify-center py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm"
+    className="flex items-center justify-center py-2.5 border border-primary/20 rounded-lg hover:bg-primary/5 transition-all duration-200 shadow-sm cursor-pointer"
   >
     <img src="https://authjs.dev/img/providers/facebook.svg" className="w-5 h-5 mr-2" alt="Facebook" />
-    <span className="text-sm font-semibold text-gray-700">Facebook</span>
+    <span className="text-sm font-semibold text-primary">Facebook</span>
   </button>
 </div>
-        <p className="text-xs text-center opacity-60">
-          New here? <Link href="/signup" className="underline">Create an account</Link>
+        <p className="text-xs text-center opacity-60 text-primary">
+          New here? <Link href="/signup" className="underline hover:opacity-85 transition-opacity">Create an account</Link>
         </p>
       </GlassCard>
     </main>
