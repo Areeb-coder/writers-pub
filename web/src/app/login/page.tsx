@@ -1,4 +1,7 @@
 "use client";
+import { signIn } from "next-auth/react";
+import { AuthBrand } from '@/components/auth-brand';
+
 
 import { FormEvent, useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
@@ -54,14 +57,15 @@ export default function LoginPage() {
           <p className="text-sm opacity-60">Sign in to continue to Writers&apos; Pub.</p>
         </div>
 
+<AuthBrand />
         <form onSubmit={onSubmit} className="space-y-4">
           <input
             type="email"
-            value={email}
+            placeholder="Your email"
             onChange={(e) => setEmail(e.target.value)}
             required
             className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
-            placeholder="Email"
+            
           />
           <div className="relative">
             <input
@@ -87,7 +91,37 @@ export default function LoginPage() {
             {loading ? "Signing in..." : "Sign In"}
           </InkButton>
         </form>
+{/* Separator Line */}
+<div className="relative my-6">
+  <div className="absolute inset-0 flex items-center">
+    <span className="w-full border-t border-gray-200" />
+  </div>
+  <div className="relative flex justify-center text-xs uppercase">
+    <span className="bg-white px-2 text-gray-500 font-medium">Or continue with</span>
+  </div>
+</div>
 
+{/* OAuth Buttons */}
+{/* Google Button */}
+<div className="grid grid-cols-2 gap-4">
+  <button 
+    type="button"
+    onClick={() => signIn('google')}
+    className="flex items-center justify-center py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm"
+  >
+    <img src="https://authjs.dev/img/providers/google.svg" className="w-5 h-5 mr-2" alt="Google" />
+    <span className="text-sm font-semibold text-gray-700">Google</span>
+  </button>
+  {/* Facebook Button */}
+  <button 
+    type="button"
+    onClick={() => signIn('facebook')}
+    className="flex items-center justify-center py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm"
+  >
+    <img src="https://authjs.dev/img/providers/facebook.svg" className="w-5 h-5 mr-2" alt="Facebook" />
+    <span className="text-sm font-semibold text-gray-700">Facebook</span>
+  </button>
+</div>
         <p className="text-xs text-center opacity-60">
           New here? <Link href="/signup" className="underline">Create an account</Link>
         </p>

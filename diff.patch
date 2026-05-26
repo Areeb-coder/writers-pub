@@ -1,0 +1,1261 @@
+﻿diff --git a/server/package-lock.json b/server/package-lock.json
+index e86df2a..fea874c 100644
+--- a/server/package-lock.json
++++ b/server/package-lock.json
+@@ -188,7 +188,6 @@
+       "integrity": "sha512-dVd04UKsfpINUnK0yBoYHDF3xu7xVH4BuDotC/xGuycx4CgbP48X/KF/586bcObxT0HENHXEU8Nqtu6NR+eKhw==",
+       "dev": true,
+       "license": "MIT",
+-      "peer": true,
+       "dependencies": {
+         "@types/body-parser": "*",
+         "@types/express-serve-static-core": "^4.17.33",
+@@ -246,7 +245,6 @@
+       "resolved": "https://registry.npmjs.org/@types/node/-/node-22.19.17.tgz",
+       "integrity": "sha512-wGdMcf+vPYM6jikpS/qhg6WiqSV/OhG+jeeHT/KlVqxYfD40iYJf9/AE1uQxVWFvU7MipKRkRv8NSHiCGgPr8Q==",
+       "license": "MIT",
+-      "peer": true,
+       "dependencies": {
+         "undici-types": "~6.21.0"
+       }
+@@ -1629,7 +1627,6 @@
+       "resolved": "https://registry.npmjs.org/pg/-/pg-8.20.0.tgz",
+       "integrity": "sha512-ldhMxz2r8fl/6QkXnBD3CR9/xg694oT6DZQ2s6c/RI28OjtSOpxnPrUCGOBJ46RCUxcWdx3p6kw/xnDHjKvaRA==",
+       "license": "MIT",
+-      "peer": true,
+       "dependencies": {
+         "pg-connection-string": "^2.12.0",
+         "pg-pool": "^3.13.0",
+@@ -2302,7 +2299,6 @@
+       "integrity": "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==",
+       "dev": true,
+       "license": "Apache-2.0",
+-      "peer": true,
+       "bin": {
+         "tsc": "bin/tsc",
+         "tsserver": "bin/tsserver"
+diff --git a/server/src/controllers/explore.controller.ts b/server/src/controllers/explore.controller.ts
+index 280b287..91f232c 100644
+--- a/server/src/controllers/explore.controller.ts
++++ b/server/src/controllers/explore.controller.ts
+@@ -23,4 +23,11 @@ export const exploreController = {
+       res.json({ success: true, data: topics });
+     } catch (err) { next(err); }
+   },
++
++  async getLeaderboard(_req: Request, res: Response, next: NextFunction) {
++    try {
++      const leaderboard = await exploreService.getLeaderboard();
++      res.json({ success: true, data: leaderboard });
++    } catch (err) { next(err); }
++  },
+ };
+diff --git a/server/src/index.ts b/server/src/index.ts
+index 489c6a2..f30879a 100644
+--- a/server/src/index.ts
++++ b/server/src/index.ts
+@@ -1,9 +1,10 @@
+ import express from 'express';
+ import cors from 'cors';
+ import cookieParser from 'cookie-parser';
++import mongoose from 'mongoose';
+ import { createServer } from 'http';
+ import { env } from './config/env';
+-import { testConnection } from './config/database';
++import { connectDatabase } from './config/database';
+ import { connectRedis } from './config/redis';
+ import { initSocket } from './socket';
+ import { errorHandler, notFound } from './middleware/errorHandler';
+@@ -20,6 +21,7 @@ import opportunitiesRoutes from './routes/opportunities.routes';
+ import submissionsRoutes from './routes/submissions.routes';
+ import analyticsRoutes from './routes/analytics.routes';
+ import notificationsRoutes, { achievementsRouter } from './routes/notifications.routes';
++import aiRoutes from './routes/ai.routes';
+ 
+ const app = express();
+ const httpServer = createServer(app);
+@@ -60,6 +62,7 @@ app.use('/api/submissions', submissionsRoutes);
+ app.use('/api/analytics', analyticsRoutes);
+ app.use('/api/notifications', notificationsRoutes);
+ app.use('/api/achievements', achievementsRouter);
++app.use('/api/ai', aiRoutes);
+ 
+ // ΓöÇΓöÇΓöÇ Error Handling ΓöÇΓöÇΓöÇ
+ app.use(notFound);
+@@ -73,7 +76,8 @@ async function start() {
+ 
+   // Connect to Databases
+   console.log('[Server] Initializing database connections...');
+-  const dbConnected = await testConnection();
++  const dbConnected = await connectDatabase();
++  const mongoConnected = mongoose.connection.readyState === 1;
+   
+   if (!dbConnected) {
+     const message = '[Server] Primary Database (PostgreSQL) unavailable. Check DATABASE_URL.';
+@@ -101,6 +105,7 @@ async function start() {
+     console.log(`\n[Server] Γ£ô API running at http://localhost:${env.PORT}`);
+     console.log(`[Server] Γ£ô Health check: http://localhost:${env.PORT}/api/health`);
+     console.log(`[Server] Γ£ô PostgreSQL: ${dbConnected ? 'Connected Γ£à' : 'Disconnected Γ¥î'}`);
++    console.log(`[Server] Γ£ô MongoDB:    ${mongoConnected ? 'Connected Γ£à' : 'Disconnected Γ¥î'}`);
+     console.log(`[Server] Γ£ô Redis:      ${redisConnected ? 'Connected Γ£à' : 'Disconnected Γ¥î'}`);
+     console.log(`[Server] Γ£ô Environment: ${env.NODE_ENV}`);
+     console.log(`[Server] Γ£ô Gemini AI:   ${env.GEMINI_API_KEY ? 'Configured' : 'Not configured'}`);
+diff --git a/server/src/routes/ai.routes.ts b/server/src/routes/ai.routes.ts
+new file mode 100644
+index 0000000..546b405
+--- /dev/null
++++ b/server/src/routes/ai.routes.ts
+@@ -0,0 +1,48 @@
++import { Router } from 'express';
++import { requireAuth } from '../middleware/auth';
++import { GoogleGenerativeAI } from '@google/generative-ai';
++import { env } from '../config/env';
++
++const router = Router();
++const genAI = env.GEMINI_API_KEY ? new GoogleGenerativeAI(env.GEMINI_API_KEY) : null;
++
++router.post('/brainstorm', requireAuth, async (req, res, next) => {
++  try {
++    if (!genAI) {
++      res.status(503).json({ success: false, message: 'AI service is currently unavailable.' });
++      return;
++    }
++
++    const { prompt, history } = req.body;
++    
++    if (!prompt) {
++      res.status(400).json({ success: false, message: 'Prompt is required.' });
++      return;
++    }
++
++    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro-preview-05-06' });
++    
++    // Format history for Gemini chat if provided
++    const chat = model.startChat({
++      history: history ? history.map((msg: any) => ({
++        role: msg.role === 'user' ? 'user' : 'model',
++        parts: [{ text: msg.content }]
++      })) : [],
++      systemInstruction: "You are an expert creative writing assistant, world-builder, and brainstorming partner for novelists. Help the user brainstorm ideas, develop characters, outline plots, or map out magic systems. Be encouraging, creative, and provide structured, detailed responses. Do not write the story for them, but rather act as a sounding board and ideation tool.",
++    });
++
++    const result = await chat.sendMessage(prompt);
++    const text = result.response.text();
++
++    res.json({
++      success: true,
++      data: {
++        response: text
++      }
++    });
++  } catch (err) {
++    next(err);
++  }
++});
++
++export default router;
+diff --git a/server/src/routes/explore.routes.ts b/server/src/routes/explore.routes.ts
+index b45f579..2726eea 100644
+--- a/server/src/routes/explore.routes.ts
++++ b/server/src/routes/explore.routes.ts
+@@ -6,5 +6,6 @@ const router = Router();
+ 
+ router.get('/', optionalAuth, exploreController.getFeed);
+ router.get('/trending', exploreController.getTrending);
++router.get('/leaderboard', exploreController.getLeaderboard);
+ 
+ export default router;
+diff --git a/server/src/services/explore.service.ts b/server/src/services/explore.service.ts
+index d560e4b..3eed7d3 100644
+--- a/server/src/services/explore.service.ts
++++ b/server/src/services/explore.service.ts
+@@ -1,4 +1,4 @@
+-import { DraftModel } from '../models';
++import { DraftModel, UserModel } from '../models';
+ 
+ export const exploreService = {
+   async getFeed(opts: { genre?: string; search?: string; sort?: string; userId?: string; userRole?: string; page?: number; limit?: number }) {
+@@ -58,6 +58,28 @@ export const exploreService = {
+     const curated = ['Unreliable Narrators', 'Climate Fiction', 'Flash Fiction Under 500w', 'Second-Person POV'];
+     return [...new Set([...topics, ...curated])].slice(0, 6);
+   },
++
++  async getLeaderboard() {
++    const writers = await UserModel.find({ role: 'writer' })
++      .select('display_name trust_score avatar_url')
++      .sort({ trust_score: -1 })
++      .limit(10)
++      .lean();
++
++    const leaderboard = await Promise.all(writers.map(async (w: any) => {
++      const drafts = await DraftModel.find({ author_id: w._id }).select('word_count').lean();
++      const totalWords = drafts.reduce((sum: number, d: any) => sum + (d.word_count || 0), 0);
++      return {
++        id: String(w._id),
++        name: w.display_name,
++        avatar: w.avatar_url,
++        trust_score: w.trust_score,
++        total_words: totalWords,
++      };
++    }));
++
++    return leaderboard.sort((a, b) => b.trust_score - a.trust_score);
++  },
+ };
+ 
+ function sortToMongoSort(sort: string): Record<string, 1 | -1> {
+diff --git a/web/package-lock.json b/web/package-lock.json
+index 51385bc..8e42f07 100644
+--- a/web/package-lock.json
++++ b/web/package-lock.json
+@@ -10,6 +10,7 @@
+       "dependencies": {
+         "clsx": "^2.1.1",
+         "framer-motion": "^12.38.0",
++        "jspdf": "^4.2.1",
+         "lucide-react": "^1.7.0",
+         "next": "16.2.2",
+         "react": "19.2.4",
+@@ -71,7 +72,6 @@
+       "integrity": "sha512-CGOfOJqWjg2qW/Mb6zNsDm+u5vFQ8DxXfbM09z69p5Z6+mE1ikP2jUXw+j42Pf1XTYED2Rni5f95npYeuwMDQA==",
+       "dev": true,
+       "license": "MIT",
+-      "peer": true,
+       "dependencies": {
+         "@babel/code-frame": "^7.29.0",
+         "@babel/generator": "^7.29.0",
+@@ -233,6 +233,15 @@
+         "node": ">=6.0.0"
+       }
+     },
++    "node_modules/@babel/runtime": {
++      "version": "7.29.2",
++      "resolved": "https://registry.npmjs.org/@babel/runtime/-/runtime-7.29.2.tgz",
++      "integrity": "sha512-JiDShH45zKHWyGe4ZNVRrCjBz8Nh9TMmZG1kh4QTK8hCBTWBi8Da+i7s1fJw7/lYpM4ccepSNfqzZ/QvABBi5g==",
++      "license": "MIT",
++      "engines": {
++        "node": ">=6.9.0"
++      }
++    },
+     "node_modules/@babel/template": {
+       "version": "7.28.6",
+       "resolved": "https://registry.npmjs.org/@babel/template/-/template-7.28.6.tgz",
+@@ -1560,13 +1569,25 @@
+         "undici-types": "~6.21.0"
+       }
+     },
++    "node_modules/@types/pako": {
++      "version": "2.0.4",
++      "resolved": "https://registry.npmjs.org/@types/pako/-/pako-2.0.4.tgz",
++      "integrity": "sha512-VWDCbrLeVXJM9fihYodcLiIv0ku+AlOa/TQ1SvYOaBuyrSKgEcro95LJyIsJ4vSo6BXIxOKxiJAat04CmST9Fw==",
++      "license": "MIT"
++    },
++    "node_modules/@types/raf": {
++      "version": "3.4.3",
++      "resolved": "https://registry.npmjs.org/@types/raf/-/raf-3.4.3.tgz",
++      "integrity": "sha512-c4YAvMedbPZ5tEyxzQdMoOhhJ4RD3rngZIdwC2/qDN3d7JpEhB6fiBRKVY1lg5B7Wk+uPBjn5f39j1/2MY1oOw==",
++      "license": "MIT",
++      "optional": true
++    },
+     "node_modules/@types/react": {
+       "version": "19.2.14",
+       "resolved": "https://registry.npmjs.org/@types/react/-/react-19.2.14.tgz",
+       "integrity": "sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w==",
+       "dev": true,
+       "license": "MIT",
+-      "peer": true,
+       "dependencies": {
+         "csstype": "^3.2.2"
+       }
+@@ -1581,6 +1602,13 @@
+         "@types/react": "^19.2.0"
+       }
+     },
++    "node_modules/@types/trusted-types": {
++      "version": "2.0.7",
++      "resolved": "https://registry.npmjs.org/@types/trusted-types/-/trusted-types-2.0.7.tgz",
++      "integrity": "sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==",
++      "license": "MIT",
++      "optional": true
++    },
+     "node_modules/@typescript-eslint/eslint-plugin": {
+       "version": "8.58.0",
+       "resolved": "https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-8.58.0.tgz",
+@@ -1626,7 +1654,6 @@
+       "integrity": "sha512-rLoGZIf9afaRBYsPUMtvkDWykwXwUPL60HebR4JgTI8mxfFe2cQTu3AGitANp4b9B2QlVru6WzjgB2IzJKiCSA==",
+       "dev": true,
+       "license": "MIT",
+-      "peer": true,
+       "dependencies": {
+         "@typescript-eslint/scope-manager": "8.58.0",
+         "@typescript-eslint/types": "8.58.0",
+@@ -2152,7 +2179,6 @@
+       "integrity": "sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw==",
+       "dev": true,
+       "license": "MIT",
+-      "peer": true,
+       "bin": {
+         "acorn": "bin/acorn"
+       },
+@@ -2440,6 +2466,16 @@
+       "dev": true,
+       "license": "MIT"
+     },
++    "node_modules/base64-arraybuffer": {
++      "version": "1.0.2",
++      "resolved": "https://registry.npmjs.org/base64-arraybuffer/-/base64-arraybuffer-1.0.2.tgz",
++      "integrity": "sha512-I3yl4r9QB5ZRY3XuJVEPfc2XhZO6YweFPI+UovAzn+8/hb3oJ6lnysaFcjVpkCPfVWFUDvoZ8kmVDP7WyRtYtQ==",
++      "license": "MIT",
++      "optional": true,
++      "engines": {
++        "node": ">= 0.6.0"
++      }
++    },
+     "node_modules/baseline-browser-mapping": {
+       "version": "2.10.16",
+       "resolved": "https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.10.16.tgz",
+@@ -2496,7 +2532,6 @@
+         }
+       ],
+       "license": "MIT",
+-      "peer": true,
+       "dependencies": {
+         "baseline-browser-mapping": "^2.10.12",
+         "caniuse-lite": "^1.0.30001782",
+@@ -2591,6 +2626,26 @@
+       ],
+       "license": "CC-BY-4.0"
+     },
++    "node_modules/canvg": {
++      "version": "3.0.11",
++      "resolved": "https://registry.npmjs.org/canvg/-/canvg-3.0.11.tgz",
++      "integrity": "sha512-5ON+q7jCTgMp9cjpu4Jo6XbvfYwSB2Ow3kzHKfIyJfaCAOHLbdKPQqGKgfED/R5B+3TFFfe8pegYA+b423SRyA==",
++      "license": "MIT",
++      "optional": true,
++      "dependencies": {
++        "@babel/runtime": "^7.12.5",
++        "@types/raf": "^3.4.0",
++        "core-js": "^3.8.3",
++        "raf": "^3.4.1",
++        "regenerator-runtime": "^0.13.7",
++        "rgbcolor": "^1.0.1",
++        "stackblur-canvas": "^2.0.0",
++        "svg-pathdata": "^6.0.3"
++      },
++      "engines": {
++        "node": ">=10.0.0"
++      }
++    },
+     "node_modules/chalk": {
+       "version": "4.1.2",
+       "resolved": "https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz",
+@@ -2657,6 +2712,18 @@
+       "dev": true,
+       "license": "MIT"
+     },
++    "node_modules/core-js": {
++      "version": "3.49.0",
++      "resolved": "https://registry.npmjs.org/core-js/-/core-js-3.49.0.tgz",
++      "integrity": "sha512-es1U2+YTtzpwkxVLwAFdSpaIMyQaq0PBgm3YD1W3Qpsn1NAmO3KSgZfu+oGSWVu6NvLHoHCV/aYcsE5wiB7ALg==",
++      "hasInstallScript": true,
++      "license": "MIT",
++      "optional": true,
++      "funding": {
++        "type": "opencollective",
++        "url": "https://opencollective.com/core-js"
++      }
++    },
+     "node_modules/cross-spawn": {
+       "version": "7.0.6",
+       "resolved": "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.6.tgz",
+@@ -2672,6 +2739,16 @@
+         "node": ">= 8"
+       }
+     },
++    "node_modules/css-line-break": {
++      "version": "2.1.0",
++      "resolved": "https://registry.npmjs.org/css-line-break/-/css-line-break-2.1.0.tgz",
++      "integrity": "sha512-FHcKFCZcAha3LwfVBhCQbW2nCNbkZXn7KVUJcsT5/P8YmfsVja0FMPJr0B903j/E69HUphKiV9iQArX8SDYA4w==",
++      "license": "MIT",
++      "optional": true,
++      "dependencies": {
++        "utrie": "^1.0.2"
++      }
++    },
+     "node_modules/csstype": {
+       "version": "3.2.3",
+       "resolved": "https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz",
+@@ -2824,6 +2901,16 @@
+         "node": ">=0.10.0"
+       }
+     },
++    "node_modules/dompurify": {
++      "version": "3.4.2",
++      "resolved": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.2.tgz",
++      "integrity": "sha512-lHeS9SA/IKeIFFyYciHBr2n0v1VMPlSj843HdLOwjb2OxNwdq9Xykxqhk+FE42MzAdHvInbAolSE4mhahPpjXA==",
++      "license": "(MPL-2.0 OR Apache-2.0)",
++      "optional": true,
++      "optionalDependencies": {
++        "@types/trusted-types": "^2.0.7"
++      }
++    },
+     "node_modules/dunder-proto": {
+       "version": "1.0.1",
+       "resolved": "https://registry.npmjs.org/dunder-proto/-/dunder-proto-1.0.1.tgz",
+@@ -3074,7 +3161,6 @@
+       "integrity": "sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ==",
+       "dev": true,
+       "license": "MIT",
+-      "peer": true,
+       "dependencies": {
+         "@eslint-community/eslint-utils": "^4.8.0",
+         "@eslint-community/regexpp": "^4.12.1",
+@@ -3260,7 +3346,6 @@
+       "integrity": "sha512-whOE1HFo/qJDyX4SnXzP4N6zOWn79WhnCUY/iDR0mPfQZO8wcYE4JClzI2oZrhBnnMUCBCHZhO6VQyoBU95mZA==",
+       "dev": true,
+       "license": "MIT",
+-      "peer": true,
+       "dependencies": {
+         "@rtsao/scc": "^1.1.0",
+         "array-includes": "^3.1.9",
+@@ -3527,6 +3612,17 @@
+       "dev": true,
+       "license": "MIT"
+     },
++    "node_modules/fast-png": {
++      "version": "6.4.0",
++      "resolved": "https://registry.npmjs.org/fast-png/-/fast-png-6.4.0.tgz",
++      "integrity": "sha512-kAqZq1TlgBjZcLr5mcN6NP5Rv4V2f22z00c3g8vRrwkcqjerx7BEhPbOnWCPqaHUl2XWQBJQvOT/FQhdMT7X/Q==",
++      "license": "MIT",
++      "dependencies": {
++        "@types/pako": "^2.0.3",
++        "iobuffer": "^5.3.2",
++        "pako": "^2.1.0"
++      }
++    },
+     "node_modules/fastq": {
+       "version": "1.20.1",
+       "resolved": "https://registry.npmjs.org/fastq/-/fastq-1.20.1.tgz",
+@@ -3537,6 +3633,12 @@
+         "reusify": "^1.0.4"
+       }
+     },
++    "node_modules/fflate": {
++      "version": "0.8.2",
++      "resolved": "https://registry.npmjs.org/fflate/-/fflate-0.8.2.tgz",
++      "integrity": "sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==",
++      "license": "MIT"
++    },
+     "node_modules/file-entry-cache": {
+       "version": "8.0.0",
+       "resolved": "https://registry.npmjs.org/file-entry-cache/-/file-entry-cache-8.0.0.tgz",
+@@ -3949,6 +4051,20 @@
+         "hermes-estree": "0.25.1"
+       }
+     },
++    "node_modules/html2canvas": {
++      "version": "1.4.1",
++      "resolved": "https://registry.npmjs.org/html2canvas/-/html2canvas-1.4.1.tgz",
++      "integrity": "sha512-fPU6BHNpsyIhr8yyMpTLLxAbkaK8ArIBcmZIRiBLiDhjeqvXolaEmDGmELFuX9I4xDcaKKcJl+TKZLqruBbmWA==",
++      "license": "MIT",
++      "optional": true,
++      "dependencies": {
++        "css-line-break": "^2.1.0",
++        "text-segmentation": "^1.0.3"
++      },
++      "engines": {
++        "node": ">=8.0.0"
++      }
++    },
+     "node_modules/ignore": {
+       "version": "5.3.2",
+       "resolved": "https://registry.npmjs.org/ignore/-/ignore-5.3.2.tgz",
+@@ -4001,6 +4117,12 @@
+         "node": ">= 0.4"
+       }
+     },
++    "node_modules/iobuffer": {
++      "version": "5.4.0",
++      "resolved": "https://registry.npmjs.org/iobuffer/-/iobuffer-5.4.0.tgz",
++      "integrity": "sha512-DRebOWuqDvxunfkNJAlc3IzWIPD5xVxwUNbHr7xKB8E6aLJxIPfNX3CoMJghcFjpv6RWQsrcJbghtEwSPoJqMA==",
++      "license": "MIT"
++    },
+     "node_modules/is-array-buffer": {
+       "version": "3.0.5",
+       "resolved": "https://registry.npmjs.org/is-array-buffer/-/is-array-buffer-3.0.5.tgz",
+@@ -4525,6 +4647,23 @@
+         "node": ">=6"
+       }
+     },
++    "node_modules/jspdf": {
++      "version": "4.2.1",
++      "resolved": "https://registry.npmjs.org/jspdf/-/jspdf-4.2.1.tgz",
++      "integrity": "sha512-YyAXyvnmjTbR4bHQRLzex3CuINCDlQnBqoSYyjJwTP2x9jDLuKDzy7aKUl0hgx3uhcl7xzg32agn5vlie6HIlQ==",
++      "license": "MIT",
++      "dependencies": {
++        "@babel/runtime": "^7.28.6",
++        "fast-png": "^6.2.0",
++        "fflate": "^0.8.1"
++      },
++      "optionalDependencies": {
++        "canvg": "^3.0.11",
++        "core-js": "^3.6.0",
++        "dompurify": "^3.3.1",
++        "html2canvas": "^1.0.0-rc.5"
++      }
++    },
+     "node_modules/jsx-ast-utils": {
+       "version": "3.3.5",
+       "resolved": "https://registry.npmjs.org/jsx-ast-utils/-/jsx-ast-utils-3.3.5.tgz",
+@@ -5329,6 +5468,12 @@
+         "url": "https://github.com/sponsors/sindresorhus"
+       }
+     },
++    "node_modules/pako": {
++      "version": "2.1.0",
++      "resolved": "https://registry.npmjs.org/pako/-/pako-2.1.0.tgz",
++      "integrity": "sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug==",
++      "license": "(MIT AND Zlib)"
++    },
+     "node_modules/parent-module": {
+       "version": "1.0.1",
+       "resolved": "https://registry.npmjs.org/parent-module/-/parent-module-1.0.1.tgz",
+@@ -5369,6 +5514,13 @@
+       "dev": true,
+       "license": "MIT"
+     },
++    "node_modules/performance-now": {
++      "version": "2.1.0",
++      "resolved": "https://registry.npmjs.org/performance-now/-/performance-now-2.1.0.tgz",
++      "integrity": "sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==",
++      "license": "MIT",
++      "optional": true
++    },
+     "node_modules/picocolors": {
+       "version": "1.1.1",
+       "resolved": "https://registry.npmjs.org/picocolors/-/picocolors-1.1.1.tgz",
+@@ -5480,12 +5632,21 @@
+       ],
+       "license": "MIT"
+     },
++    "node_modules/raf": {
++      "version": "3.4.1",
++      "resolved": "https://registry.npmjs.org/raf/-/raf-3.4.1.tgz",
++      "integrity": "sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==",
++      "license": "MIT",
++      "optional": true,
++      "dependencies": {
++        "performance-now": "^2.1.0"
++      }
++    },
+     "node_modules/react": {
+       "version": "19.2.4",
+       "resolved": "https://registry.npmjs.org/react/-/react-19.2.4.tgz",
+       "integrity": "sha512-9nfp2hYpCwOjAN+8TZFGhtWEwgvWHXqESH8qT89AT/lWklpLON22Lc8pEtnpsZz7VmawabSU0gCjnj8aC0euHQ==",
+       "license": "MIT",
+-      "peer": true,
+       "engines": {
+         "node": ">=0.10.0"
+       }
+@@ -5495,7 +5656,6 @@
+       "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-19.2.4.tgz",
+       "integrity": "sha512-AXJdLo8kgMbimY95O2aKQqsz2iWi9jMgKJhRBAxECE4IFxfcazB2LmzloIoibJI3C12IlY20+KFaLv+71bUJeQ==",
+       "license": "MIT",
+-      "peer": true,
+       "dependencies": {
+         "scheduler": "^0.27.0"
+       },
+@@ -5533,6 +5693,13 @@
+         "url": "https://github.com/sponsors/ljharb"
+       }
+     },
++    "node_modules/regenerator-runtime": {
++      "version": "0.13.11",
++      "resolved": "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz",
++      "integrity": "sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==",
++      "license": "MIT",
++      "optional": true
++    },
+     "node_modules/regexp.prototype.flags": {
+       "version": "1.5.4",
+       "resolved": "https://registry.npmjs.org/regexp.prototype.flags/-/regexp.prototype.flags-1.5.4.tgz",
+@@ -5609,6 +5776,16 @@
+         "node": ">=0.10.0"
+       }
+     },
++    "node_modules/rgbcolor": {
++      "version": "1.0.1",
++      "resolved": "https://registry.npmjs.org/rgbcolor/-/rgbcolor-1.0.1.tgz",
++      "integrity": "sha512-9aZLIrhRaD97sgVhtJOW6ckOEh6/GnvQtdVNfdZ6s67+3/XwLS9lBcQYzEEhYVeUowN7pRzMLsyGhK2i/xvWbw==",
++      "license": "MIT OR SEE LICENSE IN FEEL-FREE.md",
++      "optional": true,
++      "engines": {
++        "node": ">= 0.8.15"
++      }
++    },
+     "node_modules/run-parallel": {
+       "version": "1.2.0",
+       "resolved": "https://registry.npmjs.org/run-parallel/-/run-parallel-1.2.0.tgz",
+@@ -5926,6 +6103,16 @@
+       "dev": true,
+       "license": "MIT"
+     },
++    "node_modules/stackblur-canvas": {
++      "version": "2.7.0",
++      "resolved": "https://registry.npmjs.org/stackblur-canvas/-/stackblur-canvas-2.7.0.tgz",
++      "integrity": "sha512-yf7OENo23AGJhBriGx0QivY5JP6Y1HbrrDI6WLt6C5auYZXlQrheoY8hD4ibekFKz1HOfE48Ww8kMWMnJD/zcQ==",
++      "license": "MIT",
++      "optional": true,
++      "engines": {
++        "node": ">=0.1.14"
++      }
++    },
+     "node_modules/stop-iteration-iterator": {
+       "version": "1.1.0",
+       "resolved": "https://registry.npmjs.org/stop-iteration-iterator/-/stop-iteration-iterator-1.1.0.tgz",
+@@ -6125,6 +6312,16 @@
+         "url": "https://github.com/sponsors/ljharb"
+       }
+     },
++    "node_modules/svg-pathdata": {
++      "version": "6.0.3",
++      "resolved": "https://registry.npmjs.org/svg-pathdata/-/svg-pathdata-6.0.3.tgz",
++      "integrity": "sha512-qsjeeq5YjBZ5eMdFuUa4ZosMLxgr5RZ+F+Y1OrDhuOCEInRMA3x74XdBtggJcj9kOeInz0WE+LgCPDkZFlBYJw==",
++      "license": "MIT",
++      "optional": true,
++      "engines": {
++        "node": ">=12.0.0"
++      }
++    },
+     "node_modules/tailwind-merge": {
+       "version": "3.5.0",
+       "resolved": "https://registry.npmjs.org/tailwind-merge/-/tailwind-merge-3.5.0.tgz",
+@@ -6156,6 +6353,16 @@
+         "url": "https://opencollective.com/webpack"
+       }
+     },
++    "node_modules/text-segmentation": {
++      "version": "1.0.3",
++      "resolved": "https://registry.npmjs.org/text-segmentation/-/text-segmentation-1.0.3.tgz",
++      "integrity": "sha512-iOiPUo/BGnZ6+54OsWxZidGCsdU8YbE4PSpdPinp7DeMtUJNJBoJ/ouUSTJjHkh1KntHaltHl/gDs2FC4i5+Nw==",
++      "license": "MIT",
++      "optional": true,
++      "dependencies": {
++        "utrie": "^1.0.2"
++      }
++    },
+     "node_modules/tinyglobby": {
+       "version": "0.2.15",
+       "resolved": "https://registry.npmjs.org/tinyglobby/-/tinyglobby-0.2.15.tgz",
+@@ -6197,7 +6404,6 @@
+       "integrity": "sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==",
+       "dev": true,
+       "license": "MIT",
+-      "peer": true,
+       "engines": {
+         "node": ">=12"
+       },
+@@ -6360,7 +6566,6 @@
+       "integrity": "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==",
+       "dev": true,
+       "license": "Apache-2.0",
+-      "peer": true,
+       "bin": {
+         "tsc": "bin/tsc",
+         "tsserver": "bin/tsserver"
+@@ -6495,6 +6700,16 @@
+         "punycode": "^2.1.0"
+       }
+     },
++    "node_modules/utrie": {
++      "version": "1.0.2",
++      "resolved": "https://registry.npmjs.org/utrie/-/utrie-1.0.2.tgz",
++      "integrity": "sha512-1MLa5ouZiOmQzUbjbu9VmjLzn1QLXBhwpUa7kdLUQK+KQ5KA9I1vk5U4YHe/X2Ch7PYnJfWuWT+VbuxbGwljhw==",
++      "license": "MIT",
++      "optional": true,
++      "dependencies": {
++        "base64-arraybuffer": "^1.0.2"
++      }
++    },
+     "node_modules/which": {
+       "version": "2.0.2",
+       "resolved": "https://registry.npmjs.org/which/-/which-2.0.2.tgz",
+@@ -6636,7 +6851,6 @@
+       "integrity": "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==",
+       "dev": true,
+       "license": "MIT",
+-      "peer": true,
+       "funding": {
+         "url": "https://github.com/sponsors/colinhacks"
+       }
+diff --git a/web/package.json b/web/package.json
+index c22a5a8..212109b 100644
+--- a/web/package.json
++++ b/web/package.json
+@@ -11,6 +11,7 @@
+   "dependencies": {
+     "clsx": "^2.1.1",
+     "framer-motion": "^12.38.0",
++    "jspdf": "^4.2.1",
+     "lucide-react": "^1.7.0",
+     "next": "16.2.2",
+     "react": "19.2.4",
+diff --git a/web/src/app/agora/leaderboard/page.tsx b/web/src/app/agora/leaderboard/page.tsx
+new file mode 100644
+index 0000000..906c96d
+--- /dev/null
++++ b/web/src/app/agora/leaderboard/page.tsx
+@@ -0,0 +1,119 @@
++"use client";
++
++import { useEffect, useState } from "react";
++import { motion } from "framer-motion";
++import { MainLayout } from "@/components/layout/MainLayout";
++import { GlassCard } from "@/components/ui/GlassCard";
++import { Trophy, TrendingUp, Medal, Award, Flame } from "lucide-react";
++import { api } from "@/lib/api";
++
++interface LeaderboardUser {
++  id: string;
++  name: string;
++  avatar: string | null;
++  trust_score: number;
++  total_words: number;
++}
++
++export default function LeaderboardPage() {
++  const [leaders, setLeaders] = useState<LeaderboardUser[]>([]);
++  const [loading, setLoading] = useState(true);
++
++  useEffect(() => {
++    const fetchLeaderboard = async () => {
++      try {
++        const res = await api.get<LeaderboardUser[]>("/explore/leaderboard");
++        if (res.data) setLeaders(res.data);
++      } catch (err) {
++        console.error("Failed to load leaderboard:", err);
++      } finally {
++        setLoading(false);
++      }
++    };
++    fetchLeaderboard();
++  }, []);
++
++  const container = {
++    hidden: { opacity: 0 },
++    show: { opacity: 1, transition: { staggerChildren: 0.1 } },
++  };
++  const item = {
++    hidden: { opacity: 0, y: 10 },
++    show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
++  };
++
++  const getRankColor = (index: number) => {
++    switch (index) {
++      case 0: return "text-amber-500 bg-amber-500/10 border-amber-500/20";
++      case 1: return "text-zinc-400 bg-zinc-400/10 border-zinc-400/20";
++      case 2: return "text-amber-700 bg-amber-700/10 border-amber-700/20";
++      default: return "text-[#4a5033]/60 bg-[#4a5033]/5 border-transparent";
++    }
++  };
++
++  const getRankIcon = (index: number) => {
++    switch (index) {
++      case 0: return <Trophy size={18} />;
++      case 1: return <Medal size={18} />;
++      case 2: return <Award size={18} />;
++      default: return <span className="font-bold text-sm">#{index + 1}</span>;
++    }
++  };
++
++  return (
++    <MainLayout>
++      <div className="max-w-4xl mx-auto space-y-8">
++        <section className="text-center space-y-4 py-8">
++          <div className="w-16 h-16 mx-auto rounded-3xl bg-amber-600/10 flex items-center justify-center text-amber-600">
++            <Flame size={32} />
++          </div>
++          <h1 className="text-4xl md:text-5xl font-serif font-black italic tracking-tight text-[#4a5033]">
++            Global Leaderboard
++          </h1>
++          <p className="opacity-50 text-sm font-medium uppercase tracking-widest max-w-lg mx-auto">
++            The most prolific and trusted voices in the Writers' Pub community.
++          </p>
++        </section>
++
++        {loading ? (
++          <div className="flex justify-center py-20 opacity-30">Loading the greats...</div>
++        ) : (
++          <motion.div variants={container} initial="hidden" animate="show" className="space-y-4">
++            {leaders.map((user, index) => (
++              <motion.div key={user.id} variants={item}>
++                <GlassCard className="p-4 flex items-center gap-6 hover:bg-[#4a5033]/5 transition-colors border-[#4a5033]/10">
++                  {/* Rank Badge */}
++                  <div className={`w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center border ${getRankColor(index)}`}>
++                    {getRankIcon(index)}
++                  </div>
++
++                  {/* User Info */}
++                  <div className="flex-1 min-w-0">
++                    <h3 className="text-xl font-serif font-black truncate text-[#4a5033]">
++                      {user.name}
++                    </h3>
++                    <div className="flex items-center gap-4 mt-1 text-[10px] font-bold uppercase tracking-widest opacity-40">
++                      <span className="flex items-center gap-1"><TrendingUp size={12} /> {user.total_words.toLocaleString()} words written</span>
++                    </div>
++                  </div>
++
++                  {/* Trust Score */}
++                  <div className="text-right">
++                    <p className="text-2xl font-black text-[#4a5033]">{user.trust_score}</p>
++                    <p className="text-[9px] font-bold uppercase tracking-widest opacity-40">Trust Score</p>
++                  </div>
++                </GlassCard>
++              </motion.div>
++            ))}
++
++            {leaders.length === 0 && (
++              <div className="text-center py-20 opacity-40 italic">
++                No leaders found yet. Start writing to claim your spot!
++              </div>
++            )}
++          </motion.div>
++        )}
++      </div>
++    </MainLayout>
++  );
++}
+diff --git a/web/src/app/page.tsx b/web/src/app/page.tsx
+index fd208b5..e16c7f0 100644
+--- a/web/src/app/page.tsx
++++ b/web/src/app/page.tsx
+@@ -68,7 +68,7 @@ export default function LandingPage() {
+              
+              <motion.p variants={item} className="text-lg md:text-xl text-[#4a5033]/70 font-light leading-relaxed max-w-xl mx-auto lg:mx-0">
+                 A premium space where writers write, readers critique, and editors select the future of publishing. 
+-                Experience distraction-free writing empowered by AI and human connection.
++                Experience a studio empowered by AI and human connection.
+              </motion.p>
+              
+              <motion.div variants={item} className="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start">
+@@ -127,7 +127,7 @@ export default function LandingPage() {
+         {/* Feature Highlights */}
+         <motion.div variants={item} className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12">
+             {[
+-              { icon: BookOpen, title: "The Studio", desc: "A zen, distraction-free environment for pure creative flow." },
++              { icon: BookOpen, title: "The Studio", desc: "A creative environment for pure writing flow." },
+               { icon: MessageSquare, title: "The Agora", desc: "Share drafts for high-quality, structured human feedback." },
+               { icon: Layers, title: "The Exchange", desc: "A marketplace matching writers with publishers." },
+             ].map((feature, idx) => (
+diff --git a/web/src/app/studio/[id]/page.tsx b/web/src/app/studio/[id]/page.tsx
+index ddaaea9..66a48ca 100644
+--- a/web/src/app/studio/[id]/page.tsx
++++ b/web/src/app/studio/[id]/page.tsx
+@@ -18,6 +18,8 @@ import {
+   PanelRightClose,
+   Share2,
+   RefreshCcw,
++  Download,
++  ChevronDown,
+ } from "lucide-react";
+ 
+ interface Suggestion {
+@@ -73,6 +75,7 @@ export default function StudioEditorPage() {
+   const [content, setContent] = useState("");
+   const [tags, setTags] = useState("");
+   const [dirty, setDirty] = useState(false);
++  const [exportDropdownOpen, setExportDropdownOpen] = useState(false);
+ 
+   const fetchDraft = useCallback(async () => {
+     try {
+@@ -94,6 +97,19 @@ export default function StudioEditorPage() {
+     void fetchDraft();
+   }, [fetchDraft]);
+ 
++  // Keyboard Shortcuts
++  useEffect(() => {
++    const handleKeyDown = (e: KeyboardEvent) => {
++      // Ctrl+S to force save (though it's auto-saved)
++      if (e.ctrlKey && e.key === 's') {
++        e.preventDefault();
++        setDirty(true);
++      }
++    };
++    window.addEventListener('keydown', handleKeyDown);
++    return () => window.removeEventListener('keydown', handleKeyDown);
++  }, []);
++
+   useEffect(() => {
+     if (!dirty || !draft) return;
+     const timer = setTimeout(async () => {
+@@ -142,6 +158,47 @@ export default function StudioEditorPage() {
+     }
+   };
+ 
++  const handleExport = (format: 'pdf' | 'txt' | 'md') => {
++    if (format === 'pdf') {
++      import('jspdf').then(({ jsPDF }) => {
++        const doc = new jsPDF();
++        doc.setFontSize(22);
++        doc.setFont("times", "bold");
++        const titleLines = doc.splitTextToSize(title || 'Untitled', 170);
++        doc.text(titleLines, 20, 30);
++        
++        doc.setFontSize(12);
++        doc.setFont("times", "normal");
++        const contentLines = doc.splitTextToSize(content || '', 170);
++        
++        let y = 30 + (titleLines.length * 10) + 10;
++        const pageHeight = doc.internal.pageSize.height;
++        const margin = 20;
++        
++        contentLines.forEach((line: string) => {
++          if (y + 10 > pageHeight - margin) {
++            doc.addPage();
++            y = margin + 10;
++          }
++          doc.text(line, margin, y);
++          y += 7;
++        });
++        
++        doc.save(`${(title || 'Draft').replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`);
++      });
++    } else {
++      const exportContent = format === 'md' ? `# ${title}\n\n${content}` : `${title}\n\n${content}`;
++      const blob = new Blob([exportContent], { type: "text/plain" });
++      const url = URL.createObjectURL(blob);
++      const a = document.createElement('a');
++      a.href = url;
++      a.download = `${(title || 'Draft').replace(/[^a-z0-9]/gi, '_').toLowerCase()}.${format}`;
++      a.click();
++      URL.revokeObjectURL(url);
++    }
++    setExportDropdownOpen(false);
++  };
++
+   const wordCount = useMemo(() => content.trim().split(/\s+/).filter(Boolean).length, [content]);
+   const charCount = content.length;
+   const paragraphCount = content.split(/\n\n+/).filter(Boolean).length;
+@@ -178,13 +235,26 @@ export default function StudioEditorPage() {
+           </div>
+         </div>
+ 
+-        <div className="flex items-center gap-2">
++        <div className="flex items-center gap-2 relative">
++          <div className="relative">
++            <InkButton variant="ghost" className="p-2 rounded-lg flex items-center gap-1" onClick={() => setExportDropdownOpen(!exportDropdownOpen)} title="Export">
++              <Download size={16} /> <ChevronDown size={12} />
++            </InkButton>
++            {exportDropdownOpen && (
++              <div className="absolute top-full right-0 mt-2 w-48 glass-card border border-[#4a5033]/10 rounded-xl overflow-hidden shadow-xl z-50 py-1">
++                <button onClick={() => handleExport('pdf')} className="w-full text-left px-4 py-2 text-sm hover:bg-[#4a5033]/5 font-semibold transition-colors">Export as PDF (.pdf)</button>
++                <button onClick={() => handleExport('md')} className="w-full text-left px-4 py-2 text-sm hover:bg-[#4a5033]/5 font-semibold transition-colors">Export as Markdown (.md)</button>
++                <button onClick={() => handleExport('txt')} className="w-full text-left px-4 py-2 text-sm hover:bg-[#4a5033]/5 font-semibold transition-colors">Export as Text (.txt)</button>
++              </div>
++            )}
++          </div>
+           <InkButton variant="ghost" className="p-2 rounded-lg" id="share-btn" onClick={toggleVisibility}>
+             <Share2 size={16} />
+           </InkButton>
+           <InkButton variant="ghost" className="p-2 rounded-lg" id="reanalyze-btn" onClick={triggerAI}>
+             <RefreshCcw size={16} />
+           </InkButton>
++
+           <button
+             id="toggle-sidebar"
+             onClick={() => setSidebarOpen(!sidebarOpen)}
+@@ -208,6 +278,8 @@ export default function StudioEditorPage() {
+               placeholder="Start writing..."
+             />
+             {error ? <p className="text-sm text-rose-600 font-semibold">{error}</p> : null}
++            
++
+           </div>
+         </main>
+ 
+diff --git a/web/src/app/studio/brainstorm/page.tsx b/web/src/app/studio/brainstorm/page.tsx
+new file mode 100644
+index 0000000..5b3a935
+--- /dev/null
++++ b/web/src/app/studio/brainstorm/page.tsx
+@@ -0,0 +1,161 @@
++"use client";
++
++import { useState, useRef, useEffect } from "react";
++import { motion } from "framer-motion";
++import { MainLayout } from "@/components/layout/MainLayout";
++import { GlassCard } from "@/components/ui/GlassCard";
++import { InkButton } from "@/components/ui/InkButton";
++import { Send, Sparkles, User, Bot, Loader2 } from "lucide-react";
++import { api } from "@/lib/api";
++
++interface Message {
++  role: "user" | "model";
++  content: string;
++}
++
++export default function BrainstormingHub() {
++  const [messages, setMessages] = useState<Message[]>([
++    {
++      role: "model",
++      content: "Hello! I'm your creative writing assistant. I can help you brainstorm plots, develop characters, build worlds, or overcome writer's block. What shall we create today?"
++    }
++  ]);
++  const [input, setInput] = useState("");
++  const [loading, setLoading] = useState(false);
++  const messagesEndRef = useRef<HTMLDivElement>(null);
++
++  const scrollToBottom = () => {
++    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
++  };
++
++  useEffect(() => {
++    scrollToBottom();
++  }, [messages]);
++
++  const handleSend = async () => {
++    if (!input.trim() || loading) return;
++
++    const userMessage = input.trim();
++    setInput("");
++    setMessages(prev => [...prev, { role: "user", content: userMessage }]);
++    setLoading(true);
++
++    try {
++      const res = await api.post<{ response: string }>("/ai/brainstorm", {
++        prompt: userMessage,
++        history: messages.filter(m => m.role !== "user" || m.content !== userMessage) // Send previous context
++      });
++
++      const responseText = res.data?.response;
++      if (responseText) {
++        setMessages(prev => [...prev, { role: "model", content: responseText }]);
++      }
++    } catch (error) {
++      setMessages(prev => [...prev, { 
++        role: "model", 
++        content: "I'm sorry, I encountered an error connecting to the Muse. Please try again." 
++      }]);
++    } finally {
++      setLoading(false);
++    }
++  };
++
++  const handleKeyDown = (e: React.KeyboardEvent) => {
++    if (e.key === "Enter" && !e.shiftKey) {
++      e.preventDefault();
++      handleSend();
++    }
++  };
++
++  const suggestions = [
++    "Help me develop a villain for a fantasy novel.",
++    "I need a plot twist for a murder mystery.",
++    "Generate 3 interesting character names.",
++    "Help me build a magic system based on colors."
++  ];
++
++  return (
++    <MainLayout>
++      <div className="flex flex-col h-[calc(100vh-120px)] max-w-4xl mx-auto">
++        <div className="mb-6 flex items-center gap-3">
++          <div className="w-12 h-12 rounded-2xl bg-amber-600/10 flex items-center justify-center text-amber-600">
++            <Sparkles size={24} />
++          </div>
++          <div>
++            <h1 className="text-3xl font-serif font-black italic text-[#4a5033]">The Brainstorming Hub</h1>
++            <p className="opacity-50 text-sm font-medium uppercase tracking-widest">Collaborate with the AI Muse</p>
++          </div>
++        </div>
++
++        <GlassCard className="flex-1 flex flex-col p-0 overflow-hidden border-[#4a5033]/10">
++          {/* Chat History */}
++          <div className="flex-1 overflow-y-auto p-6 space-y-6">
++            {messages.map((msg, index) => (
++              <motion.div
++                initial={{ opacity: 0, y: 10 }}
++                animate={{ opacity: 1, y: 0 }}
++                key={index}
++                className={`flex gap-4 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
++              >
++                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
++                  msg.role === "user" ? "bg-[#4a5033] text-[#fdfcf8]" : "bg-amber-600/10 text-amber-600"
++                }`}>
++                  {msg.role === "user" ? <User size={16} /> : <Bot size={16} />}
++                </div>
++                <div className={`max-w-[80%] rounded-2xl p-4 ${
++                  msg.role === "user" 
++                    ? "bg-[#4a5033] text-[#fdfcf8] rounded-tr-none" 
++                    : "bg-[#4a5033]/5 text-[#4a5033] rounded-tl-none"
++                }`}>
++                  <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>
++                </div>
++              </motion.div>
++            ))}
++            {loading && (
++              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-4">
++                <div className="w-8 h-8 rounded-full bg-amber-600/10 text-amber-600 flex items-center justify-center shrink-0">
++                  <Bot size={16} />
++                </div>
++                <div className="bg-[#4a5033]/5 rounded-2xl rounded-tl-none p-4 flex items-center gap-2">
++                  <Loader2 size={16} className="animate-spin opacity-50" />
++                  <span className="text-sm opacity-50 italic">The Muse is thinking...</span>
++                </div>
++              </motion.div>
++            )}
++            <div ref={messagesEndRef} />
++          </div>
++
++          {/* Input Area */}
++          <div className="p-4 border-t border-[#4a5033]/10 bg-[#fdfcf8]/50">
++            {messages.length === 1 && (
++              <div className="flex flex-wrap gap-2 mb-4">
++                {suggestions.map((suggestion, i) => (
++                  <button
++                    key={i}
++                    onClick={() => setInput(suggestion)}
++                    className="text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-[#4a5033]/20 text-[#4a5033]/60 hover:bg-[#4a5033]/5 hover:text-[#4a5033] transition-colors"
++                  >
++                    {suggestion}
++                  </button>
++                ))}
++              </div>
++            )}
++            <div className="flex gap-2">
++              <textarea
++                value={input}
++                onChange={(e) => setInput(e.target.value)}
++                onKeyDown={handleKeyDown}
++                placeholder="Ask the Muse for ideas..."
++                className="flex-1 bg-[#4a5033]/5 border border-[#4a5033]/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#4a5033]/30 resize-none h-[52px]"
++                rows={1}
++              />
++              <InkButton onClick={handleSend} disabled={!input.trim() || loading} className="h-[52px] w-[52px] shrink-0 p-0 flex items-center justify-center rounded-xl">
++                <Send size={18} />
++              </InkButton>
++            </div>
++          </div>
++        </GlassCard>
++      </div>
++    </MainLayout>
++  );
++}
+diff --git a/web/src/app/studio/page.tsx b/web/src/app/studio/page.tsx
+index 9bbf60a..cba5392 100644
+--- a/web/src/app/studio/page.tsx
++++ b/web/src/app/studio/page.tsx
+@@ -102,7 +102,12 @@ export default function StudioPage() {
+             </p>
+           </motion.div>
+ 
+-          <motion.div variants={item}>
++          <motion.div variants={item} className="flex flex-wrap gap-3">
++            <Link href="/studio/brainstorm">
++              <InkButton variant="secondary" className="px-6 py-4 rounded-xl flex items-center gap-2 shadow-none border border-[#4a5033]/10">
++                <Sparkles size={18} /> Brainstorming Hub
++              </InkButton>
++            </Link>
+             <Link href="/studio/new">
+               <InkButton className="px-6 py-4 rounded-xl flex items-center gap-2 shadow-none" id="new-draft-btn">
+                 <Plus size={18} /> New Draft
+@@ -112,29 +117,31 @@ export default function StudioPage() {
+         </section>
+ 
+         {/* Stats */}
+-        <motion.div variants={item} className="grid grid-cols-2 md:grid-cols-4 gap-3">
+-          {[
+-            { label: "Total Drafts", value: stats?.total_drafts || 0, icon: FileText },
+-            { label: "Words Written", value: (stats?.total_words || 0).toLocaleString(), icon: BookOpen },
+-            { label: "Avg. Session", value: `${stats?.avg_session_minutes || 0} min`, icon: Timer },
+-            { label: "Weekly Growth", value: `${stats?.weekly_growth_pct || 0}%`, icon: TrendingUp },
+-          ].map((stat) => (
+-            <GlassCard
+-              key={stat.label}
+-              className="p-4 border-none shadow-none bg-[#4a5033]/[0.03] flex items-center gap-3"
+-            >
+-              <div className="w-9 h-9 rounded-xl bg-[#4a5033]/5 flex items-center justify-center">
+-                <stat.icon size={16} />
+-              </div>
+-              <div>
+-                <p className="text-lg font-serif font-black">{stat.value}</p>
+-                <p className="text-[9px] font-bold uppercase tracking-widest opacity-40">
+-                  {stat.label}
+-                </p>
+-              </div>
+-            </GlassCard>
+-          ))}
+-        </motion.div>
++        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
++          <motion.div variants={item} className="contents">
++            {[
++              { label: "Total Drafts", value: stats?.total_drafts || 0, icon: FileText },
++              { label: "Words Written", value: (stats?.total_words || 0).toLocaleString(), icon: BookOpen },
++              { label: "Avg. Session", value: `${stats?.avg_session_minutes || 0} min`, icon: Timer },
++              { label: "Weekly Growth", value: `${stats?.weekly_growth_pct || 0}%`, icon: TrendingUp },
++            ].map((stat) => (
++              <GlassCard
++                key={stat.label}
++                className="p-4 border-none shadow-none bg-[#4a5033]/[0.03] flex items-center gap-3"
++              >
++                <div className="w-9 h-9 rounded-xl bg-[#4a5033]/5 flex items-center justify-center">
++                  <stat.icon size={16} />
++                </div>
++                <div>
++                  <p className="text-lg font-serif font-black">{stat.value}</p>
++                  <p className="text-[9px] font-bold uppercase tracking-widest opacity-40">
++                    {stat.label}
++                  </p>
++                </div>
++              </GlassCard>
++            ))}
++          </motion.div>
++        </div>
+ 
+         {/* Toolbar */}
+         <motion.div variants={item} className="flex items-center justify-between gap-4">
+diff --git a/web/src/components/layout/MainLayout.tsx b/web/src/components/layout/MainLayout.tsx
+index 1d4b9ff..7011bef 100644
+--- a/web/src/components/layout/MainLayout.tsx
++++ b/web/src/components/layout/MainLayout.tsx
+@@ -1,8 +1,8 @@
+ "use client";
+ 
+-import { useEffect } from "react";
++import { useEffect, useState } from "react";
+ import { motion } from "framer-motion";
+-import { PenTool, Search, Briefcase, Bell, User } from "lucide-react";
++import { PenTool, Search, Briefcase, Bell, User, Trophy } from "lucide-react";
+ import Link from "next/link";
+ import { usePathname, useRouter } from "next/navigation";
+ import { cn } from "@/lib/utils";
+@@ -11,6 +11,7 @@ import { clearSession, useIsAuthenticated, useUserRole } from "@/lib/auth";
+ const navItems = [
+   { icon: PenTool, label: "Studio", href: "/studio" },
+   { icon: Search, label: "The Agora", href: "/agora" },
++  { icon: Trophy, label: "Leaderboard", href: "/agora/leaderboard" },
+   { icon: Briefcase, label: "Marketplace", href: "/marketplace" },
+ ];
+ 
+@@ -20,13 +21,18 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
+   const authenticated = useIsAuthenticated();
+   const role = useUserRole();
+   const isEditor = role === "editor" || role === "admin";
++  const [isMounted, setIsMounted] = useState(false);
+ 
+   useEffect(() => {
+-    if (!authenticated) router.replace("/login");
+-  }, [authenticated, router]);
++    setIsMounted(true);
++  }, []);
+ 
+-  if (!authenticated) {
+-    return <div className="min-h-screen flex items-center justify-center opacity-40">Loading...</div>;
++  useEffect(() => {
++    if (isMounted && !authenticated) router.replace("/login");
++  }, [authenticated, router, isMounted]);
++
++  if (!isMounted || !authenticated) {
++    return <div className="min-h-screen flex items-center justify-center opacity-40 font-serif italic text-sm">Preparing workspace...</div>;
+   }
+ 
+   const items = isEditor
