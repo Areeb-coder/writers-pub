@@ -94,10 +94,10 @@ body {
 /* adding Light and dark mode */
 
 .dark {
-  --background: #0E0F0B;
-  --foreground: #F5F5F5;
+  --background: #0f0f0f;
+  --foreground: #f5f5f5;
   --primary: #daddc6;
-  --primary-foreground: #2E3318;
+  --primary-foreground: #1a1a1a;
   
   --glass-surface: rgba(255,255,255,0.06);
   --glass-border: rgba(255,255,255,0.12);
