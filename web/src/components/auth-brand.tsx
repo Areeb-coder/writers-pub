@@ -8,10 +8,10 @@ export const AuthBrand = () => {
         <Feather className="w-8 h-8 text-white" />
       </div>
       <div className="text-center">
-        <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
+        <h1 className="text-2xl font-extrabold tracking-tight text-primary">
           Writers <span className="text-blue-600">Pub</span>
         </h1>
-        <p className="text-sm text-gray-500 font-medium">
+        <p className="text-sm text-primary/60 font-medium">
           The premium ecosystem for authors.
         </p>
       </div>

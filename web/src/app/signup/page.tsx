@@ -79,6 +79,7 @@ export default function SignupPage() {
           <h1 className="text-3xl font-serif font-black italic">Join the Pub</h1>
           <p className="text-sm opacity-60">Create your writer profile today.</p>
         </div>
+<<<<<<< HEAD
 
         <AuthBrand />
 
@@ -129,6 +130,44 @@ export default function SignupPage() {
             <div className="space-y-3 rounded-xl border border-[#4a5033]/10 bg-[#4a5033]/5 p-4">
               <div className="flex items-center justify-between text-xs font-semibold">
                 <span className={strength.textClass}>Strength: {strength.label}</span>
+=======
+<AuthBrand />
+        <form onSubmit={onSubmit} className="space-y-4">
+          <input
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            required
+            className="w-full px-4 py-3 rounded-xl bg-primary/5 border border-primary/10 text-primary placeholder:text-primary/40 focus:outline-none focus:border-primary/30"
+            placeholder="Display name"
+          />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full px-4 py-3 rounded-xl bg-primary/5 border border-primary/10 text-primary placeholder:text-primary/40 focus:outline-none focus:border-primary/30"
+            placeholder="Email"
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordTouched(true);
+              setError("");
+            }}
+            onBlur={() => setPasswordTouched(true)}
+            required
+            minLength={8}
+            className="w-full px-4 py-3 rounded-xl bg-primary/5 border border-primary/10 text-primary placeholder:text-primary/40 focus:outline-none focus:border-primary/30"
+            placeholder="Password"
+          />
+          {showPasswordFeedback ? (
+            <div className="space-y-3 rounded-xl border border-primary/10 bg-primary/5 p-4">
+              <div className="flex items-center justify-between gap-3 text-xs font-semibold">
+                <span className={passwordStrength.textClass}>Password strength</span>
+                <span className={passwordStrength.textClass}>{passwordStrength.label}</span>
+>>>>>>> upstream/main
               </div>
               <div className="h-1.5 overflow-hidden rounded-full bg-black/10">
                 <div className={`h-full transition-all duration-500 ${strength.barClass}`} style={{ width: strength.width }} />
@@ -158,11 +197,15 @@ export default function SignupPage() {
           <select
             value={role}
             onChange={(e) => setRole(e.target.value as Role)}
+<<<<<<< HEAD
             className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10 text-sm"
+=======
+            className="w-full px-4 py-3 rounded-xl bg-primary/5 border border-primary/10 text-primary focus:outline-none focus:border-primary/30 cursor-pointer"
+>>>>>>> upstream/main
           >
-            <option value="writer">Writer</option>
-            <option value="editor">Editor</option>
-            <option value="reader">Reader</option>
+            <option value="writer" className="bg-background text-primary">Writer</option>
+            <option value="editor" className="bg-background text-primary">Editor</option>
+            <option value="reader" className="bg-background text-primary">Reader</option>
           </select>
 
           {serverError && <p className="text-xs text-rose-600 text-center font-semibold">{serverError}</p>}
@@ -171,9 +214,42 @@ export default function SignupPage() {
             {isSubmitting ? "Creating Account..." : "Sign Up"}
           </InkButton>
         </form>
+<<<<<<< HEAD
+=======
+        {/* Separator */}
+<div className="relative my-6">
+  <div className="absolute inset-0 flex items-center">
+    <span className="w-full border-t border-primary/10" />
+  </div>
+  <div className="relative flex justify-center text-xs uppercase">
+    <span className="bg-background px-2 text-primary/50 font-medium">Or sign up with</span>
+  </div>
+</div>
 
-        <p className="text-xs text-center opacity-60">
-          Already have an account? <Link href="/login" className="underline">Sign in</Link>
+{/* Social Buttons */}
+<div className="grid grid-cols-2 gap-4">
+  <button 
+    type="button"
+    onClick={() => signIn('google')} 
+    className="flex items-center justify-center py-2.5 border border-primary/20 rounded-lg hover:bg-primary/5 transition-all shadow-sm cursor-pointer"
+  >
+    <img src="https://authjs.dev/img/providers/google.svg" className="w-5 h-5 mr-2" alt="Google" />
+    <span className="text-sm font-semibold text-primary">Google</span>
+  </button>
+  
+  <button 
+    type="button"
+    onClick={() => signIn('facebook')} 
+    className="flex items-center justify-center py-2.5 border border-primary/20 rounded-lg hover:bg-primary/5 transition-all shadow-sm cursor-pointer"
+  >
+    <img src="https://authjs.dev/img/providers/facebook.svg" className="w-5 h-5 mr-2" alt="Facebook" />
+    <span className="text-sm font-semibold text-primary">Facebook</span>
+  </button>
+</div>
+>>>>>>> upstream/main
+
+        <p className="text-xs text-center opacity-60 text-primary">
+          Already have an account? <Link href="/login" className="underline hover:opacity-85 transition-opacity">Sign in</Link>
         </p>
       </GlassCard>
     </main>

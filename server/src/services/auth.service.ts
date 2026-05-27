@@ -20,6 +20,67 @@ function generateTokens(user: { id: string; email: string; role: UserRole }): Au
 }
 
 export const authService = {
+  async oauthLogin(data: {
+    email: string;
+    displayName: string;
+    avatarUrl?: string;
+    provider: 'google' | 'facebook';
+    providerId: string;
+  }) {
+    if (!data?.email || !data.email.trim()) {
+      throw new AppError('Email is required', 400);
+    }
+    if (!data?.provider || !data?.providerId) {
+      throw new AppError('OAuth provider and provider ID are required', 400);
+    }
+
+    const normalizedEmail = data.email.trim().toLowerCase();
+
+    // 1. Check if user already exists (by email or oauth credentials)
+    let userDoc = await UserModel.findOne({
+      $or: [
+        { email: normalizedEmail },
+        { oauth_provider: data.provider, oauth_id: data.providerId }
+      ]
+    });
+
+    if (!userDoc) {
+      // 2. Register new OAuth user
+      userDoc = await UserModel.create({
+        email: normalizedEmail,
+        display_name: data.displayName.trim(),
+        avatar_url: data.avatarUrl || null,
+        oauth_provider: data.provider,
+        oauth_id: data.providerId,
+        role: 'writer', // Default role
+        is_verified: true, // OAuth verified users are pre-verified
+      });
+    } else {
+      // 3. User exists, link OAuth provider credentials if missing
+      let needsUpdate = false;
+      if (!userDoc.oauth_provider) {
+        userDoc.oauth_provider = data.provider;
+        userDoc.oauth_id = data.providerId;
+        needsUpdate = true;
+      }
+      if (data.avatarUrl && !userDoc.avatar_url) {
+        userDoc.avatar_url = data.avatarUrl;
+        needsUpdate = true;
+      }
+      if (needsUpdate) {
+        await userDoc.save();
+      }
+    }
+
+    // 4. Generate backend custom tokens
+    const user = normalize(userDoc);
+    const tokens = generateTokens({ id: user.id, email: user.email, role: user.role });
+    await UserModel.findByIdAndUpdate(user.id, { refresh_token: tokens.refreshToken });
+
+    const { password_hash, refresh_token, ...safeUser } = user as any;
+    return { user: safeUser, tokens };
+  },
+
   async register(data: { email: string; password: string; displayName: string; role?: UserRole }) {
     if (!data?.email || !data.email.trim()) {
       throw new AppError('Email is required', 400);

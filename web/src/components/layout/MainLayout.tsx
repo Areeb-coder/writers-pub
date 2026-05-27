@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PenTool, Search, Briefcase, Bell, User, Trophy, Menu, X, } from "lucide-react";
+import { PenTool, Search, Briefcase, Bell, User, Trophy, Menu, X, Sun, Moon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -23,14 +23,40 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
   const isEditor = role === "editor" || role === "admin";
   const [isMounted, setIsMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
     setIsMounted(true);
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+    const root = window.document.documentElement;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      if (savedTheme === "dark") {
+        root.classList.add("dark");
+      } else {
+        root.classList.remove("dark");
+      }
+    } else if (root.classList.contains("dark")) {
+      setTheme("dark");
+    }
   }, []);
 
   useEffect(() => {
     if (isMounted && !authenticated) router.replace("/login");
   }, [authenticated, router, isMounted]);
+
+  const toggleTheme = () => {
+    const root = window.document.documentElement;
+    if (theme === "light") {
+      setTheme("dark");
+      root.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      setTheme("light");
+      root.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  };
 
   if (!isMounted || !authenticated) {
     return (
@@ -44,24 +70,27 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
     ? [...navItems, { icon: User, label: "Editor", href: "/editor" }]
     : navItems;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    // Import and call signOut synchronously or asynchronously
+    const { signOut } = await import("next-auth/react");
     clearSession();
+    await signOut({ redirect: false });
     router.push("/login");
   };
 
   return (
-    <div className="min-h-screen flex flex-col relative text-[#4a5033]">
+    <div className="min-h-screen flex flex-col relative text-primary">
       {/* Floating Header */}
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         className="fixed top-0 inset-x-0 z-50 p-6 flex justify-center pointer-events-none"
       >
-        <div className="glass-card w-full max-w-5xl px-4 sm:px-8 py-3 rounded-2xl flex items-center justify-between pointer-events-auto border-[#4a5033]/10 shadow-2xl shadow-[#4a5033]/5">
+        <div className="glass-card w-full max-w-5xl px-4 sm:px-8 py-3 rounded-2xl flex items-center justify-between pointer-events-auto border-primary/10 shadow-2xl shadow-primary/5">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 ink-bg rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-              <PenTool size={16} className="text-[#daddc6]" />
+              <PenTool size={16} className="text-primary-foreground" />
             </div>
             <span className="font-serif font-black italic tracking-tighter text-lg">Pub</span>
           </Link>
@@ -85,17 +114,26 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden w-11 h-11 rounded-2xl glass-card flex items-center justify-center border border-[#4a5033]/10 text-[#4a5033] transition-all duration-300"
+            className="md:hidden w-11 h-11 rounded-2xl glass-card flex items-center justify-center border border-primary/10 text-primary transition-all duration-300"
           >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
           {/* User Section */}
-          <div className="hidden md:flex items-center gap-4 pl-8 border-l border-[#4a5033]/10">
+          <div className="hidden md:flex items-center gap-4 pl-8 border-l border-primary/10">
+            {isMounted && (
+              <button
+                onClick={toggleTheme}
+                className="opacity-40 hover:opacity-100 transition-opacity p-1.5 rounded-xl hover:bg-primary/5"
+                title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+              >
+                {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+              </button>
+            )}
             <Link href="/notifications" className="opacity-40 hover:opacity-100 transition-opacity">
               <Bell size={18} />
             </Link>
-            <Link href="/profile" className="w-8 h-8 rounded-full bg-[#4a5033]/10 flex items-center justify-center hover:bg-[#4a5033]/20 transition-colors">
+            <Link href="/profile" className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors">
               <User size={18} />
             </Link>
             <button
@@ -114,7 +152,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.25 }}
-              className="absolute top-[105%] left-6 right-6 md:hidden rounded-3xl p-6 border border-[#4a5033]/15 overflow-hidden shadow-2xl shadow-[#4a5033]/10 z-50 bg-[#e8e7d8]/95 backdrop-blur-2xl"
+              className="absolute top-[105%] left-6 right-6 md:hidden rounded-3xl p-6 border border-primary/15 overflow-hidden shadow-2xl shadow-primary/10 z-50 bg-background/95 backdrop-blur-2xl"
             >
               <div className="flex flex-col gap-5 text-sm font-medium uppercase tracking-widest">
                 {items.map((item) => (
@@ -122,17 +160,30 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 border-b border-[#4a5033]/10 pb-3"
+                    className="flex items-center gap-3 border-b border-primary/10 pb-3"
                   >
                     <item.icon size={16} />
                     {item.label}
                   </Link>
                 ))}
 
+                {isMounted && (
+                  <button
+                    onClick={() => {
+                      toggleTheme();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="flex items-center gap-3 border-b border-primary/10 pb-3 text-left w-full"
+                  >
+                    {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+                    {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                  </button>
+                )}
+
                 <Link
                   href="/notifications"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 border-b border-[#4a5033]/10 pb-3"
+                  className="flex items-center gap-3 border-b border-primary/10 pb-3"
                 >
                   <Bell size={16} />
                   Notifications
@@ -141,7 +192,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
                 <Link
                   href="/profile"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 border-b border-[#4a5033]/10 pb-3"
+                  className="flex items-center gap-3 border-b border-primary/10 pb-3"
                 >
                   <User size={16} />
                   Profile
@@ -171,7 +222,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
       </motion.main>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-[#4a5033]/5 text-center text-[10px] font-bold uppercase tracking-widest opacity-30 mt-auto">
+      <footer className="py-12 border-t border-primary/5 text-center text-[10px] font-bold uppercase tracking-widest opacity-30 mt-auto">
         &copy; 2026 Writers&apos; Pub &bull; The Digital Atelier &bull; Premium Creative Ecosystem
       </footer>
     </div>
