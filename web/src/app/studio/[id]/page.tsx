@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { InkButton } from "@/components/ui/InkButton";
 import { api } from "@/lib/api";
+import WordCountGoal from "@/components/WordCountGoal";
 import {
   ArrowLeft,
   Save,
@@ -229,6 +230,7 @@ export default function StudioEditorPage() {
           <div className="flex items-center gap-3 text-[9px] font-bold uppercase tracking-widest opacity-40">
             <span>{draft?.genre || "Uncategorized"}</span>
             <span>{wordCount.toLocaleString()} words</span>
+            <WordCountGoal wordCount={wordCount} />
             <span className={`${saving ? "text-amber-600" : "text-emerald-600"} flex items-center gap-1`}>
               <Save size={9} /> {saving ? "Saving..." : savedAt ? "Saved" : "Not saved"}
             </span>
