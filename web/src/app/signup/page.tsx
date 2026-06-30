@@ -141,6 +141,11 @@ export default function SignupPage() {
             onBlur={() => setPasswordTouched(true)}
             required
             minLength={8}
+            className="w-full px-4 py-3 rounded-xl bg-[#4a5033]/5 border border-[#4a5033]/10"
+            placeholder="Password"
+          />
+          {showPasswordFeedback ? (
+            <div className="space-y-3 rounded-xl border border-[#4a5033]/10 bg-[#4a5033]/5 p-4">
             className="w-full px-4 py-3 rounded-xl bg-primary/5 border border-primary/10 text-primary placeholder:text-primary/40 focus:outline-none focus:border-primary/30"
             placeholder="Password"
           />

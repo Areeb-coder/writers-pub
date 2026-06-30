@@ -1,5 +1,5 @@
 "use client";
-
+import ReadingProgressBar from "@/components/ReadingProgressBar";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -111,6 +111,8 @@ export default function AgoraDraftDetailPage() {
   }
 
   return (
+    <>
+    <ReadingProgressBar />
     <MainLayout>
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Back link */}
@@ -198,6 +200,7 @@ export default function AgoraDraftDetailPage() {
         )}
       </div>
     </MainLayout>
+     </>
   );
 }
 
