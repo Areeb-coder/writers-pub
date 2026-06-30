@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
    PenTool, MessageSquare, ChevronRight, Sparkles, BookOpen, Layers, Menu,
    X,
+   X, Sun, Moon
 } from "lucide-react";
 import Link from "next/link";
 import TypewriterText from "@/components/TypewriterText";
@@ -13,6 +14,41 @@ import { useState } from "react";
 
 export default function LandingPage() {
    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+import { useState, useEffect } from "react";
+
+export default function LandingPage() {
+   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+   const [theme, setTheme] = useState<"light" | "dark">("light");
+   const [isMounted, setIsMounted] = useState(false);
+
+   useEffect(() => {
+      setIsMounted(true);
+      const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+      const root = window.document.documentElement;
+      if (savedTheme) {
+         setTheme(savedTheme);
+         if (savedTheme === "dark") {
+            root.classList.add("dark");
+         } else {
+            root.classList.remove("dark");
+         }
+      } else if (root.classList.contains("dark")) {
+         setTheme("dark");
+      }
+   }, []);
+
+   const toggleTheme = () => {
+      const root = window.document.documentElement;
+      if (theme === "light") {
+         setTheme("dark");
+         root.classList.add("dark");
+         localStorage.setItem("theme", "dark");
+      } else {
+         setTheme("light");
+         root.classList.remove("dark");
+         localStorage.setItem("theme", "light");
+      }
+   };
    const container = {
       hidden: { opacity: 0 },
       show: {
@@ -45,6 +81,11 @@ export default function LandingPage() {
                <div className="flex items-center gap-3">
                   <div className="w-10 h-10 ink-bg rounded-xl flex items-center justify-center">
                      <PenTool size={20} className="text-[#daddc6]" />
+               className="relative z-50 flex justify-between items-center glass-card px-5 sm:px-8 py-4 rounded-3xl mb-12 border-primary/10 shadow-2xl shadow-primary/5"
+            >
+               <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 ink-bg rounded-xl flex items-center justify-center">
+                     <PenTool size={20} className="text-primary-foreground" />
                   </div>
                   <span className="text-xl font-bold font-serif tracking-tight ink-text italic">
                      Writers&apos; Pub
@@ -63,6 +104,29 @@ export default function LandingPage() {
                <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   className="md:hidden w-11 h-11 rounded-2xl glass-card flex items-center justify-center border border-[#4a5033]/10 text-[#4a5033] transition-all duration-300 hover:scale-105"
+                  <Link href="/studio" className="hover:text-primary transition-colors">Studio</Link>
+                  <Link href="/agora" className="hover:text-primary transition-colors">The Agora</Link>
+                  <Link href="/marketplace" className="hover:text-primary transition-colors">Marketplace</Link>
+               </div>
+               <div className="hidden md:flex items-center gap-4">
+                  {isMounted && (
+                     <button
+                        onClick={toggleTheme}
+                        className="opacity-40 hover:opacity-100 transition-opacity p-2 rounded-full hover:bg-primary/5 text-primary flex items-center justify-center cursor-pointer"
+                        title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                     >
+                        {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                     </button>
+                  )}
+                  <Link href="/login">
+                     <InkButton className="px-6 py-2.5 shadow-none rounded-full">
+                        Sign In
+                     </InkButton>
+                  </Link>
+               </div>
+               <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="md:hidden w-11 h-11 rounded-2xl glass-card flex items-center justify-center border border-primary/10 text-primary transition-all duration-300 hover:scale-105"
                >
                   {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
                </button>
@@ -81,6 +145,13 @@ export default function LandingPage() {
                               href="/studio"
                               onClick={() => setMobileMenuOpen(false)}
                               className="hover:text-[#4a5033] transition-colors border-b border-[#4a5033]/10 pb-3"
+                        className="absolute top-[110%] left-0 right-0 md:hidden rounded-3xl p-6 border border-primary/15 overflow-hidden shadow-2xl shadow-primary/20 z-50 bg-background/95 backdrop-blur-2xl text-primary"
+                     >
+                        <div className="flex flex-col gap-6 text-sm font-medium uppercase tracking-widest">
+                           <Link
+                              href="/studio"
+                              onClick={() => setMobileMenuOpen(false)}
+                              className="hover:text-primary transition-colors border-b border-primary/10 pb-3"
                            >
                               Studio
                            </Link>
@@ -89,6 +160,7 @@ export default function LandingPage() {
                               href="/agora"
                               onClick={() => setMobileMenuOpen(false)}
                               className="hover:text-[#4a5033] transition-colors border-b border-[#4a5033]/10 pb-3"
+                              className="hover:text-primary transition-colors border-b border-primary/10 pb-3"
                            >
                               The Agora
                            </Link>
@@ -97,9 +169,23 @@ export default function LandingPage() {
                               href="/marketplace"
                               onClick={() => setMobileMenuOpen(false)}
                               className="hover:text-[#4a5033] transition-colors border-b border-[#4a5033]/10 pb-3"
+                              className="hover:text-primary transition-colors border-b border-primary/10 pb-3"
                            >
                               Marketplace
                            </Link>
+
+                           {isMounted && (
+                              <button
+                                 onClick={() => {
+                                    toggleTheme();
+                                    setMobileMenuOpen(false);
+                                 }}
+                                 className="flex items-center gap-3 border-b border-primary/10 pb-3 text-left w-full hover:text-primary"
+                              >
+                                 {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+                                 {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                              </button>
+                           )}
 
                            <Link
                               href="/login"
@@ -126,6 +212,15 @@ export default function LandingPage() {
                   </motion.div>
 
                   <motion.h1 variants={item} className="text-5xl md:text-7xl font-serif text-[#4a5033] leading-[1.1] tracking-tight font-black italic">
+            {/* Hero Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+               <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
+                  <motion.div variants={item} className="inline-flex items-center gap-2 glass-border px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest text-primary/60 bg-primary/5">
+                     <Sparkles size={12} className="text-primary" />
+                     The First Complete Writing Ecosystem
+                  </motion.div>
+
+                  <motion.h1 variants={item} className="text-5xl md:text-7xl font-serif text-primary leading-[1.1] tracking-tight font-black italic">
                      <TypewriterText text="Craft Your" speed={65} showCursor={false} />
                      <br />
                      <TypewriterText text="Masterpiece." speed={65} delay={650} showCursor={false} />
@@ -134,6 +229,7 @@ export default function LandingPage() {
                   </motion.h1>
 
                   <motion.p variants={item} className="text-lg md:text-xl text-[#2E3318]/60 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
+                  <motion.p variants={item} className="text-lg md:text-xl text-foreground/60 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
                      A premium space where writers write, readers critique, and editors select the future of publishing.
                      Experience a studio empowered by AI and human connection.
                   </motion.p>
@@ -146,6 +242,7 @@ export default function LandingPage() {
                      </Link>
                      <Link href="/agora">
                         <button className="glass-card px-8 py-5 rounded-2xl text-lg font-bold ink-text border-[#4a5033]/10 hover:bg-[#4a5033]/5 transition-all">
+                        <button className="glass-card px-8 py-5 rounded-2xl text-lg font-bold ink-text border-primary/10 hover:bg-primary/5 transition-all">
                            Explore The Agora
                         </button>
                      </Link>
@@ -159,11 +256,18 @@ export default function LandingPage() {
                            <div className="w-3 h-3 rounded-full bg-[#4a5033]/20" />
                            <div className="w-3 h-3 rounded-full bg-[#4a5033]/20" />
                            <div className="w-3 h-3 rounded-full bg-[#4a5033]/20" />
+                  <GlassCard className="aspect-[4/5] flex flex-col relative overflow-hidden p-8 border-primary/20 shadow-2xl shadow-primary/5">
+                     <div className="flex items-center justify-between mb-8">
+                        <div className="flex gap-2">
+                           <div className="w-3 h-3 rounded-full bg-primary/20" />
+                           <div className="w-3 h-3 rounded-full bg-primary/20" />
+                           <div className="w-3 h-3 rounded-full bg-primary/20" />
                         </div>
                         <div className="text-[10px] uppercase font-bold tracking-widest opacity-40">Chapter 1 — Draft</div>
                      </div>
 
                      <div className="font-serif text-[#4a5033] space-y-6 leading-relaxed flex-1 italic">
+                     <div className="font-serif text-primary space-y-6 leading-relaxed flex-1 italic">
                         <p className="text-2xl font-black opacity-80 mb-8">The Obsidian Inkwell</p>
                         <p className="opacity-70">The parchment felt warm beneath my fingertips, a stark contrast to the cold October air that seeped through the cracks of the Writers&apos; Pub. Here, every drop of ink was a promise, and every sentence a battle won against the silence of the blank page...</p>
                      </div>
@@ -175,6 +279,13 @@ export default function LandingPage() {
                            ))}
                         </div>
                         <div className="glass-border px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-[#4a5033]/5">
+                     <div className="mt-auto pt-8 border-t border-primary/10 flex justify-between items-center">
+                        <div className="flex -space-x-3">
+                           {[1, 2, 3].map((i) => (
+                              <div key={i} className="w-10 h-10 rounded-full border-4 border-primary-foreground bg-primary/10 flex items-center justify-center text-[10px] font-bold">ED</div>
+                           ))}
+                        </div>
+                        <div className="glass-border px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-primary/5">
                            3 Active Critiques
                         </div>
                      </div>
@@ -187,6 +298,9 @@ export default function LandingPage() {
                      className="absolute -top-10 -right-6 w-24 h-24 glass-card rounded-3xl flex items-center justify-center shadow-xl shadow-[#4a5033]/10 border-[#4a5033]/20"
                   >
                      <PenTool size={32} className="text-[#4a5033]" />
+                     className="absolute -top-10 -right-6 w-24 h-24 glass-card rounded-3xl flex items-center justify-center shadow-xl shadow-primary/10 border-primary/20"
+                  >
+                     <PenTool size={32} className="text-primary" />
                   </motion.div>
                </motion.div>
             </div>
@@ -204,6 +318,12 @@ export default function LandingPage() {
                      </div>
                      <h3 className="text-xl font-serif font-black mb-2 italic">{feature.title}</h3>
                      <p className="text-sm text-[#4a5033]/60 leading-relaxed italic">{feature.desc}</p>
+                  <GlassCard key={idx} className="group hover:scale-105 border-primary/10 hover:border-primary/30">
+                     <div className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center mb-6">
+                        <feature.icon size={24} className="text-primary" />
+                     </div>
+                     <h3 className="text-xl font-serif font-black mb-2 italic">{feature.title}</h3>
+                     <p className="text-sm text-primary/60 leading-relaxed italic">{feature.desc}</p>
                   </GlassCard>
                ))}
             </motion.div>

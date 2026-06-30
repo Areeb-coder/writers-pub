@@ -126,24 +126,24 @@ export default function Dashboard() {
               {/* Profile Card / Trust Score */}
               <motion.section variants={item}>
                  <GlassCard variant="ink" className="text-center p-10 space-y-6">
-                    <div className="w-20 h-20 rounded-full mx-auto bg-[#daddc6]/20 p-1">
-                       <div className="w-full h-full rounded-full bg-[#daddc6] flex items-center justify-center">
-                          <User size={32} className="text-[#4a5033]" />
+                    <div className="w-20 h-20 rounded-full mx-auto bg-primary-foreground/20 p-1">
+                       <div className="w-full h-full rounded-full bg-primary-foreground flex items-center justify-center">
+                          <User size={32} className="text-primary" />
                        </div>
                     </div>
                     <div className="space-y-1">
-                       <h3 className="text-xl font-serif font-black italic text-[#daddc6]">Grand Master</h3>
-                       <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 text-[#daddc6]">Mastery of the Inkwell</p>
+                       <h3 className="text-xl font-serif font-black italic text-primary-foreground">Grand Master</h3>
+                       <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 text-primary-foreground">Mastery of the Inkwell</p>
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-4 border-t border-[#daddc6]/10 pt-6">
+                    <div className="grid grid-cols-2 gap-4 border-t border-primary-foreground/10 pt-6">
                        <div className="text-center">
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-[#daddc6]/60 mb-1">Impact</p>
-                          <p className="text-xl font-serif font-black text-[#daddc6]">1.2k</p>
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground/60 mb-1">Impact</p>
+                          <p className="text-xl font-serif font-black text-primary-foreground">1.2k</p>
                        </div>
                        <div className="text-center">
-                          <p className="text-[10px] font-bold uppercase tracking-widest text-[#daddc6]/60 mb-1">Rank</p>
-                          <p className="text-xl font-serif font-black text-[#daddc6]">#42</p>
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-primary-foreground/60 mb-1">Rank</p>
+                          <p className="text-xl font-serif font-black text-primary-foreground">#42</p>
                        </div>
                     </div>
                  </GlassCard>

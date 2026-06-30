@@ -171,19 +171,19 @@ export default function AgoraPage() {
             {/* Share CTA */}
             <motion.div variants={item}>
               <GlassCard variant="ink" className="p-8 text-center space-y-4">
-                <Sparkles size={28} className="text-[#daddc6] mx-auto opacity-60" />
+                <Sparkles size={28} className="text-primary-foreground mx-auto opacity-60" />
                 <div className="space-y-2">
-                  <h3 className="text-lg font-serif font-black italic text-[#daddc6]">
+                  <h3 className="text-lg font-serif font-black italic text-primary-foreground">
                     Share Your Work
                   </h3>
-                  <p className="text-[11px] text-[#daddc6]/60 italic leading-relaxed">
+                  <p className="text-[11px] text-primary-foreground/60 italic leading-relaxed">
                     Put your draft before trusted eyes and receive structured, honest feedback.
                   </p>
                 </div>
                 <Link href="/studio/new">
                   <InkButton
                     variant="secondary"
-                    className="px-6 py-3 rounded-xl text-[10px] bg-[#daddc6] text-[#4a5033] hover:bg-[#daddc6]/90"
+                    className="px-6 py-3 rounded-xl text-[10px] bg-primary-foreground text-primary hover:bg-primary-foreground/90"
                     id="share-draft-cta"
                   >
                     Share a Chapter
