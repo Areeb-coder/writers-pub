@@ -125,13 +125,13 @@ writers-pub/
 
 Follow these steps to run the project locally.
 
-### 8.1. Prerequisites
+### Prerequisites
 - **Node.js**: `v20.0.0` or higher
 - **npm**: `v10.0.0` or higher
 - **PostgreSQL**: `v16` (Ensure the `pgvector` extension is installed: `CREATE EXTENSION vector;`)
 - **Redis**: `v7.0` or higher
 
-### 8.2. Installation
+### Installation
 
 1. Clone the repository:
    ```bash
