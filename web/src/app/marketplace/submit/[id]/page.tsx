@@ -189,3 +189,5 @@ export default function SubmitToOpportunity() {
     </MainLayout>
   );
 }
+
+.catch(err => console.error("Promise.all failed:", err));
