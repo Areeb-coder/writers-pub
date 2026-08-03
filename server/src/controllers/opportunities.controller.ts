@@ -13,7 +13,7 @@ export const opportunitiesController = {
         isPaid: req.query.isPaid === 'true' ? true : req.query.isPaid === 'false' ? false : undefined,
         search: req.query.search ? String(req.query.search) : undefined,
         userId: req.user?.userId,
-        page: req.query.page ? parseInt(String(req.query.page)) : undefined,
+        page: req.query.page ? parseInt(String(req.query.page, 10)) : undefined,
         limit: req.query.limit ? parseInt(String(req.query.limit)) : undefined,
       });
       res.json({
