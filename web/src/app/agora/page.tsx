@@ -198,7 +198,7 @@ export default function AgoraPage() {
                 Trending This Week
               </h2>
               <GlassCard className="p-5 space-y-3 border-none shadow-none bg-[#4a5033]/[0.03]">
-                {trending.length > 0 ? trending.map((topic, i) => (
+                {Array.isArray(trending) ? trending.map((topic, i) => (
                     <div
                       key={topic}
                       className="flex items-center gap-3 group cursor-pointer"
