@@ -22,7 +22,7 @@ export const usersController = {
 
   async getLeaderboard(req: Request, res: Response, next: NextFunction) {
     try {
-      const limit = parseInt(String(req.query.limit || '10'));
+      const limit = parseInt(String(req.query.limit || '10', 10));
       const leaderboard = await usersService.getLeaderboard(limit);
       res.json({ success: true, data: leaderboard });
     } catch (err) { next(err); }
