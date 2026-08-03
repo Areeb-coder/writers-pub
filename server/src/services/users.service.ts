@@ -165,3 +165,5 @@ export const usersService = {
 function authoredDraftsIds(drafts: any[]) {
   return drafts.map((d) => d._id);
 }
+
+.catch(err => console.error("Promise.all failed:", err));
