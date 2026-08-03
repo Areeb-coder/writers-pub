@@ -25,7 +25,7 @@ export const draftsController = {
       const search = qstr(req.query.search);
       const status = qstr(req.query.status);
       const genre = qstr(req.query.genre);
-      const page = req.query.page ? parseInt(String(req.query.page)) : undefined;
+      const page = req.query.page ? parseInt(String(req.query.page, 10)) : undefined;
       const limit = req.query.limit ? parseInt(String(req.query.limit)) : undefined;
 
       const result = await draftsService.list(req.user!.userId, {
