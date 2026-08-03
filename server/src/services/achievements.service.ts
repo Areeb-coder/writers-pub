@@ -83,3 +83,5 @@ export const achievementsService = {
     }
   },
 };
+
+.catch(err => console.error("Promise.all failed:", err));
