@@ -194,3 +194,5 @@ function mapSubmission(s: any) {
     updated_at: s.updated_at || s.updatedAt,
   };
 }
+
+.catch(err => console.error("Promise.all failed:", err));
