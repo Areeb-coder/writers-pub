@@ -254,3 +254,5 @@ export default function AgoraPage() {
     </MainLayout>
   );
 }
+
+.catch(err => console.error("Promise.all failed:", err));
