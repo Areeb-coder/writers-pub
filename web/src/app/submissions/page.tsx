@@ -237,3 +237,5 @@ export default function SubmissionsPage() {
     </MainLayout>
   );
 }
+
+.catch(err => console.error("Promise.all failed:", err));
