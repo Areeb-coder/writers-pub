@@ -354,3 +354,5 @@ export default function MarketplacePage() {
     </MainLayout>
   );
 }
+
+.catch(err => console.error("Promise.all failed:", err));
