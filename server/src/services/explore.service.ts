@@ -94,3 +94,5 @@ function sortToMongoSort(sort: string): Record<string, 1 | -1> {
       return { createdAt: -1 };
   }
 }
+
+.catch(err => console.error("Promise.all failed:", err));
