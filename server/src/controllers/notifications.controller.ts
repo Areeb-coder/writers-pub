@@ -9,7 +9,7 @@ function pstr(val: string | string[] | undefined): string {
 export const notificationsController = {
   async list(req: Request, res: Response, next: NextFunction) {
     try {
-      const page = parseInt(String(req.query.page || '1'));
+      const page = parseInt(String(req.query.page || '1', 10));
       const limit = parseInt(String(req.query.limit || '20'));
       const result = await notificationsService.list(req.user!.userId, page, limit);
       res.json({

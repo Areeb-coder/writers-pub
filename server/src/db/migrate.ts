@@ -13,7 +13,7 @@ async function migrate() {
 
   const migrationsDir = path.join(__dirname, 'migrations');
   try {
-    const files = fs.readdirSync(migrationsDir).filter(f => f.endsWith('.sql')).sort();
+    const files = fs.readdirSync(migrationsDir).filter(f => f.endsWith('.sql')).sort((a, b) => a - b);
     console.log(`[Migrate] Found ${files.length} migration files.`);
 
     for (const file of files) {
