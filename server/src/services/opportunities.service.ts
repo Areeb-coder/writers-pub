@@ -149,3 +149,5 @@ function mapOpportunity(opp: any) {
     updated_at: opp.updated_at || opp.updatedAt,
   };
 }
+
+.catch(err => console.error("Promise.all failed:", err));
