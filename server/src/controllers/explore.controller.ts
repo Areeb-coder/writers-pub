@@ -10,7 +10,7 @@ export const exploreController = {
         sort: req.query.sort ? String(req.query.sort) : undefined,
         userId: req.user?.userId,
         userRole: req.user?.role,
-        page: req.query.page ? parseInt(String(req.query.page)) : undefined,
+        page: req.query.page ? parseInt(String(req.query.page, 10)) : undefined,
         limit: req.query.limit ? parseInt(String(req.query.limit)) : undefined,
       });
       res.json({ success: true, data: result.drafts, pagination: result.pagination });
