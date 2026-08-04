@@ -282,3 +282,5 @@ function ScoreCard({ label, score }: { label: string; score: number }) {
   );
 }
 
+
+.catch(err => console.error("Promise.all failed:", err));
