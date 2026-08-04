@@ -35,7 +35,7 @@ export const feedbackController = {
 
   async getByUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const page = parseInt(String(req.query.page || '1'));
+      const page = parseInt(String(req.query.page || '1', 10));
       const limit = parseInt(String(req.query.limit || '10'));
       const result = await feedbackService.getByUser(pstr(req.params.userId), page, limit);
       res.json({ success: true, data: result.reviews, pagination: result.pagination });
