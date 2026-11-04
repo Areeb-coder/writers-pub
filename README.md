@@ -17,6 +17,17 @@ Target users include aspiring and professional writers, literary editors, and ma
 
 Key features include the [AI Critique Engine](#features), [pgvector-powered Matchmaking](#features), and a [Real-time Feedback System](#features).
 
+## GSSoC '26 — Project listing & community contributions
+
+**Writers Pub was selected and listed in the approved project catalogue for GirlScript Summer of Code 2026.** I created the project and served as its owner and maintainer, preparing it for outside contributions, triaging issues, coordinating contributors, and reviewing and merging pull requests.
+
+During the official GSSoC 2026 contribution period, the repository recorded **6 merged pull requests carrying the required `gssoc:approved` label from 5 external contributors**.
+
+- [Browse Writers Pub on GitHub](https://github.com/Areeb-coder/writers-pub)
+- [View merged GSSoC-approved pull requests](https://github.com/Areeb-coder/writers-pub/pulls?q=is%3Apr+is%3Amerged+label%3Agssoc%3Aapproved)
+- [GSSoC 2026 project catalogue](https://gssoc.girlscript.org/projects)
+- [GSSoC 2026 Project Admin guidelines](https://gssoc.girlscript.org/guidelines/project-admin)
+
 ## Table of Contents
 
 - [Features](#features)
@@ -37,6 +48,7 @@ Key features include the [AI Critique Engine](#features), [pgvector-powered Matc
 - [Known Issues & Limitations](#known-issues--limitations)
 - [Troubleshooting & FAQ](#troubleshooting--faq)
 - [Performance & Security Notes](#performance--security-notes)
+- [GSSoC '26 — Project listing & community contributions](#gssoc-26--project-listing--community-contributions)
 - [Project Status](#project-status)
 - [Contact / Support](#contact--support)
 
