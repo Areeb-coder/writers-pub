@@ -21,7 +21,7 @@ Key features include the [AI Critique Engine](#features), [pgvector-powered Matc
 
 **Writers Pub was selected and listed in the approved project catalogue for GirlScript Summer of Code 2026.** I created the project and served as its owner and maintainer, preparing it for outside contributions, triaging issues, coordinating contributors, and reviewing and merging pull requests.
 
-During the official GSSoC 2026 contribution period, the repository recorded **6 merged pull requests carrying the required `gssoc:approved` label from 5 external contributors**.
+The repository’s public pull-request history records **8 merged pull requests carrying the required `gssoc:approved` label from 7 external contributors**. This records contributor activity on the project; it does not imply that I personally earned contributor points from PRs merged into my own repository.
 
 - [Browse Writers Pub on GitHub](https://github.com/Areeb-coder/writers-pub)
 - [View merged GSSoC-approved pull requests](https://github.com/Areeb-coder/writers-pub/pulls?q=is%3Apr+is%3Amerged+label%3Agssoc%3Aapproved)
